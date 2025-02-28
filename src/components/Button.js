@@ -8,20 +8,29 @@ import "../assets/styles/components/button.scss"; // SCSS 적용
 const Button = ({
   children,
   to,
-  variant = "contained", // 기본 스타일
-  customColor = "var(--primary-color)", // 기본 배경색
-  textColor = "var(--text-color)", // 기본 텍스트 색상
-  hoverColor = "var(--button-hover)", // ✅ 호버 시 색상 추가
+  variant = "contained",
+  customColor = "var(--primary-color)",
+  textColor = "var(--text-color)",
+  hoverColor = "var(--button-hover)",
   size = "medium",
+  disableClickEffect= false, 
   disabled = false,
   fullWidth = false,
   className = "",
   onClick,
   ...props
 }) => {
-  const buttonClass = classNames("custom-button", className); // SCSS 클래스 적용
+  const buttonClass = classNames("custom-button", className);
 
-  // ✅ 내부적으로 Link 사용 (to 값이 있는 경우)
+  const buttonStyles = {
+    backgroundColor: customColor,
+    color: textColor,
+    "&:hover": {
+      backgroundColor: hoverColor,
+    },
+   
+  };
+
   if (to) {
     return (
       <Link to={to} className={buttonClass} {...props}>
@@ -30,13 +39,7 @@ const Button = ({
           size={size}
           disabled={disabled}
           fullWidth={fullWidth}
-          sx={{
-            backgroundColor: customColor,
-            color: textColor,
-            "&:hover": {
-              backgroundColor: hoverColor, // ✅ 호버 시 색상 변경 가능
-            },
-          }}
+          sx={buttonStyles}
         >
           {children}
         </MUIButton>
@@ -53,13 +56,8 @@ const Button = ({
       fullWidth={fullWidth}
       onClick={onClick}
       {...props}
-      sx={{
-        backgroundColor: customColor,
-        color: textColor,
-        "&:hover": {
-          backgroundColor: hoverColor, // ✅ 호버 시 색상 변경 가능
-        },
-      }}
+      sx={buttonStyles}
+      disableRipple={disableClickEffect}
     >
       {children}
     </MUIButton>
@@ -68,11 +66,12 @@ const Button = ({
 
 Button.propTypes = {
   children: PropTypes.node.isRequired,
-  to: PropTypes.string, // 링크 여부
+  to: PropTypes.string,
   variant: PropTypes.oneOf(["text", "outlined", "contained"]),
-  customColor: PropTypes.string, // ✅ 커스텀 색상 지원
-  textColor: PropTypes.string, // ✅ 텍스트 색상 변경 가능
-  hoverColor: PropTypes.string, // ✅ 호버 시 색상 변경 가능
+  customColor: PropTypes.string,
+  textColor: PropTypes.string,
+  hoverColor: PropTypes.string,
+  disableClickEffect: PropTypes.bool, 
   size: PropTypes.oneOf(["small", "medium", "large"]),
   disabled: PropTypes.bool,
   fullWidth: PropTypes.bool,

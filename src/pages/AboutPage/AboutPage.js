@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
-import backgroundImage from "../../assets/images/room.jpg"; // ✅ 이미지 정상 경로
+import backgroundImage from "../../assets/images/room1.jpg"; // ✅ 이미지 정상 경로
 
-function MainPage() {
+function AboutPage() {
   const [loaded, setLoaded] = useState(false);
   const [darken, setDarken] = useState(1); // ✅ 초기 밝기 (1 = 밝음, 0 = 완전 검정)
   const [text, setText] = useState(""); // ✅ 타이핑 애니메이션 텍스트
@@ -109,4 +109,4 @@ function MainPage() {
   );
 }
 
-export default MainPage;
+export default AboutPage;
