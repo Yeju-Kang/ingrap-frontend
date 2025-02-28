@@ -2,14 +2,21 @@ import AboutPage from "../pages/AboutPage/AboutPage";
 import ProductsPage from "../pages/ProductPage/ProductPage";
 import DrawingPage from "../pages/DrawingPage/DrawingPage";
 import ProductDetailPage from "../pages/ProductPage/ProductDetailPage";
+import useTranslate from "../hooks/useTranslate"; // ✅ 번역 훅 가져오기
 
-const allRoutes = [
-  { path: "/about", label: "About Us", element: <AboutPage /> },
-  { path: "/products", label: "Product", element: <ProductsPage /> },
-  { path: "/drawing", label: "Drawing", element: <DrawingPage /> },
-  { path: "/products/:productId", element: <ProductDetailPage />, label: null },
-];
+// ✅ 커스텀 훅으로 변경
+export const useAllRoutes = () => {
+  const { translate } = useTranslate(); // ✅ 번역 함수 가져오기
 
-const menuRoutes = allRoutes.filter(({ label }) => label !== null);
+  return [
+    { path: "/about", label: translate("aboutUs.title"), element: <AboutPage /> },
+    { path: "/products", label: translate("product.title"), element: <ProductsPage /> },
+    { path: "/drawing", label: translate("drawing.title"), element: <DrawingPage /> },
+    { path: "/products/:productId", element: <ProductDetailPage />, label: null },
+  ];
+};
 
-export { allRoutes, menuRoutes };
+// ✅ menuRoutes도 훅 내부에서 처리해야 오류가 발생하지 않음
+export const useMenuRoutes = () => {
+  return useAllRoutes().filter(({ label }) => label !== null);
+};

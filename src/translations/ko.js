@@ -1,6 +1,19 @@
 const ko = {
-    common: { close: "닫기", save: "저장", cancel: "취소" },
-    header: { home: "홈", about: "소개", contact: "연락처" },
+    common: {
+      title: "인그랩",
+      close: "닫기",
+      save: "저장",
+      cancel: "취소",
+    },
+    aboutUs: {
+      title: "About Us"
+    },
+    product: {
+      title: "Product"
+    },
+    drawing: {
+      title: "Drawing"
+    },
   };
   
   export default ko;
