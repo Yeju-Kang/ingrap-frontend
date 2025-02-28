@@ -1,20 +1,25 @@
 // 🎨 기본 스타일 적용
 @import "./colors.scss";
-@import url("https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css");
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
 
 * {
   box-sizing: border-box;
   background: none; /* 불필요한 배경 제거 */
 }
 
-html,
-body,
-#root {
+
+html, body, #root {
+  font-family: 'Pretendard-Regular', 'Roboto', 'Helvetica', 'Arial', sans-serif !important;
   margin: 0;
   padding: 0;
   width: 100%;
-  min-height: 100vh; /* 항상 전체 높이 유지 */
-  background: var(--secondary-color);
+  min-height: 100vh;
+  background: var(--background-color);
   display: flex;
   flex-direction: column;
 }
@@ -30,6 +35,12 @@ body,
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+}
+
+/* ✅ MUI 컴포넌트 폰트 강제 적용 */
+.MuiTypography-root, 
+.MuiButton-root {
+  font-family: 'MarinesBold', 'Roboto', 'Helvetica', 'Arial', sans-serif !important;
 }
 
 // ✨ 스크롤바 스타일 (선택 사항)
