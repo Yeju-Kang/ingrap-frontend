@@ -1,23 +1,23 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
-import MainPage from "./pages/MainPage/MainPage";
 import CustomCursor from "./components/CustomCursor/CustomCursor";
-// import ProductsPage from "./pages/ProductPage/ProductPage";
-// import DrawingPage from "./pages/DrawingPage/DrawingPage";
+import { allRoutes } from "./routes/routes";
+import HomePage from "./pages/HomePage/HomePage"; // ✅ 루트(`/`)용 홈 페이지 추가
 
 function App() {
   return (
     <>
       <CustomCursor />
       <MainLayout>
-        {" "}
-        {/* 전체 레이아웃 감싸기 */}
         <Routes>
-          <Route index element={<MainPage />}></Route>
-          {/* <Route path="/main" element={<MainPage />} />
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/drawing" element={<DrawingPage />} /> */}
+          {/* ✅ 홈 페이지 (`/`) 추가 */}
+          <Route path="/" element={<HomePage />} />
+
+          {/* ✅ 기존 페이지들 자동 등록 */}
+          {allRoutes.map(({ path, element }) => (
+            <Route key={path} path={path} element={element} />
+          ))}
         </Routes>
       </MainLayout>
     </>

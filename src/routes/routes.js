@@ -1,13 +1,15 @@
-import ProductDetailPage from "../pages/ProductPage/ProductDetailPage"; // 상세 페이지 import
+import MainPage from "../pages/MainPage/MainPage";
+import ProductsPage from "../pages/ProductPage/ProductPage";
+import DrawingPage from "../pages/DrawingPage/DrawingPage";
+import ProductDetailPage from "../pages/ProductPage/ProductDetailPage";
 
 const allRoutes = [
-  { path: "/main", label: "About Us" },
-  { path: "/products", label: "Product" },
-  { path: "/drawing", label: "Drawing" },
-
+  { path: "/main", label: "About Us", element: <MainPage /> },
+  { path: "/products", label: "Product", element: <ProductsPage /> },
+  { path: "/drawing", label: "Drawing", element: <DrawingPage /> },
   { path: "/products/:productId", element: <ProductDetailPage />, label: null },
 ];
 
-const menuRoutes = allRoutes.filter((route) => route.label !== null);
+const menuRoutes = allRoutes.filter(({ label }) => label !== null);
 
 export { allRoutes, menuRoutes };
