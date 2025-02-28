@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import Button from "../components/Button";
 import { menuRoutes } from "../routes/routes";
-import logo from "../assets/images/logo_brown.png"; // 로고 import
+import logo from "../assets/images/image.png"; // 로고 import
 import LoginModal from "../components/LoginModal"; // ✅ 로그인 모달 import
 
 function Header() {

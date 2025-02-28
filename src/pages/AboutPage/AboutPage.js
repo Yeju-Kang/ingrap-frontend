@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
-import backgroundImage from "../../assets/images/room.jpg"; // ✅ 이미지 정상 경로
+import backgroundImage from "../../assets/images/room.png"; // ✅ 이미지 정상 경로
 
 function AboutPage() {
   const [loaded, setLoaded] = useState(false);
