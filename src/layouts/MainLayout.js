@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import Header from "./Header";
-import RightLayout from "./RightLayout";
+import MainContent from "./MainContent";
 
 function MainLayout() {
   return (
@@ -13,7 +13,7 @@ function MainLayout() {
       }}
     >
       <Header />
-      <RightLayout />
+      <MainContent />
     </Box>
   );
 }
