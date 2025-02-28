@@ -1,0 +1,26 @@
+// 🎨 브랜드 컬러 정의
+$primary-color: #a3a380; // 올리브 그린
+$secondary-color: #ede6da; // 베이지
+$button-color: #d6cdc0;
+$button-hover: #bab298;
+$background-color: #f5f5f5; // 아이보리 화이트
+$white-color: #ffffff; // 순수한 화이트
+$text-color: #4e4e4e; // 다크 그레이
+$border-color: #dadada; // 연한 그레이
+
+// 🎨 상태별 컬러
+$success-color: #4caf50;
+$warning-color: #ffc107;
+$info-color: #2196f3;
+
+// ✨ 테마 컬러 변수 설정
+:root {
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --button-color: #{$button-color};
+  --button-hover: #{$button-hover};
+  --background-color: #{$background-color};
+  --white-color: #{$white-color};
+  --text-color: #{$text-color};
+  --border-color: #{$border-color};
+}

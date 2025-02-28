@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import MainLayout from "./layouts/MainLayout";
+import MainPage from "./pages/MainPage/MainPage";
+import CustomCursor from "./components/CustomCursor/CustomCursor";
+// import ProductsPage from "./pages/ProductPage/ProductPage";
+// import DrawingPage from "./pages/DrawingPage/DrawingPage";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <CustomCursor />
+      <MainLayout>
+        {" "}
+        {/* 전체 레이아웃 감싸기 */}
+        <Routes>
+          <Route index element={<MainPage />}></Route>
+          {/* <Route path="/main" element={<MainPage />} />
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/drawing" element={<DrawingPage />} /> */}
+        </Routes>
+      </MainLayout>
+    </>
   );
 }
 

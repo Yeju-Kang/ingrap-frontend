@@ -1,0 +1,47 @@
+// 🎨 기본 스타일 적용
+@import "./colors.scss";
+@import url("https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css");
+
+* {
+  box-sizing: border-box;
+  background: none; /* 불필요한 배경 제거 */
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh; /* 항상 전체 높이 유지 */
+  background: var(--secondary-color);
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* 화면 전체 높이 */
+}
+
+// 🚀 공통 레이아웃 스타일
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+// ✨ 스크롤바 스타일 (선택 사항)
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f4f4f4;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+}

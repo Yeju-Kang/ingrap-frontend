@@ -1,43 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <meta name="description" content="Next-generation web platform" />
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
+    <!-- 캐시 방지 (항상 최신 데이터 로드) -->
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
+
+    <!-- 보안 설정: HTTPS 강제 -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="upgrade-insecure-requests"
+    />
+
+    <!-- Favicon & Web App Icons -->
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+    <!-- 기본 타이틀은 스크립트에서 업데이트 -->
+    <title></title>
+
+    <!-- 환경 변수 (env.js) 추가 -->
+    <script src="%PUBLIC_URL%/env.js"></script>
+
+    <!-- 사이트 기본 언어 설정, localStorage 확인 및 타이틀 업데이트 스크립트 -->
+    <script>
+      // `env.js`에서 기본 언어 가져오기
+      const defaultLang = window.ENV?.DEFAULT_LANGUAGE || "ko";
+
+      // localStorage에 `language` 값이 없으면 기본값 설정
+      if (!localStorage.getItem("language")) {
+        localStorage.setItem("language", defaultLang);
+      }
+
+      // 저장된 언어 불러오기
+      const savedLanguage = localStorage.getItem("language");
+      window.siteLanguage = savedLanguage;
+
+      // 타이틀 업데이트 함수
+      function updateTitle(lang) {
+        document.title =
+          lang === "ko"
+            ? "인테리어가 당신의 손 안에 | 인그랩"
+            : "Your Space, Your Way | INGRAP";
+
+        // 언어 업데이트 후 저장
+        window.siteLanguage = lang;
+        localStorage.setItem("language", lang);
+      }
+
+      updateTitle(window.siteLanguage);
+
+      // 📌 `localStorage` 변경을 감지하는 이벤트 추가
+      window.addEventListener("storage", (event) => {
+        if (event.key === "language") {
+          console.log("🔄 로컬스토리지 변경 감지! 새 값:", event.newValue);
+          updateTitle(event.newValue);
+        }
+      });
+    </script>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+    <div id="root" style="height: 100%"></div>
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+    <!-- 언어 변경 버튼은 다른 페이지에서 구현 예정 -->
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    <!-- Google Analytics (환경변수 사용 가능) -->
+    <script>
+      if (window.ENV && window.ENV.GA_TRACKING_ID) {
+        var script = document.createElement("script");
+        script.async = true;
+        script.src =
+          "https://www.googletagmanager.com/gtag/js?id=" +
+          window.ENV.GA_TRACKING_ID;
+        document.head.appendChild(script);
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+        gtag("config", window.ENV.GA_TRACKING_ID);
+      }
+    </script>
   </body>
 </html>

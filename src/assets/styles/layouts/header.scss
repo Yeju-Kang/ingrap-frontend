@@ -1,0 +1,57 @@
+.menu-container {
+  display: flex;
+  justify-content: center; // 가운데 정렬
+  align-items: center;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.menu-wrapper {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--button-color); // 🔹 테두리만 있는 박스
+  background-color: transparent;
+  padding: 5px;
+  border-radius: 8px;
+  width: 70%; // 메뉴가 너무 넓지 않도록 조정
+  max-width: 600px; // 최대 너비 설정
+  justify-content: space-between; // 메뉴 가운데 + 로그인 버튼 오른쪽 정렬
+}
+
+.menu-list {
+  display: flex;
+  padding: 0;
+  flex-grow: 1; // 메뉴 리스트가 확장되도록 설정
+  justify-content: center; // 가로 가운데 정렬
+}
+
+.menu-item {
+  min-width: 120px;
+  padding: 10px 20px;
+  text-align: center;
+  font-weight: normal;
+  color: var(--text-color);
+  background-color: var(--button-color);
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--button-hover);
+  }
+
+  &.active {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    font-weight: bold;
+  }
+}
+
+// ✅ 로그인 버튼 (오른쪽 끝 정렬)
+.login-button {
+  margin-left: auto; // 오른쪽 정렬
+  margin-right: 10px; // 오른쪽 여백 추가
+}
