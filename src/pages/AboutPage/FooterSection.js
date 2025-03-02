@@ -1,42 +1,29 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { forwardRef } from "react";
 import { Box } from "@mui/material";
 
-const RoomSection = React.forwardRef(({ image, index, currentSection, first = false, last = false }, ref) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.5 }
-    );
-
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
+const FooterSection = forwardRef(({ isActive }, ref) => {
   return (
     <Box
-      ref={(el) => {
-        sectionRef.current = el;
-        if (ref) ref(el);
-      }}
+      ref={ref}
       sx={{
-        position: "fixed",
-        top: isVisible ? "0%" : "100%",
+        position: "absolute",
+        bottom: 0,
         left: 0,
         width: "100%",
-        height: "100vh",
-        backgroundImage: `url(${image})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        transform: first
-          ? "scale(1)"
-          : "none",
-        transition: "top 1s ease-in-out",
+        height: "40vh",
+        backgroundColor: "#222",
+        color: "white",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: "2rem",
+        transform: isActive ? "translateY(0%)" : "translateY(100%)",
+        transition: "transform 1s ease-in-out",
       }}
-    />
+    >
+      Footer Section
+    </Box>
   );
 });
 
-export default RoomSection;
+export default FooterSection;

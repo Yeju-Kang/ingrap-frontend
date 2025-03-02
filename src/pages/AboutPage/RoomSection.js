@@ -1,43 +1,37 @@
-import React, { useState, useEffect, useRef, forwardRef } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import { Box } from "@mui/material";
 
-const RoomSection = forwardRef(({ image, index, currentSection, first = false, last = false }, ref) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef(null);
+const RoomSection = forwardRef(({ index, image, currentSection, first = false }, ref) => {
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.5 }
-    );
-
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
+    if (first && currentSection === 0) {
+      setTimeout(() => setLoaded(true), 100);
+    }
+  }, [currentSection, first]);
 
   return (
     <Box
-      ref={(el) => {
-        sectionRef.current = el;
-        if (ref) ref(el);
-      }}
+      ref={ref}
       sx={{
-        position: "fixed",
-        top: isVisible ? "0%" : "100%",
-        left: 0,
+        position: "absolute", // ✅ 모든 섹션이 한 화면 위에 쌓이도록 설정
         width: "100%",
         height: "100vh",
         backgroundImage: `url(${image})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
+        top: 0,
+        left: 0,
         transform: first
-          ? isVisible
-            ? "scale(1)" // ✅ 확대
-            : "scale(0.3)" // ✅ 처음에는 축소
-          : "none",
-        transition: first
-          ? "transform 1.5s ease-out, top 1s ease-in-out"
-          : "top 1s ease-in-out",
+          ? !loaded
+            ? "scale(0.3)" // ✅ 첫 번째 섹션은 축소된 상태에서 확대
+            : "scale(1)" // ✅ 확대 애니메이션
+          : currentSection === index
+          ? "translateY(0%)" // ✅ 현재 섹션
+          : currentSection > index
+          ? "translateY(-100%)" // ✅ 위로 사라짐
+          : "translateY(100%)", // ✅ 아래에서 올라옴
+        transition: "transform 1s ease-in-out",
       }}
     />
   );

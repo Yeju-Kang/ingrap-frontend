@@ -1,24 +1,13 @@
-import React, { useState, useEffect, useRef, forwardRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 
-const TextScreen = forwardRef(({ currentSection, index }, ref) => {
+const TextScreen = ({ isActive }) => {
   const [text, setText] = useState("");
+  const [showCursor, setShowCursor] = useState(true);
   const fullText = "Your Space, Your Way!";
-  const sectionRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.8 }
-    );
-
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (isVisible) {
+    if (isActive) {
       setTimeout(() => {
         let index = 0;
         const typingInterval = setInterval(() => {
@@ -28,20 +17,13 @@ const TextScreen = forwardRef(({ currentSection, index }, ref) => {
         }, 150);
       }, 1000);
     } else {
-      setText(""); // ✅ blackScreen이 사라질 때 텍스트 제거
+      setTimeout(() => setText(""), 800);
     }
-  }, [isVisible]);
+  }, [isActive]);
 
   return (
     <Box
-      ref={(el) => {
-        sectionRef.current = el;
-        if (ref) ref(el);
-      }}
       sx={{
-        position: "fixed",
-        top: isVisible ? "0%" : "100%",
-        left: 0,
         width: "100%",
         height: "100vh",
         backgroundColor: "black",
@@ -51,12 +33,26 @@ const TextScreen = forwardRef(({ currentSection, index }, ref) => {
         color: "white",
         fontSize: "3rem",
         fontWeight: "bold",
-        transition: "top 1s ease-in-out",
+        position: "absolute",
+        top: 0,
+        left: 0,
+        transform: isActive ? "translateY(0%)" : "translateY(100%)", // ✅ 위에서 아래로 이동하도록 변경
+        transition: "transform 1s ease-in-out",
       }}
     >
       {text}
+      <Box
+        component="span"
+        sx={{
+          display: "inline-block",
+          width: "10px",
+          height: "50px",
+          backgroundColor: showCursor ? "white" : "transparent",
+          marginLeft: "4px",
+        }}
+      />
     </Box>
   );
-});
+};
 
 export default TextScreen;

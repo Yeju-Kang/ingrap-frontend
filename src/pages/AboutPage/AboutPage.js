@@ -1,59 +1,65 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Box } from "@mui/material";
 import RoomSection from "./RoomSection";
 import TextScreen from "./TextScreen";
-import FooterSection from "./FooterSection";
 import backgroundImage1 from "../../assets/images/room1.jpg";
 import backgroundImage2 from "../../assets/images/room2.jpg";
 import backgroundImage3 from "../../assets/images/room3.jpg";
 import backgroundImage4 from "../../assets/images/room4.jpg";
 
 function AboutPage() {
-  const sections = useRef([]);
+  const sections = ["room1", "blackScreen", "room2", "room3", "room4"];
+  const sectionRefs = useRef([]);
   const [currentSection, setCurrentSection] = useState(0);
+  const observerRef = useRef(null);
 
   useEffect(() => {
-    const observerOptions = { threshold: 0.5 }; // 50% 이상 보일 때 감지
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const sectionIndex = sectionRefs.current.indexOf(entry.target);
+            if (sectionIndex !== -1) {
+              setCurrentSection(sectionIndex);
+            }
+          }
+        });
+      },
+      { threshold: 0.7 }
+    );
 
-    const observerCallback = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const index = sections.current.indexOf(entry.target);
-          setCurrentSection(index);
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-    sections.current.forEach((section) => {
-      if (section) observer.observe(section);
+    sectionRefs.current.forEach((section) => {
+      if (section) observerRef.current.observe(section);
     });
 
-    return () => observer.disconnect();
+    return () => observerRef.current.disconnect();
   }, []);
 
   return (
-    <Box sx={{ height: "100vh", overflow: "hidden" }}>
+    <Box sx={{ height: "100vh", overflowY: "auto", position: "relative" }}>
+      {/* ✅ 첫 번째 이미지 (Room1) */}
       <RoomSection
-        ref={(el) => (sections.current[0] = el)}
+        ref={(el) => (sectionRefs.current[0] = el)}
         image={backgroundImage1}
-        index={0}
         currentSection={currentSection}
         first
       />
-      <TextScreen ref={(el) => (sections.current[1] = el)} index={1} currentSection={currentSection} />
-      {[backgroundImage2, backgroundImage3, backgroundImage4].map((image, index, arr) => (
+
+      {/* ✅ 검은색 배경 & 텍스트 애니메이션 */}
+      <TextScreen
+        ref={(el) => (sectionRefs.current[1] = el)}
+        isActive={currentSection === 1}
+      />
+
+      {/* ✅ Room2 ~ Room4 */}
+      {[backgroundImage2, backgroundImage3, backgroundImage4].map((image, index) => (
         <RoomSection
           key={index}
-          ref={(el) => (sections.current[index + 2] = el)}
+          ref={(el) => (sectionRefs.current[index + 2] = el)}
           image={image}
-          index={index + 2}
           currentSection={currentSection}
-          last={index === arr.length - 1}
         />
       ))}
-      <FooterSection ref={(el) => (sections.current[5] = el)} currentSection={currentSection} />
     </Box>
   );
 }
