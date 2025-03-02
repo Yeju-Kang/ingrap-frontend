@@ -8,18 +8,12 @@
     <meta name="description" content="Next-generation web platform" />
 
     <!-- 캐시 방지 (항상 최신 데이터 로드) -->
-    <meta
-      http-equiv="Cache-Control"
-      content="no-cache, no-store, must-revalidate"
-    />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="-1" />
 
     <!-- 보안 설정: HTTPS 강제 -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="upgrade-insecure-requests"
-    />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
 
     <!-- Favicon & Web App Icons -->
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -32,47 +26,22 @@
     <!-- 환경 변수 (env.js) 추가 -->
     <script src="%PUBLIC_URL%/env.js"></script>
 
-    <!-- 사이트 기본 언어 설정, localStorage 확인 및 타이틀 업데이트 스크립트 -->
+    <!-- 사이트 기본 언어 설정 및 타이틀 업데이트 -->
     <script>
-      // `env.js`에서 기본 언어 가져오기
-      const defaultLang = window.ENV?.DEFAULT_LANGUAGE || "ko";
-
-      // localStorage에 `language` 값이 없으면 기본값 설정
-      if (!localStorage.getItem("language")) {
-        localStorage.setItem("language", defaultLang);
-      }
-
-      // 저장된 언어 불러오기
-      const savedLanguage = localStorage.getItem("language");
-      window.siteLanguage = savedLanguage;
-
-      // 타이틀 업데이트 함수
-      function updateTitle(lang) {
-        document.title =
-          lang === "ko"
-            ? "인테리어가 당신의 손 안에 | 인그랩"
-            : "Your Space, Your Way | INGRAP";
-
-        // 언어 업데이트 후 저장
-        window.siteLanguage = lang;
-        localStorage.setItem("language", lang);
-      }
-
-      updateTitle(window.siteLanguage);
-
-      // 📌 `localStorage` 변경을 감지하는 이벤트 추가
-      window.addEventListener("storage", (event) => {
-        if (event.key === "language") {
-          console.log("🔄 로컬스토리지 변경 감지! 새 값:", event.newValue);
-          updateTitle(event.newValue);
-        }
+      document.addEventListener("DOMContentLoaded", function () {
+        const defaultLang = window.ENV?.DEFAULT_LANGUAGE || "ko";
+        // Redux Toolkit에서 언어를 가져와서 타이틀 설정 (React 내에서 처리됨)
+          document.title =
+          defaultLang === "ko"
+              ? "인테리어가 당신의 손 안에 | 인그랩"
+              : "Your Space, Your Way | INGRAP";
+      
+        
       });
     </script>
   </head>
   <body>
     <div id="root" style="height: 100%"></div>
-
-    <!-- 언어 변경 버튼은 다른 페이지에서 구현 예정 -->
 
     <!-- Google Analytics (환경변수 사용 가능) -->
     <script>
@@ -80,8 +49,7 @@
         var script = document.createElement("script");
         script.async = true;
         script.src =
-          "https://www.googletagmanager.com/gtag/js?id=" +
-          window.ENV.GA_TRACKING_ID;
+          "https://www.googletagmanager.com/gtag/js?id=" + window.ENV.GA_TRACKING_ID;
         document.head.appendChild(script);
         window.dataLayer = window.dataLayer || [];
         function gtag() {

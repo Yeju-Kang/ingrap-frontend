@@ -1,7 +1,7 @@
 import React from "react"
 import { Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import Button from "../../components/Button"
+import Button from "../../components/CustomButton/CustomButton"
 import { useMenuRoutes  } from "../../routes/routes";
 
 function NavMenu() {
@@ -21,7 +21,7 @@ function NavMenu() {
   >
     <Typography
       sx={{
-        fontSize: 13.5,
+        fontSize: 20,
         fontWeight: "bold",
         color: "var(--text-color)",
       }}

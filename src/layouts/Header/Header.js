@@ -34,7 +34,7 @@ function Header() {
           top: 0,
           left: 0,
           width: "100%",
-          height: visible ? "66px" : "10px",
+          height: visible ? "80px" : "10px",
           zIndex: 999,
           backgroundColor: "transparent",
         }}
@@ -47,7 +47,7 @@ function Header() {
           top: visible || hovering ? 0 : "-70px",
           left: 0,
           width: "100%",
-          height: "66px",
+          height: "80px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",

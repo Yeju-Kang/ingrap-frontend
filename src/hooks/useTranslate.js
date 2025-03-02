@@ -4,7 +4,7 @@ import { setLanguage } from "../redux/languageSlice";
 const useTranslate = () => {
   const dispatch = useDispatch();
   const language = useSelector((state) => state.language.language);
-  const translations = useSelector((state) => state.language.translations);
+  const translations = useSelector((state) => state.language.translations) || {};
 
   const translate = (key) => {
     const keys = key.split("."); // "aboutUs.title" → ["aboutUs", "title"]
@@ -20,6 +20,7 @@ const useTranslate = () => {
 
   const toggleLanguage = () => {
     const newLanguage = language === "ko" ? "en" : "ko";
+    localStorage.setItem("language", newLanguage); // ✅ localStorage에 저장
     dispatch(setLanguage(newLanguage)); // ✅ Redux 상태 업데이트
   };
 

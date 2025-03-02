@@ -1,6 +1,6 @@
 const en = {
     common: {
-        title: "InGrap",
+        title: "Your Space, Your Way | INGRAP",
       close: "Close",
       save: "Save",
       cancel: "Cancel",
