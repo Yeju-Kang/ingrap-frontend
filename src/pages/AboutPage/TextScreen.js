@@ -3,7 +3,6 @@ import { Box } from "@mui/material";
 
 const TextScreen = ({ isActive }) => {
   const [text, setText] = useState("");
-  const [showCursor, setShowCursor] = useState(true);
   const fullText = "Your Space, Your Way!";
 
   useEffect(() => {
@@ -33,24 +32,9 @@ const TextScreen = ({ isActive }) => {
         color: "white",
         fontSize: "3rem",
         fontWeight: "bold",
-        position: "absolute",
-        top: 0,
-        left: 0,
-        transform: isActive ? "translateY(0%)" : "translateY(100%)", // ✅ 위에서 아래로 이동하도록 변경
-        transition: "transform 1s ease-in-out",
       }}
     >
       {text}
-      <Box
-        component="span"
-        sx={{
-          display: "inline-block",
-          width: "10px",
-          height: "50px",
-          backgroundColor: showCursor ? "white" : "transparent",
-          marginLeft: "4px",
-        }}
-      />
     </Box>
   );
 };

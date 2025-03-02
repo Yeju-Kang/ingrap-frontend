@@ -1,15 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Box } from "@mui/material";
 import RoomSection from "./RoomSection";
 import TextScreen from "./TextScreen";
+import FooterSection from "./FooterSection";
 import backgroundImage1 from "../../assets/images/room1.jpg";
 import backgroundImage2 from "../../assets/images/room2.jpg";
 import backgroundImage3 from "../../assets/images/room3.jpg";
 import backgroundImage4 from "../../assets/images/room4.jpg";
 
 function AboutPage() {
-  const sections = ["room1", "blackScreen", "room2", "room3", "room4"];
-  const sectionRefs = useRef([]);
+  const sections = ["room1", "blackScreen", "room2", "room3", "room4", "footer"];
+  const sectionRefs = useRef([]); // ✅ 각 섹션의 ref 저장
   const [currentSection, setCurrentSection] = useState(0);
   const observerRef = useRef(null);
 
@@ -25,7 +26,7 @@ function AboutPage() {
           }
         });
       },
-      { threshold: 0.7 }
+      { threshold: 0.8 } // ✅ 80% 이상 화면에 보여야 감지됨
     );
 
     sectionRefs.current.forEach((section) => {
@@ -36,29 +37,27 @@ function AboutPage() {
   }, []);
 
   return (
-    <Box sx={{ height: "100vh", overflowY: "auto", position: "relative" }}>
-      {/* ✅ 첫 번째 이미지 (Room1) */}
-      <RoomSection
-        ref={(el) => (sectionRefs.current[0] = el)}
-        image={backgroundImage1}
-        currentSection={currentSection}
-        first
-      />
-
-      {/* ✅ 검은색 배경 & 텍스트 애니메이션 */}
-      <TextScreen
-        ref={(el) => (sectionRefs.current[1] = el)}
-        isActive={currentSection === 1}
-      />
-
-      {/* ✅ Room2 ~ Room4 */}
-      {[backgroundImage2, backgroundImage3, backgroundImage4].map((image, index) => (
-        <RoomSection
+    <Box sx={{ height: "100vh", overflowY: "auto", scrollSnapType: "y mandatory", position: "relative" }}>
+      {sections.map((section, index) => (
+        <Box
           key={index}
-          ref={(el) => (sectionRefs.current[index + 2] = el)}
-          image={image}
-          currentSection={currentSection}
-        />
+          ref={(el) => (sectionRefs.current[index] = el)}
+          sx={{
+            width: "100%",
+            height: index === sections.length - 1 ? "40vh" : "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            scrollSnapAlign: "start", // ✅ 스크롤 시 각 섹션이 정확히 한 번에 이동
+          }}
+        >
+          {index === 0 && <RoomSection image={backgroundImage1} isActive={currentSection === 0} first />}
+          {index === 1 && <TextScreen isActive={currentSection === 1} />}
+          {[backgroundImage2, backgroundImage3, backgroundImage4].map(
+            (image, i) => index === i + 2 && <RoomSection key={i} image={image} isActive={currentSection === i + 2} />
+          )}
+          {index === sections.length - 1 && <FooterSection />}
+        </Box>
       ))}
     </Box>
   );
