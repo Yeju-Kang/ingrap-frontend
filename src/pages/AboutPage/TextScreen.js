@@ -1,14 +1,24 @@
-import React, {useState, useEffect} from "react"
-import { Box } from "@mui/material"
+import React, { useState, useEffect, useRef, forwardRef } from "react";
+import { Box } from "@mui/material";
 
-const TextScreen = ({currentSection, index}) => {
+const TextScreen = forwardRef(({ currentSection, index }, ref) => {
   const [text, setText] = useState("");
-  const [showCursor, setShowCursor] = useState(true);
   const fullText = "Your Space, Your Way!";
+  const sectionRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    if (currentSection === 1) {
-      // ✅ blackScreen이 화면을 덮은 후 (1초 후) 텍스트 애니메이션 시작
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.8 }
+    );
+
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (isVisible) {
       setTimeout(() => {
         let index = 0;
         const typingInterval = setInterval(() => {
@@ -16,50 +26,37 @@ const TextScreen = ({currentSection, index}) => {
           index++;
           if (index === fullText.length) clearInterval(typingInterval);
         }, 150);
-      }, 1000); // ✅ blackScreen 애니메이션 시간 (1초) 후에 실행
+      }, 1000);
     } else {
-        setTimeout(() =>{
-            setText("");
-        }, 800)
-    } 
-  }, [currentSection]); 
+      setText(""); // ✅ blackScreen이 사라질 때 텍스트 제거
+    }
+  }, [isVisible]);
 
-    return (
-        <Box
-        sx={{
-          position: "fixed",
-          top: currentSection === 1
-            ? "0%" // ✅ 검은 배경이 Room1과 함께 이동
-            : currentSection > 1
-            ? "-100%" // ✅ 위로 사라짐
-            : "100%", // ✅ 아래에서 올라옴
-          left: 0,
-          width: "100%",
-          height: "100vh",
-          backgroundColor: "var(--background-color)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "var(--primary-color)",
-          fontSize: "3rem",
-          fontWeight: "bold",
-          transition: "top 1s ease-in-out",
-        }}
-      >
-        {text}
-        <Box
-          component="span"
-          sx={{
-            display: "inline-block",
-            width: "10px",
-            height: "50px",
-            backgroundColor: showCursor ? "var(--primary-color)" : "transparent",
-            marginLeft: "4px",
-          }}
-        />
-      </Box>
-    )
-
-}
+  return (
+    <Box
+      ref={(el) => {
+        sectionRef.current = el;
+        if (ref) ref(el);
+      }}
+      sx={{
+        position: "fixed",
+        top: isVisible ? "0%" : "100%",
+        left: 0,
+        width: "100%",
+        height: "100vh",
+        backgroundColor: "black",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "white",
+        fontSize: "3rem",
+        fontWeight: "bold",
+        transition: "top 1s ease-in-out",
+      }}
+    >
+      {text}
+    </Box>
+  );
+});
 
 export default TextScreen;
