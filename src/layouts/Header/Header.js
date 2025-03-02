@@ -1,24 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Box } from "@mui/material";
 import Logo from "./Logo";
 import NavMenu from "./NavMenu";
 import UserMenu from "./UserMenu"
 
 function Header() {
+  const [scrollY, setScrollY] = useState(0);
   const [visible, setVisible] = useState(true);
   const [hovering, setHovering] = useState(false);
-  let lastScrollY = window.scrollY;
+  let lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
+      lastScrollY.current=window.scrollY;
+      setScrollY(lastScrollY.current);
       if (!hovering) {
-        if (window.scrollY > lastScrollY && window.scrollY > 100) {
+        if (window.scrollY > lastScrollY.current && window.scrollY > 100) {
           setVisible(false);
         } else {
           setVisible(true);
         }
       }
-      lastScrollY = window.scrollY;
+      lastScrollY.current = window.scrollY;
     };
 
     window.addEventListener("scroll", handleScroll);

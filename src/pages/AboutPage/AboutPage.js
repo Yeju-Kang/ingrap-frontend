@@ -23,19 +23,18 @@ useEffect(() => {
 }, []);
 
   useEffect(() => {
-    let scrollThreshold = 200; // ✅ 스크롤 감지 임계값
-    let accumulatedScroll = 0; // ✅ 누적된 스크롤 값
-    const scrollDelay = 800; // ✅ 연속 스크롤 방지 (0.8초)
+    let scrollThreshold = 200; 
+    let accumulatedScroll = 0;
+    const scrollDelay = 800; 
   
     const handleScroll = (event) => {
-      if (isScrolling.current) return; // ✅ 스크롤 애니메이션이 끝나기 전에는 무시
+      if (isScrolling.current) return; 
 
       const scrollValue = Math.sign(event.deltaY) * Math.min(Math.abs(event.deltaY), 50);
-      console.log(event.deltaY, scrollValue)
-      accumulatedScroll +=  scrollValue; // ✅ 누적된 스크롤 값 증가
+      accumulatedScroll +=  scrollValue; 
   
-      if (Math.abs(accumulatedScroll) > scrollThreshold) { // ✅ 일정 이상 스크롤 시
-        isScrolling.current = true; // ✅ 다음 스크롤 이벤트 차단
+      if (Math.abs(accumulatedScroll) > scrollThreshold) { 
+        isScrolling.current = true; 
   
         if (accumulatedScroll > 0 && currentSection < sections.length - 1) {
           setCurrentSection((prev) => prev + 1);
@@ -43,10 +42,10 @@ useEffect(() => {
           setCurrentSection((prev) => prev - 1);
         }
   
-        accumulatedScroll = 0; // ✅ 누적 값 초기화
+        accumulatedScroll = 0;
   
         setTimeout(() => {
-          isScrolling.current = false; // ✅ 0.8초 후 스크롤 가능
+          isScrolling.current = false; 
         }, scrollDelay);
       }
     };
@@ -65,7 +64,6 @@ useEffect(() => {
       first
       />
       <TextScreen currentSection={currentSection} index={1} />
-      {/* Room2 ~ Room4 애니메이션 (아래에서 위로 등장하고, 위로 사라짐) */}
       {[backgroundImage2, backgroundImage3, backgroundImage4].map((image, index, arr) => (
         <RoomSection
           key={index}
