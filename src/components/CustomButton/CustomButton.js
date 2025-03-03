@@ -3,9 +3,8 @@ import PropTypes from "prop-types";
 import { Button as MUIButton } from "@mui/material";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
-import "../assets/styles/components/button.scss"; // SCSS 적용
 
-const Button = ({
+const CustomButton = ({
   children,
   to,
   variant = "contained",
@@ -64,7 +63,7 @@ const Button = ({
   );
 };
 
-Button.propTypes = {
+CustomButton.propTypes = {
   children: PropTypes.node.isRequired,
   to: PropTypes.string,
   variant: PropTypes.oneOf(["text", "outlined", "contained"]),
@@ -79,4 +78,4 @@ Button.propTypes = {
   onClick: PropTypes.func,
 };
 
-export default Button;
+export default CustomButton;

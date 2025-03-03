@@ -55,9 +55,7 @@ function LoginModal({ isOpen, onClose }) {
         <Typography variant="h6" fontWeight="bold" gutterBottom>
           로그인
         </Typography>
-        <Typography variant="body2" sx={{ marginBottom: "20px" }}>
-          계정을 입력하세요
-        </Typography>
+       
 
         {/* ✅ 아이디 입력 필드 */}
         <TextField
@@ -96,7 +94,17 @@ function LoginModal({ isOpen, onClose }) {
         >
           로그인
         </Button>
-
+<Box sx={{display:"flex"}}>
+        <Typography variant="body2" sx={{ marginTop: "12px", marginRight: "20px"}}>
+          아이디 찾기
+        </Typography>
+        <Typography variant="body2" sx={{ marginTop: "12px", marginRight: "20px" }}>
+          비밀번호 찾기
+        </Typography>
+        <Typography variant="body2" sx={{ marginTop: "12px" }}>
+          회원가입
+        </Typography>
+        </Box>
         {/* ✅ 닫기 버튼 */}
         <Button
           onClick={onClose}

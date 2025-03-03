@@ -1,14 +1,20 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import React, {useEffect} from "react";
 import theme from "./theme"; // ✅ 테마 불러오기
 import MainLayout from "./layouts/MainLayout";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import CustomCursor from "./components/CustomCursor/CustomCursor";
 import { useAllRoutes  } from "./routes/routes";
-import HomePage from "./pages/HomePage/HomePage"; // ✅ 루트(`/`)용 홈 페이지 추가
+import { useSelector } from "react-redux";
 
 function App() {
-  const allRoutes = useAllRoutes();
+  const language = useSelector((state) => state.language.language);
+  useEffect(() => {
+    document.title =
+      language === "ko"
+        ? "인테리어가 당신의 손 안에 | 인그랩"
+        : "Your Space, Your Way | INGRAP";
+  }, [language]);
+
   return (
      <ThemeProvider theme={theme}>
       <CssBaseline />

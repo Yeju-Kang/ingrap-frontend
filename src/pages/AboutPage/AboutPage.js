@@ -1,110 +1,73 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Box } from "@mui/material";
-import backgroundImage from "../../assets/images/room1.jpg"; // ✅ 이미지 정상 경로
+import RoomSection from "./RoomSection";
+import TextScreen from "./TextScreen";
+import FooterSection from "./FooterSection";
+import backgroundImage1 from "../../assets/images/room1.jpg";
+import backgroundImage2 from "../../assets/images/room2.jpg";
+import backgroundImage3 from "../../assets/images/room3.jpg";
+import backgroundImage4 from "../../assets/images/room4.jpg";
 
 function AboutPage() {
-  const [loaded, setLoaded] = useState(false);
-  const [darken, setDarken] = useState(1); // ✅ 초기 밝기 (1 = 밝음, 0 = 완전 검정)
-  const [text, setText] = useState(""); // ✅ 타이핑 애니메이션 텍스트
-  const fullText = "Your Space, Your Way!";
-  const [showCursor, setShowCursor] = useState(true); // ✅ 깜빡이는 커서 효과
+  const sections = ["room1", "blackScreen", "room2", "room3", "room4", "footer"];
+  const sectionRefs = useRef([]); // ✅ 각 섹션의 ref 저장
+  const [currentSection, setCurrentSection] = useState(0);
+  const observerRef = useRef(null);
 
   useEffect(() => {
-    // ✅ 새로고침 시 무조건 최상단으로 이동 (즉시 실행)
-    window.scrollTo(0, 0);
-
-    // ✅ 0.5초 후 이미지 등장
-    const timer = setTimeout(() => {
-      setLoaded(true);
-      window.scrollTo(0, 0); // ✅ 로드 완료 후에도 한 번 더 최상단 이동
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const maxScroll = window.innerHeight;
-      const darkenLevel = Math.min(1, scrollY / maxScroll);
-      setDarken(1 - darkenLevel);
+    // 🔥 body의 높이를 강제 확장해서 스크롤 가능하게 만들기
+    document.body.style.height = `${sections.length * window.innerHeight}px`;
+    
+    return () => {
+      document.body.style.height = ""; // 🔄 컴포넌트 언마운트 시 원래대로 돌려놓기
     };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    if (darken === 0) {
-      let index = 0;
-      const typingInterval = setInterval(() => {
-        setText(fullText.slice(0, index + 1));
-        index++;
-        if (index === fullText.length) clearInterval(typingInterval);
-      }, 150);
-    }
-  }, [darken]);
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const sectionIndex = sectionRefs.current.indexOf(entry.target);
+            if (sectionIndex !== -1) {
+              setCurrentSection(sectionIndex);
+            }
+          }
+        });
+      },
+      { threshold: 0.8 } // ✅ 80% 이상 화면에 보여야 감지됨
+    );
 
-  useEffect(() => {
-    const cursorInterval = setInterval(() => {
-      setShowCursor((prev) => !prev);
-    }, 500);
+    sectionRefs.current.forEach((section) => {
+      if (section) observerRef.current.observe(section);
+    });
 
-    return () => clearInterval(cursorInterval);
+    return () => observerRef.current.disconnect();
   }, []);
 
   return (
-    <Box sx={{ height: "200vh", backgroundColor: "var(--second-color)" }}>
-      {/* ✅ 배경 이미지 */}
-      <Box
-        sx={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100vh",
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? "scale(1)" : "scale(0.3)",
-          transition: "opacity 1.5s ease-out, transform 1.5s ease-out",
-          filter: `brightness(${Math.max(0, darken)})`,
-          willChange: "transform, opacity",
-          backfaceVisibility: "hidden",
-        }}
-      />
-
-      {/* ✅ 어두워진 배경일 때 텍스트 애니메이션 */}
-      {darken === 0 && (
+    <Box sx={{ height: "100vh", overflowY: "auto", scrollSnapType: "y mandatory", position: "relative" }}>
+      {sections.map((section, index) => (
         <Box
+          key={index}
+          ref={(el) => (sectionRefs.current[index] = el)}
           sx={{
-            position: "fixed",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            textAlign: "center",
-            color: "var(--primary-color)",
-            fontSize: "3rem",
-            fontWeight: "bold",
+            width: "100%",
+            height: index === sections.length - 1 ? "40vh" : "100vh",
             display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            scrollSnapAlign: "start", // ✅ 스크롤 시 각 섹션이 정확히 한 번에 이동
           }}
         >
-          {text}
-          <Box
-            component="span"
-            sx={{
-              display: "inline-block",
-              width: "10px",
-              height: "60px",
-              backgroundColor: showCursor
-                ? "var(--primary-color)"
-                : "transparent",
-              marginLeft: "4px",
-            }}
-          />
+          {index === 0 && <RoomSection image={backgroundImage1} isActive={currentSection === 0} first />}
+          {index === 1 && <TextScreen isActive={currentSection === 1} />}
+          {[backgroundImage2, backgroundImage3, backgroundImage4].map(
+            (image, i) => index === i + 2 && <RoomSection key={i} image={image} isActive={currentSection === i + 2} />
+          )}
+          {index === sections.length - 1 && <FooterSection />}
         </Box>
-      )}
+      ))}
     </Box>
   );
 }

@@ -1,11 +1,11 @@
 import React from "react";
 import { Box, IconButton, Typography } from "@mui/material";
 import { PersonOutline, ShoppingBagOutlined } from "@mui/icons-material";
-import LoginModal from "../../components/LoginModal";
+import LoginModal from "../../pages/LogingPage/LoginModal";
 import useTranslate from "../../hooks/useTranslate";
 
 
-function Logo() {
+function UserMenu() {
     const { language, toggleLanguage } = useTranslate();
     const [isLoginOpen, setIsLoginOpen] = React.useState(false);
   
@@ -15,10 +15,10 @@ function Logo() {
             onClick={() => setIsLoginOpen(true)}
             sx={{ padding: "8px" }}
           >
-            <PersonOutline sx={{ fontSize: 24, color: "var(--text-color)" }} />
+            <PersonOutline sx={{ fontSize: 36, color: "var(--text-color)" }} />
           </IconButton>
           <IconButton sx={{ padding: "8px" }}>
-            <ShoppingBagOutlined sx={{ fontSize: 24, color: "var(--text-color)" }} />
+            <ShoppingBagOutlined sx={{ fontSize: 36, color: "var(--text-color)" }} />
           </IconButton>
 
           {/* ✅ 언어 변경 버튼 */}
@@ -39,7 +39,7 @@ function Logo() {
           >
             <Typography
               sx={{
-                fontSize: 18,
+                fontSize: 24,
                 fontWeight: "bold",
                 color: "var(--text-color)",
               }}
@@ -53,7 +53,7 @@ function Logo() {
     )
 }
 
-export default Logo;
+export default UserMenu;
 
 
 
