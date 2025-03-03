@@ -1,6 +1,5 @@
 import React from "react";
 import { Box } from "@mui/material";
-import Header from "./Header/Header";
 import MainContent from "./MainContent";
 
 function MainLayout() {
@@ -12,8 +11,7 @@ function MainLayout() {
         flexDirection: "column",
       }}
     >
-      <Header />
-      <MainContent />
+       <MainContent />
     </Box>
   );
 }

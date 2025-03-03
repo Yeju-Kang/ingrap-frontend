@@ -10,32 +10,21 @@ import backgroundImage4 from "../../assets/images/room4.jpg";
 
 function AboutPage() {
   const sections = ["room1", "blackScreen", "room2", "room3", "room4", "footer"];
-  const sectionRefs = useRef([]); // ✅ 각 섹션의 ref 저장
+  const sectionRefs = useRef([]);
   const [currentSection, setCurrentSection] = useState(0);
   const observerRef = useRef(null);
-
-  useEffect(() => {
-    // 🔥 body의 높이를 강제 확장해서 스크롤 가능하게 만들기
-    document.body.style.height = `${sections.length * window.innerHeight}px`;
-    
-    return () => {
-      document.body.style.height = ""; // 🔄 컴포넌트 언마운트 시 원래대로 돌려놓기
-    };
-  }, []);
 
   useEffect(() => {
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const sectionIndex = sectionRefs.current.indexOf(entry.target);
-            if (sectionIndex !== -1) {
-              setCurrentSection(sectionIndex);
-            }
+          const sectionIndex = sectionRefs.current.indexOf(entry.target);
+          if (sectionIndex !== -1) {
+            setCurrentSection(sectionIndex);
           }
         });
       },
-      { threshold: 0.8 } // ✅ 80% 이상 화면에 보여야 감지됨
+      { threshold: 0.8 }
     );
 
     sectionRefs.current.forEach((section) => {
@@ -46,29 +35,35 @@ function AboutPage() {
   }, []);
 
   return (
-    <Box sx={{ height: "100vh", overflowY: "auto", scrollSnapType: "y mandatory", position: "relative" }}>
-      {sections.map((section, index) => (
-        <Box
-          key={index}
-          ref={(el) => (sectionRefs.current[index] = el)}
-          sx={{
-            width: "100%",
-            height: index === sections.length - 1 ? "40vh" : "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            scrollSnapAlign: "start", // ✅ 스크롤 시 각 섹션이 정확히 한 번에 이동
-          }}
-        >
-          {index === 0 && <RoomSection image={backgroundImage1} isActive={currentSection === 0} first />}
-          {index === 1 && <TextScreen isActive={currentSection === 1} />}
-          {[backgroundImage2, backgroundImage3, backgroundImage4].map(
-            (image, i) => index === i + 2 && <RoomSection key={i} image={image} isActive={currentSection === i + 2} />
-          )}
-          {index === sections.length - 1 && <FooterSection />}
-        </Box>
-      ))}
-    </Box>
+    <>
+      {/* ✅ 전체 페이지를 스크롤 컨테이너로 설정 (Header에서 감지 가능) */}
+      <Box
+        id="about-content" // ✅ Header에서 감지할 수 있도록 id 추가
+        sx={{ height: "100vh", overflowY: "auto", scrollSnapType: "y mandatory", position: "relative"}}
+      >
+        {sections.map((section, index) => (
+          <Box
+            key={index}
+            ref={(el) => (sectionRefs.current[index] = el)}
+            sx={{
+              width: "100%",
+              height: index === sections.length - 1 ? "40vh" : "100vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              scrollSnapAlign: "start",
+            }}
+          >
+            {index === 0 && <RoomSection image={backgroundImage1} isActive={currentSection === 0} first />}
+            {index === 1 && <TextScreen isActive={currentSection === 1} />}
+            {[backgroundImage2, backgroundImage3, backgroundImage4].map(
+              (image, i) => index === i + 2 && <RoomSection key={i} image={image} isActive={currentSection === i + 2} />
+            )}
+            {index === sections.length - 1 && <FooterSection />}
+          </Box>
+        ))}
+      </Box>
+    </>
   );
 }
 

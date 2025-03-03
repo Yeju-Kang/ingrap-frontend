@@ -10,7 +10,7 @@
 * {
   box-sizing: border-box;
   background: none; /* 불필요한 배경 제거 */
-}
+} 
 
 
 html, body, #root {
@@ -18,7 +18,7 @@ html, body, #root {
   margin: 0;
   padding: 0;
   width: 100%;
-  overflow: auto;
+  overflow: hidden;
   min-height: 100vh;
   background: var(--background-color);
   display: flex;
