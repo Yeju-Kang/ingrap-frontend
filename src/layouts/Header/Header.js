@@ -1,50 +1,47 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Box } from "@mui/material";
 import Logo from "./Logo";
 import NavMenu from "./NavMenu";
-import UserMenu from "./UserMenu"
+import UserMenu from "./UserMenu";
 
 function Header() {
-  const [visible, setVisible] = useState(true);
-  const [hovering, setHovering] = useState(false);
-  let lastScrollY = window.scrollY;
+  const [visible, setVisible] = useState(true); // ✅ 헤더 보임 여부
+  const [hovering, setHovering] = useState(false); // ✅ 마우스 호버 상태
+  const [isAtTop, setIsAtTop] = useState(true); // ✅ 최상단 여부 확인
+  const observerRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!hovering) {
-        if (window.scrollY > lastScrollY && window.scrollY > 100) {
-          setVisible(false);
-        } else {
-          setVisible(true);
-        }
-      }
-      lastScrollY = window.scrollY;
+      console.log("✅ handleScroll 실행됨");
+      console.log("📌 현재 스크롤 위치:", document.documentElement.scrollTop);
     };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [hovering]);
+  
+    document.addEventListener("scroll", handleScroll, { passive: false });
+  
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <>
-      {/* 헤더 감지용 투명 박스 */}
+      {/* ✅ 최상단 감지용 박스 */}
       <Box
+        id="top-sentinel"
         sx={{
-          position: "fixed",
+          position: "absolute",
           top: 0,
           left: 0,
           width: "100%",
-          height: visible ? "80px" : "10px",
-          zIndex: 999,
-          backgroundColor: "transparent",
+          height: "1px", // ✅ 1px 크기의 감지 박스
         }}
-        onMouseEnter={() => setHovering(true)}
-        onMouseLeave={() => setHovering(false)}
       />
+
+      {/* ✅ 실제 헤더 */}
       <Box
         sx={{
           position: "fixed",
-          top: visible || hovering ? 0 : "-70px",
+          top: visible ? 0 : "-80px", // ✅ 부드럽게 숨김/표시
           left: 0,
           width: "100%",
           height: "80px",
@@ -53,17 +50,17 @@ function Header() {
           justifyContent: "space-between",
           padding: "0 10px",
           zIndex: 1000,
-          backgroundColor: "rgba(245, 245, 245, 0.7)", 
-          transition: "top 0.3s ease-in-out",
+          backgroundColor: "rgba(245, 245, 245, 0.95)",
+          transition: "top 0.4s ease-in-out",
         }}
-        onMouseEnter={() => setHovering(true)}
-        onMouseLeave={() => setHovering(false)}
+        onMouseEnter={() => setHovering(true)} // ✅ 마우스를 올리면 헤더 보이기
+        onMouseLeave={() => setHovering(false)} // ✅ 마우스를 떼면 다시 숨김
       >
-       <NavMenu />
-       <Logo />
-<UserMenu />
-</Box>
-</>
+        <NavMenu />
+        <Logo />
+        <UserMenu />
+      </Box>
+    </>
   );
 }
 

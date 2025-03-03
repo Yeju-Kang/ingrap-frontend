@@ -15,6 +15,15 @@ function AboutPage() {
   const observerRef = useRef(null);
 
   useEffect(() => {
+    // 🔥 body의 높이를 강제 확장해서 스크롤 가능하게 만들기
+    document.body.style.height = `${sections.length * window.innerHeight}px`;
+    
+    return () => {
+      document.body.style.height = ""; // 🔄 컴포넌트 언마운트 시 원래대로 돌려놓기
+    };
+  }, []);
+
+  useEffect(() => {
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
