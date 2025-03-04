@@ -10,7 +10,7 @@ export const useAllRoutes = () => {
 
   return [
     { path: "/drawing", label: translate("drawing.title"), element: <DrawingPage /> },
-    { path: "/shop", label: translate("product.title"), element: <ShopPage /> },
+    { path: "/shop", label: translate("shop.title"), element: <ShopPage /> },
     { path: "/shop/:productId", element: <ProductDetailPage />, label: null },
     { path: "/cart",label: null, element: <CartPage /> },
   ];

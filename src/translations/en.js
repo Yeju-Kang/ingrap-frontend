@@ -7,8 +7,8 @@ const en = {
     },
     home: {
       },
-      product: {
-        title: "Product"
+      shop: {
+        title: "Shop"
       },
       drawing: {
         title: "Drawing"

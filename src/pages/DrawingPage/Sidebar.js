@@ -9,7 +9,7 @@ import HelpIcon from "@mui/icons-material/Help";
 
 const Sidebar = () => {
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" p={2} bgcolor="black" color="white">
+    <Box display="flex" flexDirection="column" alignItems="center" p={2} bgcolor="var(--background-color)" color="var(--text-color)">
       {[WbSunnyIcon, NightlightIcon, UmbrellaIcon, PaintRollerIcon, LocationOnIcon, HelpIcon].map((Icon, index) => (
         <IconButton key={index} color="inherit">
           <Icon />
