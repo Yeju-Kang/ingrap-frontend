@@ -16,7 +16,7 @@ const DrawingPage = () => {
   });
 
   return (
-    <Box display="flex" height="100vh" sx={{ marginTop: "100px" }}>
+    <Box display="flex" height="100vh" sx={{ marginTop: "80px" }}>
       <Sidebar />
       <RoomArea />
       <Box width="300px" display="flex" flexDirection="column">

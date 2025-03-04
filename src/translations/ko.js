@@ -1,3 +1,5 @@
+import { Shop } from "@mui/icons-material";
+
 const ko = {
     common: {
       title: "인테리어가 당신의 손 안에 | 인그랩",
@@ -7,8 +9,8 @@ const ko = {
     },
     home: {
     },
-    product: {
-      title: "Product"
+    shop: {
+      title: "Shop"
     },
     drawing: {
       title: "Drawing"

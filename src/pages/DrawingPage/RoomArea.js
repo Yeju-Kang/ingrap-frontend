@@ -5,7 +5,7 @@ import { OrbitControls } from "@react-three/drei";
 
 const RoomArea = () => {
   return (
-    <Box flex={1} display="flex" justifyContent="center" alignItems="center" sx={{ borderRadius: 4, border: "2px solid gray", mx: 2, position: "relative" }}>
+    <Box flex={1} display="flex" justifyContent="center" alignItems="center" sx={{  mx: 2, position: "relative", margin: 0 }}>
       <Canvas camera={{ position: [5, 5, 10], fov: 50 }}>
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 10, 10]} />

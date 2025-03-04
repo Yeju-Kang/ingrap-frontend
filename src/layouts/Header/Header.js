@@ -71,7 +71,6 @@ function Header() {
           zIndex: 1000,
           backgroundColor: "rgba(245, 245, 245, 0.9)",
           transition: "top 0.3s ease-in-out",
-          boxShadow: isAtTop || hovering ? "0px 4px 6px rgba(0,0,0,0.1)" : "none",
         }}
         onMouseLeave={() => setTimeout(() => setHovering(false), 500)} // ✅ 마우스를 떼면 일정 시간 후 다시 숨김
       >
