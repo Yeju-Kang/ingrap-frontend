@@ -3,6 +3,8 @@ import ProductDetailPage from "../pages/ShopPage/ProductDetailPage";
 import useTranslate from "../hooks/useTranslate"; // ✅ 번역 훅 가져오기
 import CartPage from "../pages/CartPage/CartPage";
 import ShopPage from "../pages/ShopPage/ShopPage";
+import CommunityPage from "../pages/CommunityPage/CommunityPage";
+import PostDetailPage from "../pages/CommunityPage/PostDetailPage";
 
 // ✅ 커스텀 훅으로 변경
 export const useAllRoutes = () => {
@@ -12,6 +14,8 @@ export const useAllRoutes = () => {
     { path: "/drawing", label: translate("drawing.title"), element: <DrawingPage /> },
     { path: "/shop", label: translate("shop.title"), element: <ShopPage /> },
     { path: "/shop/:productId", element: <ProductDetailPage />, label: null },
+    { path: "/community", label: translate("community.title"), element: <CommunityPage /> },
+    { path: "/community/:postId", element: <PostDetailPage />, label: null },
     { path: "/cart",label: null, element: <CartPage /> },
   ];
 };

@@ -7,15 +7,18 @@ const en = {
     },
     home: {
       },
-      shop: {
+    shop: {
         title: "Shop"
       },
-      drawing: {
+    drawing: {
         title: "Drawing"
       },
-      cart: {
+    cart: {
         title: "장바구니"
       },
+    community: {
+        title: "Community"
+      }
   };
   
   export default en;
