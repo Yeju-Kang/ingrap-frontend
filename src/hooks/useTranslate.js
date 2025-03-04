@@ -7,7 +7,7 @@ const useTranslate = () => {
   const translations = useSelector((state) => state.language.translations) || {};
 
   const translate = (key) => {
-    const keys = key.split("."); // "aboutUs.title" → ["aboutUs", "title"]
+    const keys = key.split(".");
     let value = translations[language];
 
     for (let k of keys) {

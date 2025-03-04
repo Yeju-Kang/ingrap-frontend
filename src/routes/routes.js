@@ -1,19 +1,17 @@
-import AboutPage from "../pages/AboutPage/AboutPage";
-import ProductsPage from "../pages/ProductPage/ProductPage";
 import DrawingPage from "../pages/DrawingPage/DrawingPage";
-import ProductDetailPage from "../pages/ProductPage/ProductDetailPage";
+import ProductDetailPage from "../pages/ShopPage/ProductDetailPage";
 import useTranslate from "../hooks/useTranslate"; // ✅ 번역 훅 가져오기
 import CartPage from "../pages/CartPage/CartPage";
+import ShopPage from "../pages/ShopPage/ShopPage";
 
 // ✅ 커스텀 훅으로 변경
 export const useAllRoutes = () => {
   const { translate } = useTranslate(); // ✅ 번역 함수 가져오기
 
   return [
-    { path: "/about", label: translate("aboutUs.title"), element: <AboutPage /> },
-    { path: "/products", label: translate("product.title"), element: <ProductsPage /> },
-    { path: "/products/:productId", element: <ProductDetailPage />, label: null },
     { path: "/drawing", label: translate("drawing.title"), element: <DrawingPage /> },
+    { path: "/shop", label: translate("product.title"), element: <ShopPage /> },
+    { path: "/shop/:productId", element: <ProductDetailPage />, label: null },
     { path: "/cart",label: null, element: <CartPage /> },
   ];
 };

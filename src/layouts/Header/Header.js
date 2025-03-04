@@ -9,12 +9,12 @@ function Header() {
   const [hovering, setHovering] = useState(false); // ✅ 마우스 오버 여부
   const [isAtTop, setIsAtTop] = useState(true); // ✅ 최상단 여부
   const location = useLocation();
-  const isAboutPage = location.pathname === "/about";
+  const isHomePage = location.pathname === "/" || location.pathname === "/index.html";
   const contentRef = useRef(null);
 
   useEffect(() => {
-    if (isAboutPage) {
-      contentRef.current = document.getElementById("about-content");
+    if (isHomePage) {
+      contentRef.current = document.getElementById("home-content");
     } else {
       contentRef.current = window;
     }
@@ -23,11 +23,10 @@ function Header() {
 
     // ✅ 스크롤 감지 함수 (최상단 여부 체크)
     const handleScroll = () => {
-      const currentScrollY = isAboutPage
+      const currentScrollY = isHomePage
       
         ? contentRef.current.scrollTop
         : window.scrollY;
-        console.log('xxx', currentScrollY)
 
       setIsAtTop(currentScrollY === 0);
     };
@@ -37,7 +36,7 @@ function Header() {
     return () => {
       contentRef.current.removeEventListener("scroll", handleScroll);
     };
-  }, [isAboutPage]);
+  }, [isHomePage]);
 
   return (
     <>

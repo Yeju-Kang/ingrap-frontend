@@ -5,8 +5,7 @@ const en = {
       save: "Save",
       cancel: "Cancel",
     },
-    aboutUs: {
-        title: "About Us"
+    home: {
       },
       product: {
         title: "Product"

@@ -1,7 +1,7 @@
 import React from "react"
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/images/image.png";
+import logo from "../../assets/images/image2.png";
 
 function Logo() {
     const navigate = useNavigate();

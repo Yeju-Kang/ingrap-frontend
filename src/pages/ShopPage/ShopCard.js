@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardMedia, CardContent, Typography } from "@mui/material";
 
-const ProductCard = ({ product, onClick }) => {
+const ShopCard = ({ product, onClick }) => {
   return (
     <Card sx={{ maxWidth: 300, m: 2, cursor: "pointer" }} onClick={onClick}>
       <CardMedia component="img" height="200" image={product.image} alt={product.name} />
@@ -13,4 +13,4 @@ const ProductCard = ({ product, onClick }) => {
   );
 };
 
-export default ProductCard;
+export default ShopCard;

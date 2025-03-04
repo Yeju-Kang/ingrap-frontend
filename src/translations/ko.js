@@ -5,8 +5,7 @@ const ko = {
       save: "저장",
       cancel: "취소",
     },
-    aboutUs: {
-      title: "About Us"
+    home: {
     },
     product: {
       title: "Product"

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Grid, Typography, Switch, FormControlLabel, Select, MenuItem } from "@mui/material";
-import ProductCard from "./ProductCard";
+import ProductCard from "./ShopCard";
 
 const initialProducts = [
   { id: 1, name: "우드 모던 테이블", price: 374000, image: "/table1.jpg", sale: true, inStock: true },
@@ -9,7 +9,7 @@ const initialProducts = [
   { id: 4, name: "월넛 원목 테이블", price: 781000, image: "/table4.jpg", sale: true, inStock: true },
 ];
 
-const ProductList = () => {
+const ShopList = () => {
   const [showSaleOnly, setShowSaleOnly] = useState(false);
   const [showInStockOnly, setShowInStockOnly] = useState(false);
   const [sortOption, setSortOption] = useState("추천순");
@@ -52,4 +52,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default ShopList;
