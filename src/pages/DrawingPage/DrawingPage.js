@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Box } from "@mui/material";
 import Sidebar from "./Sidebar";
-import RoomArea from "./RoomArea";
 import FilterPanel from "./FilterPanel";
 import ProductList from "./ProductList";
+import RoomArea from "./RoomArea";
+
 
 const DrawingPage = () => {
   const [filters, setFilters] = useState({
@@ -15,7 +16,7 @@ const DrawingPage = () => {
   });
 
   return (
-    <Box display="flex" height="100vh" sx={{marginTop: '100px'}}>
+    <Box display="flex" height="100vh" sx={{ marginTop: "100px" }}>
       <Sidebar />
       <RoomArea />
       <Box width="300px" display="flex" flexDirection="column">
