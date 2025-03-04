@@ -14,6 +14,9 @@ const ko = {
     drawing: {
       title: "Drawing"
     },
+    cart: {
+      title: "장바구니"
+    },
   };
   
   export default ko;
