@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Box, Typography, Button, TextField} from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import Logo from "../../layouts/Header/Logo"
 
 function LoginModal({ isOpen, onClose }) {
+    const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -19,11 +21,6 @@ function LoginModal({ isOpen, onClose }) {
     if (event.key === "Enter") {
       handleLogin();
     }
-  };
-
-  const handleSignup = () => {
-    console.log("회원가입 버튼 클릭");
-    // TODO: 회원가입 페이지로 이동 로직 추가
   };
 
   return (
@@ -143,7 +140,7 @@ function LoginModal({ isOpen, onClose }) {
             marginTop: "10px",
             border: "1px solid var(--primary-color)",
           }}
-          onClick={handleSignup}
+          onClick={() => navigate("/signup")}
         >
           회원가입
         </Button>
