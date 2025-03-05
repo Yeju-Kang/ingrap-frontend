@@ -20,7 +20,7 @@ function NavMenu() {
         <IconButton
           key={label}
           onClick={() => handleMenuClick(path)}
-          sx={{ borderRadius: "15%" }}
+          sx={{ borderRadius: "4px" }}
         >
           <Typography
             sx={{
