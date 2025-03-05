@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Box, IconButton, Typography, Button } from "@mui/material";
 import { PersonOutline, ShoppingBagOutlined } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
-import LoginModal from "../../pages/LogingPage/LoginModal";
 import useTranslate from "../../hooks/useTranslate";
 
 function UserMenu() {
@@ -11,20 +10,6 @@ function UserMenu() {
   const { language, toggleLanguage } = useTranslate();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 추가
-
-  useEffect(() => {
-    console.log("🔥 location.state 변경 감지:", location.state);
-    
-    if (location.state?.openLoginModal) {
-      console.log("🔔 로그인 모달 열기 요청 감지!");
-      setIsLoginOpen(true);
-
-      // ✅ 상태를 초기화 (replace: true로 state 삭제)
-      setTimeout(() => {
-        navigate(location.pathname, { replace: true, state: {} });
-      }, 100);
-    }
-  }, [location.state, navigate]); // ✅ location.state가 변경될 때 실행
 
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -49,7 +34,7 @@ function UserMenu() {
             sx={{
               borderRadius: "4px"
             }}
-            onClick={() => setIsLoginOpen(true)}
+            onClick={() => navigate("/login")}
           >
              <Typography
             sx={{
@@ -85,9 +70,6 @@ function UserMenu() {
           {language === "ko" ? "한" : "A"}
         </Typography>
       </IconButton>
-
-      {/* ✅ 로그인 모달 */}
-      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
     </Box>
   );
 }
