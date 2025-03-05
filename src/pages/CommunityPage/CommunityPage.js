@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, Typography, Container, Grid } from "@mui/material";
+import { Typography, Container, Grid } from "@mui/material";
 import PostList from "./PostList";
 import PostForm from "./PostForm";
 

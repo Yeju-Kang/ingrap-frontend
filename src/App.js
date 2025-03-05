@@ -3,7 +3,6 @@ import theme from "./theme"; // ✅ 테마 불러오기
 import MainLayout from "./layouts/MainLayout";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import CustomCursor from "./components/CustomCursor/CustomCursor";
-import { useAllRoutes  } from "./routes/routes";
 import Header from "./layouts/Header/Header";
 import { useSelector } from "react-redux";
 
