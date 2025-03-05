@@ -7,6 +7,9 @@ const ko = {
       save: "저장",
       cancel: "취소",
     },
+    login: {
+      title: '로그인'
+    },
     home: {
     },
     shop: {

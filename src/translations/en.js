@@ -5,6 +5,9 @@ const en = {
       save: "Save",
       cancel: "Cancel",
     },
+    login: {
+      title: '로그인'
+    },
     home: {
       },
       shop: {
