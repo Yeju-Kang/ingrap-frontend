@@ -1,14 +1,18 @@
-import React, { useState } from "react";
-import { Box, TextField, Button, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { Box, TextField, Button, Typography } from '@mui/material';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
+    name: '',
+    id: '',
+    password: '',
   });
+
+  // 이전 경로 정보 확인
+  const from = location.state?.from || '/';
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,22 +20,35 @@ const SignUpPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("회원가입 정보:", formData);
-    // TODO: 백엔드 API 연동 후 회원가입 처리
+    console.log('회원가입 정보:', formData);
+    // 회원가입 로직 처리
+
+    // 회원가입 성공 시 로그인 페이지로 이동하며 이전 경로 정보 전달
+    navigate('/login', { state: { from } });
   };
 
   return (
     <Box
-      sx={{
-        maxWidth: "400px",
-        margin: "50px auto",
-        marginTop: "80px",
-        padding: "20px",
-        borderRadius: "10px",
-        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-        textAlign: "center",
-      }}
-    >
+    sx={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      height: "100vh",
+      backgroundColor: "#f5f5f5",
+    }}
+  >
+    <Box
+        sx={{
+            backgroundColor: "white",
+            padding: "24px",
+            borderRadius: "10px",
+            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
+            width: "320px",
+            textAlign: "center",
+          }}
+        >
+    
       <Typography variant="h5" fontWeight="bold" mb={2}>
         회원가입
       </Typography>
@@ -51,7 +68,6 @@ const SignUpPage = () => {
         <TextField
           label="아이디"
           name="id"
-          type="id"
           variant="outlined"
           fullWidth
           required
@@ -88,6 +104,7 @@ const SignUpPage = () => {
           가입하기
         </Button>
       </form>
+    </Box>
     </Box>
   );
 };

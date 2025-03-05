@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, IconButton, Typography, Button } from "@mui/material";
 import { PersonOutline, ShoppingBagOutlined } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
-import LoginModal from "../../pages/LogingPage/LoginModal";
+import { useNavigate, useLocation } from "react-router-dom";
 import useTranslate from "../../hooks/useTranslate";
 
 function UserMenu() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { language, toggleLanguage } = useTranslate();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 추가
@@ -29,18 +29,24 @@ function UserMenu() {
       ) : (
         <>
           {/* ✅ 로그인 버튼 */}
-          <Button
+          <IconButton
             variant="outlined"
             sx={{
-              borderColor: "var(--text-color)",
-              color: "var(--text-color)",
-              fontWeight: "bold",
-              "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.1)" },
+              borderRadius: "4px"
             }}
-            onClick={() => setIsLoginOpen(true)}
+            onClick={() => navigate("/login")}
+          >
+             <Typography
+            sx={{
+              fontSize: 20,
+              fontWeight: "bold",
+              color: "var(--text-color)",
+              transition: "color 0.3s ease-in-out", // ✅ 색상 변경 애니메이션
+            }}
           >
             LOGIN
-          </Button>
+          </Typography>
+          </IconButton>
         </>
       )}
 
@@ -64,9 +70,6 @@ function UserMenu() {
           {language === "ko" ? "한" : "A"}
         </Typography>
       </IconButton>
-
-      {/* ✅ 로그인 모달 */}
-      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
     </Box>
   );
 }

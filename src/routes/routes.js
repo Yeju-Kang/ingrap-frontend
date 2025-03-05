@@ -6,9 +6,10 @@ import ShopPage from "../pages/ShopPage/ShopPage";
 import CommunityPage from "../pages/CommunityPage/CommunityPage";
 import PostDetailPage from "../pages/CommunityPage/PostDetailPage";
 import SignUpPage from "../pages/SignUpPage/SignUpPage";
+import LoginPage from "../pages/LogingPage/LoginPage";
 
 // ✅ 커스텀 훅으로 변경
-export const useAllRoutes = () => {
+export const useAllRoutes = (isAuthenticated) => {
   const { translate } = useTranslate(); // ✅ 번역 함수 가져오기
 
   return [
@@ -18,6 +19,7 @@ export const useAllRoutes = () => {
     { path: "/community", label: translate("community.title"), element: <CommunityPage /> },
     { path: "/community/:postId", element: <PostDetailPage />, label: null },
     { path: "/signup", element: <SignUpPage />, label: null },
+    { path: "/login", element: <LoginPage />, label: null },
     { path: "/cart",label: null, element: <CartPage /> },
   ];
 };
@@ -26,3 +28,5 @@ export const useAllRoutes = () => {
 export const useMenuRoutes = () => {
   return useAllRoutes().filter(({ label }) => label !== null);
 };
+
+
