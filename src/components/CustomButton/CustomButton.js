@@ -33,21 +33,7 @@ const CustomButton = ({
   if (to) {
     return (
       <Link to={to} className={buttonClass} {...props}>
-        <MUIButton
-          variant={variant}
-          size={size}
-          disabled={disabled}
-          fullWidth={fullWidth}
-          sx={buttonStyles}
-        >
-          {children}
-        </MUIButton>
-      </Link>
-    );
-  }
-
-  return (
-    <MUIButton
+         <MUIButton
       className={buttonClass}
       variant={variant}
       size={size}
@@ -60,7 +46,9 @@ const CustomButton = ({
     >
       {children}
     </MUIButton>
-  );
+      </Link>
+    );
+  }
 };
 
 CustomButton.propTypes = {

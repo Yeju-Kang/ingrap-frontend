@@ -18,6 +18,9 @@ const ko = {
     cart: {
       title: "장바구니"
     },
+    community: {
+      title: "Community"
+    }
   };
   
   export default ko;
