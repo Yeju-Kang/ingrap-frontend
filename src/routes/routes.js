@@ -5,6 +5,7 @@ import CartPage from "../pages/CartPage/CartPage";
 import ShopPage from "../pages/ShopPage/ShopPage";
 import CommunityPage from "../pages/CommunityPage/CommunityPage";
 import PostDetailPage from "../pages/CommunityPage/PostDetailPage";
+import SignUpPage from "../pages/SignUpPage/SignUpPage";
 
 // ✅ 커스텀 훅으로 변경
 export const useAllRoutes = () => {
@@ -16,6 +17,7 @@ export const useAllRoutes = () => {
     { path: "/shop/:productId", element: <ProductDetailPage />, label: null },
     { path: "/community", label: translate("community.title"), element: <CommunityPage /> },
     { path: "/community/:postId", element: <PostDetailPage />, label: null },
+    { path: "/signup", element: <SignUpPage />, label: null },
     { path: "/cart",label: null, element: <CartPage /> },
   ];
 };

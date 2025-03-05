@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Card, CardMedia, CardContent, Typography, List } from "@mui/material";
+import { Card, CardMedia, CardContent, Typography, List } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const products = [

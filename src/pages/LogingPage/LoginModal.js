@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { Box, Typography, Button, TextField } from "@mui/material";
+import { Box, Typography, Button, TextField} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import Logo from "../../layouts/Header/Logo"
 
 function LoginModal({ isOpen, onClose }) {
+    const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -52,9 +55,9 @@ function LoginModal({ isOpen, onClose }) {
           textAlign: "center",
         }}
       >
-        <Typography variant="h6" fontWeight="bold" gutterBottom>
-          로그인
-        </Typography>
+        <Box sx={{marginBottom: "12px"}}>
+      <Logo />
+      </Box>
        
 
         {/* ✅ 아이디 입력 필드 */}
@@ -82,28 +85,34 @@ function LoginModal({ isOpen, onClose }) {
           sx={{ marginBottom: "20px" }}
         />
 
-        {/* ✅ 로그인 버튼 */}
-        <Button
-          variant="contained"
+<Button
           fullWidth
           sx={{
             backgroundColor: "var(--primary-color)",
-            "&:hover": { backgroundColor: "var(--button-hover)" },
+            color: "white",
+            fontWeight: "bold",
+            padding: "12px",
+            marginBottom: "10px",
+            "&:hover": { backgroundColor: "var(--primary-color)" },
           }}
-          onClick={handleLogin}
+          onClick={() => console.log("로그인 버튼 클릭")}
         >
           로그인
         </Button>
-<Box sx={{display:"flex"}}>
-        <Typography variant="body2" sx={{ marginTop: "12px", marginRight: "20px"}}>
-          아이디 찾기
-        </Typography>
-        <Typography variant="body2" sx={{ marginTop: "12px", marginRight: "20px" }}>
-          비밀번호 찾기
-        </Typography>
-        <Typography variant="body2" sx={{ marginTop: "12px" }}>
-          회원가입
-        </Typography>
+
+
+<Box display="flex" justifyContent="end" alignItems="center">
+          <Box display="flex" gap={1}>
+            <Typography variant="body2" sx={{ cursor: "pointer", color: "gray" }}>
+              아이디 찾기
+            </Typography>
+            <Typography variant="body2" sx={{ cursor: "pointer", color: "gray" }}>
+              |
+            </Typography>
+            <Typography variant="body2" sx={{ cursor: "pointer", color: "gray" }}>
+              비밀번호 찾기
+            </Typography>
+          </Box>
         </Box>
         {/* ✅ 닫기 버튼 */}
         <Button
@@ -120,6 +129,20 @@ function LoginModal({ isOpen, onClose }) {
           }}
         >
           ✖
+        </Button>
+        <Button
+          fullWidth
+          sx={{
+            backgroundColor: "white",
+            color: "black",
+            fontWeight: "bold",
+            padding: "10px",
+            marginTop: "10px",
+            border: "1px solid var(--primary-color)",
+          }}
+          onClick={() => navigate("/signup")}
+        >
+          회원가입
         </Button>
       </Box>
     </Box>

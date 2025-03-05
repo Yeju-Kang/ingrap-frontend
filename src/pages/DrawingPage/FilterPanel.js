@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography, IconButton, List, ListItem, Divider, Button } from "@mui/material";
+import { Typography, IconButton, List, ListItem, Divider, Button } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 
 const categories = [
