@@ -1,4 +1,4 @@
-import DrawingPage from "../pages/DrawingPage/DrawingPage";
+import ProjectPage from "../pages/ProjectPage/ProjectPage";
 import ProductDetailPage from "../pages/ShopPage/ProductDetailPage";
 import useTranslate from "../hooks/useTranslate"; // ✅ 번역 훅 가져오기
 import CartPage from "../pages/CartPage/CartPage";
@@ -13,7 +13,7 @@ export const useAllRoutes = (isAuthenticated) => {
   const { translate } = useTranslate(); // ✅ 번역 함수 가져오기
 
   return [
-    { path: "/drawing", label: translate("drawing.title"), element: <DrawingPage /> },
+    { path: "/project", label: translate("project.title"), element: <ProjectPage /> },
     { path: "/shop", label: translate("shop.title"), element: <ShopPage /> },
     { path: "/shop/:productId", element: <ProductDetailPage />, label: null },
     { path: "/community", label: translate("community.title"), element: <CommunityPage /> },
