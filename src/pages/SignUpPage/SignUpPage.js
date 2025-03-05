@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
+    id: "",
     password: "",
   });
 
@@ -17,7 +18,10 @@ const SignUpPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("회원가입 정보:", formData);
-    // TODO: 백엔드 API 연동 후 회원가입 처리
+    
+    // ✅ 이전 페이지로 돌아가면서 로그인 모달을 열도록 state 전달
+    navigate(-1, { state: { openLoginModal: true } });
+    console.log('state',location.state)
   };
 
   return (
@@ -51,7 +55,6 @@ const SignUpPage = () => {
         <TextField
           label="아이디"
           name="id"
-          type="id"
           variant="outlined"
           fullWidth
           required

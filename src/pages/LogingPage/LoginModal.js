@@ -1,19 +1,18 @@
 import React, { useState } from "react";
-import { Box, Typography, Button, TextField} from "@mui/material";
+import { Box, Typography, Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import Logo from "../../layouts/Header/Logo"
+import Logo from "../../layouts/Header/Logo";
 
 function LoginModal({ isOpen, onClose }) {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   if (!isOpen) return null; // ✅ 모달이 닫혀 있으면 렌더링하지 않음
 
-  // ✅ 로그인 버튼 클릭 시 콘솔에 입력값 출력 (추후 로그인 API 연결 가능)
+  // ✅ 로그인 버튼 클릭 시 콘솔 출력 (추후 로그인 API 연결 가능)
   const handleLogin = () => {
     console.log("📝 로그인 시도:", { username, password });
-    // TODO: 로그인 처리 로직 추가
   };
 
   // ✅ 엔터 키 입력 시 로그인 실행
@@ -34,8 +33,8 @@ function LoginModal({ isOpen, onClose }) {
           left: 0,
           width: "100%",
           height: "100%",
-          backgroundColor: "rgba(0, 0, 0, 0.5)", // ✅ 반투명한 오버레이
-          zIndex: 999, // ✅ 모달보다 아래
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          zIndex: 999,
         }}
       />
 
@@ -55,10 +54,9 @@ function LoginModal({ isOpen, onClose }) {
           textAlign: "center",
         }}
       >
-        <Box sx={{marginBottom: "12px"}}>
-      <Logo />
-      </Box>
-       
+        <Box sx={{ marginBottom: "12px" }}>
+          <Logo />
+        </Box>
 
         {/* ✅ 아이디 입력 필드 */}
         <TextField
@@ -68,7 +66,7 @@ function LoginModal({ isOpen, onClose }) {
           size="small"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          onKeyPress={handleKeyPress} // ✅ 엔터 키 입력 감지
+          onKeyPress={handleKeyPress}
           sx={{ marginBottom: "12px" }}
         />
 
@@ -81,11 +79,11 @@ function LoginModal({ isOpen, onClose }) {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          onKeyPress={handleKeyPress} // ✅ 엔터 키 입력 감지
+          onKeyPress={handleKeyPress}
           sx={{ marginBottom: "20px" }}
         />
 
-<Button
+        <Button
           fullWidth
           sx={{
             backgroundColor: "var(--primary-color)",
@@ -95,13 +93,12 @@ function LoginModal({ isOpen, onClose }) {
             marginBottom: "10px",
             "&:hover": { backgroundColor: "var(--primary-color)" },
           }}
-          onClick={() => console.log("로그인 버튼 클릭")}
+          onClick={handleLogin}
         >
           로그인
         </Button>
 
-
-<Box display="flex" justifyContent="end" alignItems="center">
+        <Box display="flex" justifyContent="end" alignItems="center">
           <Box display="flex" gap={1}>
             <Typography variant="body2" sx={{ cursor: "pointer", color: "gray" }}>
               아이디 찾기
@@ -114,6 +111,7 @@ function LoginModal({ isOpen, onClose }) {
             </Typography>
           </Box>
         </Box>
+
         {/* ✅ 닫기 버튼 */}
         <Button
           onClick={onClose}
@@ -130,6 +128,8 @@ function LoginModal({ isOpen, onClose }) {
         >
           ✖
         </Button>
+
+        {/* ✅ 회원가입 버튼 → 클릭 시 모달 닫고 회원가입 페이지 이동 */}
         <Button
           fullWidth
           sx={{
@@ -140,7 +140,10 @@ function LoginModal({ isOpen, onClose }) {
             marginTop: "10px",
             border: "1px solid var(--primary-color)",
           }}
-          onClick={() => navigate("/signup")}
+          onClick={() => {
+            onClose(); // ✅ 로그인 모달 닫기
+            navigate("/signup"); // ✅ 회원가입 페이지 이동
+          }}
         >
           회원가입
         </Button>
