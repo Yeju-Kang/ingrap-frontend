@@ -13,8 +13,8 @@ const en = {
       shop: {
         title: "Shop"
       },
-    drawing: {
-        title: "Drawing"
+    project: {
+        title: "Project"
       },
     cart: {
         title: "장바구니"

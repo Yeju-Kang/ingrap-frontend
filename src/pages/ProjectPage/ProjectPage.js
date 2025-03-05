@@ -6,7 +6,7 @@ import ProductList from "./ProductList";
 import RoomArea from "./RoomArea";
 
 
-const DrawingPage = () => {
+const ProjectPage = () => {
   const [filters, setFilters] = useState({
     brand: "ALEX MULLER",
     type: "Table",
@@ -27,4 +27,4 @@ const DrawingPage = () => {
   );
 };
 
-export default DrawingPage;
+export default ProjectPage;
