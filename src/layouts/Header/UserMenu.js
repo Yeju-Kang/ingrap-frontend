@@ -1,23 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { Box, IconButton, Typography, Button } from "@mui/material";
+import React, { useState } from "react";
+import { Box, IconButton, Typography } from "@mui/material";
 import { PersonOutline, ShoppingBagOutlined } from "@mui/icons-material";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useTranslate from "../../hooks/useTranslate";
 
 function UserMenu() {
   const navigate = useNavigate();
-  const location = useLocation();
   const { language, toggleLanguage } = useTranslate();
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 추가
 
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
       {/* ✅ 로그인 여부에 따라 다른 UI 표시 */}
-      {isLoggedIn ? (
+      {!isLoggedIn ? (
         <>
           {/* ✅ 마이페이지 버튼 (로그인 상태) */}
-          <IconButton onClick={() => navigate("/mypage")} sx={{ padding: "8px" }}>
+          <IconButton onClick={() => navigate("/profile")} sx={{ padding: "8px" }}>
             <PersonOutline sx={{ fontSize: 36, color: "var(--text-color)" }} />
           </IconButton>
 

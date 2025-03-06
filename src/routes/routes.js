@@ -7,6 +7,8 @@ import CommunityPage from "../pages/CommunityPage/CommunityPage";
 import PostDetailPage from "../pages/CommunityPage/PostDetailPage";
 import SignUpPage from "../pages/SignUpPage/SignUpPage";
 import LoginPage from "../pages/LogingPage/LoginPage";
+import ProfilePage from "../pages/ProfilePage/ProfilePage";
+
 
 // ✅ 커스텀 훅으로 변경
 export const useAllRoutes = (isAuthenticated) => {
@@ -20,6 +22,7 @@ export const useAllRoutes = (isAuthenticated) => {
     { path: "/community/:postId", element: <PostDetailPage />, label: null },
     { path: "/signup", element: <SignUpPage />, label: null },
     { path: "/login", element: <LoginPage />, label: null },
+    { path: "/profile", element: <ProfilePage />, label: null },
     { path: "/cart",label: null, element: <CartPage /> },
   ];
 };

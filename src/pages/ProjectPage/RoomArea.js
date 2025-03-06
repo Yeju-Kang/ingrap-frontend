@@ -1,32 +1,30 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { Box } from "@mui/material";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import SceneContent from "./SceneContent";
 
-const RoomArea = () => {
+const RoomArea = ({ furnitureList }) => {
+  const [selectedFurniture, setSelectedFurniture] = useState(null);
+  const controlsRef = useRef();
+
+  // ✅ 빈 공간 클릭 시 가구 선택 해제 (위치는 유지!)
+  const handleBackgroundClick = () => {
+    if (selectedFurniture) {
+      console.log("🚀 빈 공간 클릭! 선택 해제됨!");
+      setSelectedFurniture(null); // ✅ 가구 선택 해제 (위치는 그대로 유지!)
+    }
+  };
+
   return (
-    <Box flex={1} display="flex" justifyContent="center" alignItems="center" sx={{  mx: 2, position: "relative", margin: 0 }}>
+    <Box flex={1} display="flex" justifyContent="center" alignItems="center" sx={{ mx: 2, position: "relative", margin: 0 }}>
       <Canvas camera={{ position: [5, 5, 10], fov: 50 }}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 10]} />
-        <OrbitControls />
-        {/* 바닥 (Floor) */}
-        <mesh position={[0, 0, 0]}>
-          <boxGeometry args={[10, 0.2, 10]} />
-          <meshStandardMaterial color="#ffffff" /> {/* 갈색 바닥 */}
-        </mesh>
-
-        {/* 왼쪽 벽 (Left Wall) */}
-        <mesh position={[-5, 2.5, 0]}>
-          <boxGeometry args={[0.2, 5, 10]} />
-          <meshStandardMaterial color="var(--background-color)" /> {/* 베이지 색상 */}
-        </mesh>
-
-        {/* 오른쪽 벽 (Right Wall) */}
-        <mesh position={[0, 2.5, -5]} rotation={[0, Math.PI / 2, 0]}>
-          <boxGeometry args={[0.2, 5, 10]} />
-          <meshStandardMaterial color="var(--background-color)" />
-        </mesh>
+        <SceneContent
+          furnitureList={furnitureList}
+          selectedFurniture={selectedFurniture}
+          onSelectFurniture={setSelectedFurniture}
+          controlsRef={controlsRef}
+          onBackgroundClick={handleBackgroundClick} // ✅ 빈 공간 클릭 핸들러 전달!
+        />
       </Canvas>
     </Box>
   );
