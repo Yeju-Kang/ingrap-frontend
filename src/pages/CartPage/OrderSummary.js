@@ -1,7 +1,9 @@
 import React from "react";
 import { Box, Typography, Divider, Select, MenuItem, TextField, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const OrderSummary = ({ totalItems, subtotal, shipping, setShipping, promoCode, setPromoCode, totalCost }) => {
+  const navigate = useNavigate();
   return (
     <Box width="30%" bgcolor="white" p={3} borderRadius={2} boxShadow={2} ml={3}>
       <Typography variant="h6" fontWeight="bold">Order Summary</Typography>
@@ -35,7 +37,7 @@ const OrderSummary = ({ totalItems, subtotal, shipping, setShipping, promoCode, 
         <Typography fontWeight="bold">£{totalCost.toFixed(2)}</Typography>
       </Box>
 
-      <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>CHECKOUT</Button>
+      <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }}onClick={() => navigate("/checkout")}>CHECKOUT</Button>
     </Box>
   );
 };
