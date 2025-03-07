@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, IconButton, Typography } from "@mui/material";
 import { PersonOutline, ShoppingBagOutlined } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import useTranslate from "../../hooks/useTranslate";
 
 function UserMenu() {
   const navigate = useNavigate();
   const { language, toggleLanguage } = useTranslate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 추가
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
 
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
       {/* ✅ 로그인 여부에 따라 다른 UI 표시 */}
-      {!isLoggedIn ? (
+      {isAuthenticated  ? (
         <>
           {/* ✅ 마이페이지 버튼 (로그인 상태) */}
           <IconButton onClick={() => navigate("/profile")} sx={{ padding: "8px" }}>

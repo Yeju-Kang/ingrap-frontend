@@ -1,24 +1,41 @@
-// LoginPage.js
 import React, { useState } from 'react';
 import { Box, Typography, Button, TextField } from '@mui/material';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector  } from "react-redux";
+import { loginSuccess } from "../../redux/authSlice";
 import Logo from '../../layouts/Header/Logo';
+import apiClient from '../../api/apiClient';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();  // ✅ Redux Dispatch 추가
+  const { lastVisitedPage } = useSelector((state) => state.auth);
+  const [formData, setFormData] = useState({
+    email: '',    // ✅ 백엔드에서 `email` 사용
+    password: '',
+  });
+  const [error, setError] = useState(null);
 
-  // 이전 경로 정보 확인
-  const from = location.state?.from || '/';
 
-  const handleLogin = () => {
-    // 로그인 로직 처리
-    console.log('📝 로그인 시도:', { username, password });
+  const handleLogin = async () => {
+    try {
+        const response = await apiClient.post("/users/login", formData);
 
-    // 로그인 성공 시 이전 경로로 리디렉션
-    navigate(from, { replace: true });
+        alert("로그인 성공!");
+
+        // ✅ Redux 상태 업데이트
+        dispatch(loginSuccess({ email: formData.email }));
+
+        // ✅ Redux에서 `lastVisitedPage` 가져와서 이동
+        navigate(lastVisitedPage, { replace: true });
+    } catch (error) {
+        setError("로그인 실패! 이메일 또는 비밀번호를 확인해주세요.");
+        console.error("로그인 오류:", error);
+    }
+};
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleKeyPress = (event) => {
@@ -53,25 +70,33 @@ const LoginPage = () => {
           <Logo />
         </Box>
 
+        {error && (
+          <Typography color="error" sx={{ marginBottom: "12px" }}>
+            {error}
+          </Typography>
+        )}
+
         <TextField
-          label='아이디'
+          label='이메일'
+          name="email"  // ✅ `email`로 변경
           variant='outlined'
           fullWidth
           size='small'
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={formData.email}
+          onChange={handleChange}
           onKeyPress={handleKeyPress}
           sx={{ marginBottom: '12px' }}
         />
 
         <TextField
           label='비밀번호'
+          name="password"
           variant='outlined'
           fullWidth
           size='small'
           type='password'
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={formData.password}
+          onChange={handleChange}
           onKeyPress={handleKeyPress}
           sx={{ marginBottom: '20px' }}
         />
@@ -124,7 +149,7 @@ const LoginPage = () => {
             marginTop: '10px',
             border: '1px solid var(--primary-color)',
           }}
-          onClick={() => navigate('/signup', { state: { from } })}
+          onClick={handleLogin}
         >
           회원가입
         </Button>
