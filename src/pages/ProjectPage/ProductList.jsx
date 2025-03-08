@@ -2,11 +2,13 @@ import React from "react";
 import { Card, CardMedia, Grid } from "@mui/material";
 import chair1 from "../../assets/images/chair1-1.png"
 import chair2 from "../../assets/images/chair1-2.glb"
+import bed1 from "../../assets/images/bed1-1.png"
+import bed2 from "../../assets/images/bed1-2.glb"
 
 
 const products = [
   { id: 1, name: "알렉스뮐러 타니코 원목 테이블", model: chair2, image: chair1 },
-  { id: 2, name: "알렉스뮐러 AT 화이트 오크 원목 테이블", model: chair2, image: chair1 },
+  { id: 2, name: "알렉스뮐러 AT 화이트 오크 원목 테이블", model: bed2, image: bed1 },
   { id: 3, name: "알렉스뮐러 로로이 포르토 원목 테이블", model: chair2, image: chair1 },
 ];
 

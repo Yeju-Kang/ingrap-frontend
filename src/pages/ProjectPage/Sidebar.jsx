@@ -1,32 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, IconButton } from "@mui/material";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import NightlightIcon from "@mui/icons-material/Nightlight";
-import UmbrellaIcon from "@mui/icons-material/BeachAccess";
+import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import PaintRollerIcon from "@mui/icons-material/FormatPaint";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import HelpIcon from "@mui/icons-material/Help";
 
-const Sidebar = () => {
-  const weatherIcons = [WbSunnyIcon, NightlightIcon, UmbrellaIcon];
-  const [currentIconIndex, setCurrentIconIndex] = useState(0);
+const weatherStates = ["sunny", "night", "rainy"];
 
-  const CurrentWeatherIcon = weatherIcons[currentIconIndex];
+const weatherIcons = {
+  sunny: WbSunnyIcon,
+  night: NightlightIcon,
+  rainy: BeachAccessIcon,
+};
+
+const Sidebar = ({ weather = "sunny", setWeather = () => {} }) => {
+  const CurrentWeatherIcon = weatherIcons[weather] || WbSunnyIcon;
 
   const handleWeatherIconClick = () => {
-    setCurrentIconIndex((prev) => (prev + 1) % weatherIcons.length);
+    const currentIndex = weatherStates.indexOf(weather);
+    const nextIndex = (currentIndex + 1) % weatherStates.length;
+    setWeather(weatherStates[nextIndex]);
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      p={2}
-      bgcolor="var(--background-color)"
-      color="var(--text-color)"
-      paddingTop="5px"
-    >
+    <Box display="flex" flexDirection="column" alignItems="center" p={2}>
       <IconButton onClick={handleWeatherIconClick}>
         <CurrentWeatherIcon />
       </IconButton>

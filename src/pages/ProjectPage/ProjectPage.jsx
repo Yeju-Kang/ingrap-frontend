@@ -1,3 +1,4 @@
+// ProjectPage.jsx (중복없이 완벽한 상태 선언)
 import React, { useState } from "react";
 import { Box } from "@mui/material";
 import Sidebar from "./Sidebar";
@@ -9,6 +10,12 @@ import FurnitureControls from "./FurnitureControls";
 const ProjectPage = () => {
   const [furnitureList, setFurnitureList] = useState([]);
   const [selectedFurniture, setSelectedFurniture] = useState(null);
+  const [weather, setWeather] = useState("sunny");
+  const [cameraMode, setCameraMode] = useState("third");
+
+  const toggleCameraMode = () => {
+    setCameraMode((prev) => (prev === "third" ? "firstPerson" : "third"));
+  };
 
   const handleAddFurniture = (furniture) => {
     const newFurniture = {
@@ -18,13 +25,14 @@ const ProjectPage = () => {
     };
     setFurnitureList((prev) => [...prev, newFurniture]);
   };
-  
+
   const handleDeleteFurniture = () => {
     if (selectedFurniture) {
       setFurnitureList((prev) => prev.filter((item) => item.uuid !== selectedFurniture.uuid));
       setSelectedFurniture(null);
     }
   };
+
   return (
     <Box
       height="calc(100vh - 80px)"
@@ -50,28 +58,25 @@ const ProjectPage = () => {
         />
       </Box>
 
-      {/* 메인 콘텐츠 영역 */}
       <Box display="flex" flex={1} overflow="hidden">
-        <Sidebar />
+        <Sidebar
+          weather={weather}
+          setWeather={setWeather}
+          cameraMode={cameraMode}
+          toggleCameraMode={toggleCameraMode}
+        />
+             <Box flex={1} display="flex" flexDirection="column" minWidth={0} minHeight={0}>
 
-        {/* 🔥 여기서 명확히 스타일 추가 🔥 */}
-        <Box flex={1} display="flex" flexDirection="column" minWidth={0} minHeight={0}>
           <RoomArea
             furnitureList={furnitureList}
             selectedFurniture={selectedFurniture}
             setSelectedFurniture={setSelectedFurniture}
+            weather={weather}
+            cameraMode={cameraMode}
           />
         </Box>
 
-        <Box
-          width="180px"
-          sx={{
-            borderLeft: "1px solid #ddd",
-            display: "flex",
-            flexDirection: "column",
-            overflowY: "auto",
-          }}
-        >
+        <Box width="180px" sx={{ overflowY: "auto", borderLeft: "1px solid #ddd" }}>
           <FilterPanel />
           <ProductList onAddFurniture={handleAddFurniture} />
         </Box>
