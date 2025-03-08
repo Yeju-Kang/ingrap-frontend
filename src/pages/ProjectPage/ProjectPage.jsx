@@ -27,8 +27,14 @@ const ProjectPage = () => {
   };
 
   return (
-    <Box height="100vh" display="flex" flexDirection="column" sx={{ marginTop: "80px", overflow: "hidden" }}>
-      {/* FurnitureControls 영역 */}
+    <Box
+      height="calc(100vh - 80px)"
+      display="flex"
+      flexDirection="column"
+      overflow="hidden"
+      sx={{ marginTop: "80px" }}
+    >
+      {/* FurnitureControls */}
       <Box
         sx={{
           width: "100%",
@@ -46,17 +52,20 @@ const ProjectPage = () => {
       </Box>
 
       {/* 메인 콘텐츠 영역 */}
-      <Box display="flex" flex={1} overflow="auto">
+      <Box display="flex" flex={1} overflow="hidden">
         <Sidebar />
-        <Box flex={1} sx={{ overflow: "hidden" }}>
+
+        {/* 🔥 여기서 명확히 스타일 추가 🔥 */}
+        <Box flex={1} display="flex" flexDirection="column" minWidth={0} minHeight={0}>
           <RoomArea
             furnitureList={furnitureList}
             selectedFurniture={selectedFurniture}
             setSelectedFurniture={setSelectedFurniture}
           />
         </Box>
+
         <Box
-          width="300px"
+          width="180px"
           sx={{
             borderLeft: "1px solid #ddd",
             display: "flex",
