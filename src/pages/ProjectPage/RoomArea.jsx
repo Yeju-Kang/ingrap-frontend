@@ -3,8 +3,7 @@ import { Box } from "@mui/material";
 import { Canvas } from "@react-three/fiber";
 import SceneContent from "./SceneContent";
 
-const RoomArea = ({ furnitureList }) => {
-  const [selectedFurniture, setSelectedFurniture] = useState(null);
+const RoomArea = ({ furnitureList, selectedFurniture, setSelectedFurniture }) => {
   const controlsRef = useRef();
 
   const handleBackgroundClick = () => {
@@ -12,10 +11,10 @@ const RoomArea = ({ furnitureList }) => {
   };
 
   return (
-    <Box flex={1} display="flex" justifyContent="center" alignItems="center">
+    <Box flex={1}>
       <Canvas camera={{ position: [5, 5, 10], fov: 50 }}>
         <SceneContent
-          furnitureList={furnitureList} // ✅ furnitureList 배열 전달 필수
+          furnitureList={furnitureList}
           selectedFurniture={selectedFurniture}
           onSelectFurniture={setSelectedFurniture}
           controlsRef={controlsRef}
@@ -25,5 +24,6 @@ const RoomArea = ({ furnitureList }) => {
     </Box>
   );
 };
+
 
 export default RoomArea;

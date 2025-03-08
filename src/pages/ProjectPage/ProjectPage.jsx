@@ -4,38 +4,48 @@ import Sidebar from "./Sidebar";
 import FilterPanel from "./FilterPanel";
 import ProductList from "./ProductList";
 import RoomArea from "./RoomArea";
+import FurnitureControls from "./FurnitureControls";
 
 const ProjectPage = () => {
-  const [filters, setFilters] = useState({
-    brand: "ALEX MULLER",
-    type: "Table",
-    material: "Wood",
-    color: "None",
-    price: [0, 10000000],
-  });
-
   const [furnitureList, setFurnitureList] = useState([]);
+  const [selectedFurniture, setSelectedFurniture] = useState(null);
 
   const handleAddFurniture = (furniture) => {
     const newFurniture = {
       ...furniture,
-      uuid: Date.now(), // 고유한 식별자 추가 ✅
-      position: [
-        Math.random() * 4 - 2, // ✅ 가구가 겹치지 않도록 위치 랜덤 지정
-        0.1,
-        Math.random() * 4 - 2,
-      ],
+      uuid: Date.now(),
+      position: [Math.random() * 4 - 2, 0.1, Math.random() * 4 - 2],
     };
     setFurnitureList((prev) => [...prev, newFurniture]);
   };
 
+  const handleDeleteFurniture = () => {
+    if (selectedFurniture) {
+      setFurnitureList((prev) => prev.filter((_, idx) => idx !== selectedFurniture.id));
+      setSelectedFurniture(null);
+    }
+  };
+
   return (
-    <Box display="flex" height="100vh" sx={{ marginTop: "80px" }}>
+    <Box height="100vh" sx={{marginTop: "80px"}}>
+      <Box sx={{ width: "100%", height: "50px", borderBottom: "1px solid #ddd", display: "flex", alignItems: "center", px: 2 }}>
+        <FurnitureControls
+          selectedFurniture={selectedFurniture}
+          onDeleteFurniture={handleDeleteFurniture}
+        />
+      </Box>
+     
+      <Box display="flex" flex={1}>
       <Sidebar />
-      <RoomArea furnitureList={furnitureList} />
-      <Box width="300px" display="flex" flexDirection="column">
-        <FilterPanel filters={filters} setFilters={setFilters} />
-        <ProductList onAddFurniture={handleAddFurniture} />
+        <RoomArea
+          furnitureList={furnitureList}
+          selectedFurniture={selectedFurniture}
+          setSelectedFurniture={setSelectedFurniture}
+        />
+        <Box width="300px" sx={{ borderLeft: "1px solid #ddd", display: "flex", flexDirection: "column" }}>
+          <FilterPanel />
+          <ProductList onAddFurniture={handleAddFurniture} />
+        </Box>
       </Box>
     </Box>
   );
