@@ -18,14 +18,13 @@ const ProjectPage = () => {
     };
     setFurnitureList((prev) => [...prev, newFurniture]);
   };
-
+  
   const handleDeleteFurniture = () => {
     if (selectedFurniture) {
-      setFurnitureList((prev) => prev.filter((_, idx) => idx !== selectedFurniture.id));
+      setFurnitureList((prev) => prev.filter((item) => item.uuid !== selectedFurniture.uuid));
       setSelectedFurniture(null);
     }
   };
-
   return (
     <Box
       height="calc(100vh - 80px)"

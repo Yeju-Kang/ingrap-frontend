@@ -28,16 +28,17 @@ const SceneContent = ({ furnitureList, selectedFurniture, onSelectFurniture, onB
         <meshStandardMaterial color="lightgray" />
       </mesh>
 
-      {/* 가구 모델 렌더링 */}
-      {furnitureList.map((item, index) => (
-        <FurnitureModel
-          key={index}
-          modelPath={item.model}
-          position={item.position}
-          selected={selectedFurniture?.id === index}
-          onSelect={(object) => onSelectFurniture({ object, id: index })}
-        />
-      ))}
+ {/* 가구 모델 렌더링 */}
+{furnitureList.map((item) => (
+  <FurnitureModel
+    key={item.uuid} // ✅ 고유한 uuid 사용!
+    modelPath={item.model}
+    position={item.position}
+    selected={selectedFurniture?.uuid === item.uuid}
+    onSelect={(object) => onSelectFurniture({ object, uuid: item.uuid })}
+  />
+))}
+
 
       {/* 선택된 가구 이동 컨트롤 */}
       {selectedFurniture && selectedFurniture.object && (
