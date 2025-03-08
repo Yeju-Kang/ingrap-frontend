@@ -38,7 +38,7 @@ const ProjectPage = () => {
         sx={{
           width: "100%",
           height: "50px",
-          borderBottom: "1px solid #ddd",
+          border: "1px solid #ddd",
           display: "flex",
           alignItems: "center",
           px: 2,
