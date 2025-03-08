@@ -14,10 +14,19 @@ const ProjectPage = () => {
     price: [0, 10000000],
   });
 
-  const [furnitureList, setFurnitureList] = useState([]); // ✅ 선택된 가구 리스트
+  const [furnitureList, setFurnitureList] = useState([]);
 
   const handleAddFurniture = (furniture) => {
-    setFurnitureList((prev) => [...prev, furniture]);
+    const newFurniture = {
+      ...furniture,
+      uuid: Date.now(), // 고유한 식별자 추가 ✅
+      position: [
+        Math.random() * 4 - 2, // ✅ 가구가 겹치지 않도록 위치 랜덤 지정
+        0.1,
+        Math.random() * 4 - 2,
+      ],
+    };
+    setFurnitureList((prev) => [...prev, newFurniture]);
   };
 
   return (
