@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import { OrbitControls, TransformControls } from "@react-three/drei";
 import FurnitureModel from "./FurnitureModel";
 
@@ -10,6 +10,25 @@ const SceneContent = ({ furnitureList, selectedFurniture, onSelectFurniture, onB
 
       <OrbitControls enablePan={!selectedFurniture} enableRotate={!selectedFurniture} />
 
+      {/* 방 바닥 */}
+      <mesh position={[0, 0, 0]} onClick={onBackgroundClick}>
+        <boxGeometry args={[10, 0.2, 10]} />
+        <meshStandardMaterial color="#ffffff" />
+      </mesh>
+
+      {/* 왼쪽 벽 */}
+      <mesh position={[-5, 2.5, 0]} onClick={onBackgroundClick}>
+        <boxGeometry args={[0.2, 5, 10]} />
+        <meshStandardMaterial color="lightgray" />
+      </mesh>
+
+      {/* 뒤쪽 벽 */}
+      <mesh position={[0, 2.5, -5]} rotation={[0, Math.PI / 2, 0]} onClick={onBackgroundClick}>
+        <boxGeometry args={[0.2, 5, 10]} />
+        <meshStandardMaterial color="lightgray" />
+      </mesh>
+
+      {/* 가구 모델 렌더링 */}
       {furnitureList.map((item, index) => (
         <FurnitureModel
           key={index}
@@ -20,6 +39,7 @@ const SceneContent = ({ furnitureList, selectedFurniture, onSelectFurniture, onB
         />
       ))}
 
+      {/* 선택된 가구 이동 컨트롤 */}
       {selectedFurniture && selectedFurniture.object && (
         <TransformControls
           object={selectedFurniture.object}
@@ -27,14 +47,8 @@ const SceneContent = ({ furnitureList, selectedFurniture, onSelectFurniture, onB
           onPointerDown={(e) => e.stopPropagation()}
         />
       )}
-
-      <mesh position={[0, 0, 0]} onClick={onBackgroundClick}>
-        <boxGeometry args={[10, 0.2, 10]} />
-        <meshStandardMaterial color="#ffffff" />
-      </mesh>
     </>
   );
 };
-
 
 export default SceneContent;
