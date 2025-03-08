@@ -27,22 +27,43 @@ const ProjectPage = () => {
   };
 
   return (
-    <Box height="100vh" sx={{marginTop: "80px"}}>
-      <Box sx={{ width: "100%", height: "50px", borderBottom: "1px solid #ddd", display: "flex", alignItems: "center", px: 2 }}>
+    <Box height="100vh" display="flex" flexDirection="column" sx={{ marginTop: "80px", overflow: "hidden" }}>
+      {/* FurnitureControls 영역 */}
+      <Box
+        sx={{
+          width: "100%",
+          height: "50px",
+          borderBottom: "1px solid #ddd",
+          display: "flex",
+          alignItems: "center",
+          px: 2,
+        }}
+      >
         <FurnitureControls
           selectedFurniture={selectedFurniture}
           onDeleteFurniture={handleDeleteFurniture}
         />
       </Box>
-     
-      <Box display="flex" flex={1}>
-      <Sidebar />
-        <RoomArea
-          furnitureList={furnitureList}
-          selectedFurniture={selectedFurniture}
-          setSelectedFurniture={setSelectedFurniture}
-        />
-        <Box width="300px" sx={{ borderLeft: "1px solid #ddd", display: "flex", flexDirection: "column" }}>
+
+      {/* 메인 콘텐츠 영역 */}
+      <Box display="flex" flex={1} overflow="auto">
+        <Sidebar />
+        <Box flex={1} sx={{ overflow: "hidden" }}>
+          <RoomArea
+            furnitureList={furnitureList}
+            selectedFurniture={selectedFurniture}
+            setSelectedFurniture={setSelectedFurniture}
+          />
+        </Box>
+        <Box
+          width="300px"
+          sx={{
+            borderLeft: "1px solid #ddd",
+            display: "flex",
+            flexDirection: "column",
+            overflowY: "auto",
+          }}
+        >
           <FilterPanel />
           <ProductList onAddFurniture={handleAddFurniture} />
         </Box>
