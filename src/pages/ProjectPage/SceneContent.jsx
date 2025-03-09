@@ -1,6 +1,9 @@
 import React from "react";
-import { OrbitControls, TransformControls } from "@react-three/drei";
+import { OrbitControls, TransformControls, Html } from "@react-three/drei";
 import FurnitureModel from "./FurnitureModel";
+import { IconButton } from "@mui/material";
+import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
 const SceneContent = ({
   furnitureList,
@@ -8,6 +11,7 @@ const SceneContent = ({
   onSelectFurniture,
   onBackgroundClick,
   weather,
+  setFurnitureList, // ✅ 가구 이동 & 회전 저장을 위한 상태 변경 함수 추가
 }) => {
   // ✅ 날씨별 조명 설정
   const renderWeatherLighting = () => {
@@ -23,12 +27,49 @@ const SceneContent = ({
     }
   };
 
+  const rotateFurniture = (direction) => {
+    if (!selectedFurniture) return;
+    setFurnitureList((prevList) =>
+      prevList.map((item) => {
+        if (item.uuid === selectedFurniture.uuid) {
+          const currentRotation = item.rotation || [0, 0, 0]; // ✅ 기본값 추가
+          return {
+            ...item,
+            rotation: [
+              currentRotation[0], // X축 유지
+              currentRotation[1] + direction * (Math.PI / 2), // Y축 회전
+              currentRotation[2], // Z축 유지
+            ],
+          };
+        }
+        return item;
+      })
+    );
+  };
+  
+  
+  
+
+  // ✅ 가구 이동 시 위치 업데이트
+  const handleTransformChange = () => {
+    if (!selectedFurniture) return;
+    setFurnitureList((prevList) =>
+      prevList.map((item) =>
+        item.uuid === selectedFurniture.uuid
+          ? {
+              ...item,
+              position: selectedFurniture.object.position.clone(),
+              rotation: selectedFurniture.object.rotation.clone(),
+            }
+          : item
+      )
+    );
+  };
+
   return (
     <>
       <ambientLight intensity={weather === "night" ? 0.2 : 0.5} />
-
       {renderWeatherLighting()}
-
       <OrbitControls enablePan={!selectedFurniture} enableRotate={!selectedFurniture} />
 
       {/* 방 바닥 */}
@@ -51,21 +92,36 @@ const SceneContent = ({
 
       {/* 가구 모델 렌더링 */}
       {furnitureList.map((item) => (
-        <FurnitureModel
-          key={item.uuid}
-          modelPath={item.model}
-          position={item.position}
-          selected={selectedFurniture?.uuid === item.uuid}
-          onSelect={(object) => onSelectFurniture({ object, uuid: item.uuid })}
-        />
+        <group key={item.uuid} position={item.position} rotation={item.rotation}>
+          <FurnitureModel
+            modelPath={item.model}
+            selected={selectedFurniture?.uuid === item.uuid}
+            onSelect={(object) => onSelectFurniture({ object, uuid: item.uuid })}
+          />
+
+          {/* ✅ 선택된 가구 위에 좌/우 회전 버튼 표시 */}
+          {selectedFurniture?.uuid === item.uuid && (
+            <Html position={[0, 1.5, 0]} center>
+              <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                <IconButton onClick={() => rotateFurniture(-1)} color="primary">
+                  <ArrowLeftIcon />
+                </IconButton>
+                <IconButton onClick={() => rotateFurniture(1)} color="primary">
+                  <ArrowRightIcon />
+                </IconButton>
+              </div>
+            </Html>
+          )}
+        </group>
       ))}
 
-      {/* 선택된 가구 이동 컨트롤 */}
+      {/* ✅ 이동 기능 유지 (TransformControls) */}
       {selectedFurniture && selectedFurniture.object && (
         <TransformControls
           object={selectedFurniture.object}
-          mode="translate"
+          mode="translate" // ✅ 이동 모드 유지
           onPointerDown={(e) => e.stopPropagation()}
+          onObjectChange={handleTransformChange} // ✅ 이동할 때 상태 업데이트
         />
       )}
     </>

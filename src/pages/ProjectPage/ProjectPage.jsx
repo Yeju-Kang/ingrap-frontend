@@ -69,6 +69,7 @@ const ProjectPage = () => {
 
           <RoomArea
             furnitureList={furnitureList}
+            setFurnitureList={setFurnitureList} // ✅ 추가
             selectedFurniture={selectedFurniture}
             setSelectedFurniture={setSelectedFurniture}
             weather={weather}

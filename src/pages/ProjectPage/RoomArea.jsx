@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import { Canvas } from "@react-three/fiber";
 import SceneContent from "./SceneContent";
 
-const RoomArea = ({ furnitureList, selectedFurniture, setSelectedFurniture, weather }) => {
+const RoomArea = ({ furnitureList, selectedFurniture, setSelectedFurniture, weather,  setFurnitureList={setFurnitureList} }) => {
   const controlsRef = useRef();
 
   const handleBackgroundClick = () => {
@@ -17,6 +17,7 @@ const RoomArea = ({ furnitureList, selectedFurniture, setSelectedFurniture, weat
           furnitureList={furnitureList}
           selectedFurniture={selectedFurniture}
           onSelectFurniture={setSelectedFurniture}
+          setFurnitureList={setFurnitureList}
           controlsRef={controlsRef}
           onBackgroundClick={handleBackgroundClick}
           weather={weather} // ✅ 추가
