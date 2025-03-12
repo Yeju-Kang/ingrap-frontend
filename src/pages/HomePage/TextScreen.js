@@ -25,11 +25,11 @@ const TextScreen = ({ isActive }) => {
       sx={{
         width: "100%",
         height: "100vh",
-        backgroundColor: "black",
+        backgroundColor: "var(--background-color",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        color: "white",
+        color: "var(--primary-color",
         fontSize: "3rem",
         fontWeight: "bold",
       }}
