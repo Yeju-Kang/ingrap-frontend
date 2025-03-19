@@ -39,7 +39,6 @@ const ProjectPage = () => {
       display="flex"
       flexDirection="column"
       overflow="hidden"
-      sx={{ marginTop: "80px" }}
     >
       {/* FurnitureControls */}
       <Box

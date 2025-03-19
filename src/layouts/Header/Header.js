@@ -69,7 +69,7 @@ function Header() {
           justifyContent: "space-between",
           padding: "0 20px",
           zIndex: 1000,
-          backgroundColor: "rgba(245, 245, 245, 0.9)",
+          backgroundColor: "rgba(245, 245, 245, 0.5)",
           transition: "top 0.3s ease-in-out",
         }}
         onMouseLeave={() => setTimeout(() => setHovering(false), 500)} // ✅ 마우스를 떼면 일정 시간 후 다시 숨김
