@@ -7,7 +7,7 @@ function Logo() {
     const navigate = useNavigate();
 
     return(
-        <Box sx={{ display: "flex", justifyContent: "center", flex: 1 }}>
+        <Box sx={{ display: "flex", justifyContent: "center", flex: 0 }}>
 <Box
 component="img"
 src={logo}

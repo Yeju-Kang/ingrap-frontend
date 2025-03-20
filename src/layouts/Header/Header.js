@@ -74,8 +74,8 @@ function Header() {
         }}
         onMouseLeave={() => setTimeout(() => setHovering(false), 500)} // ✅ 마우스를 떼면 일정 시간 후 다시 숨김
       >
+         <Logo />
         <NavMenu />
-        <Logo />
         <UserMenu />
       </Box>
     </>
