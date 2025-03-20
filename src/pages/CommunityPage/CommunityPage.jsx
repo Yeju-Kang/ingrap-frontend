@@ -100,7 +100,7 @@ const CommunityPage = () => {
   console.log("otherPosts", otherPosts); // ✅ 데이터 확인
 
   return (
-    <Container maxWidth={false} sx={{ px: "24px", height: "calc(100vh - 80px)", overflowY: "auto" }}>
+    <Container maxWidth={false} sx={{ px: "24px", height: "calc(100vh - 80px)" }}>
       {topPost && otherPosts.length > 0 && (
         <TopRanking
           topPost={topPost}

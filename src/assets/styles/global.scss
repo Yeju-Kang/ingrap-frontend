@@ -12,18 +12,21 @@
   background: none; /* 불필요한 배경 제거 */
 } 
 
-
 html, body, #root {
   font-family: 'Pretendard-Regular', 'Roboto', 'Helvetica', 'Arial', sans-serif !important;
   margin: 0;
   padding: 0;
   width: 100%;
-  overflow: hidden;
   min-height: 100vh;
   background: var(--background-color);
   display: flex;
   flex-direction: column;
 }
+
+html, body {
+  height: 100%;
+}
+
 
 #root {
   display: flex;

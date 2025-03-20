@@ -19,7 +19,6 @@ function App() {
      <ThemeProvider theme={theme}>
       <CssBaseline />
       <CustomCursor />
-      <Header />
       <MainLayout />
     </ThemeProvider>
   );
