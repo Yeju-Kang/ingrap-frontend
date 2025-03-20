@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Grid, useMediaQuery, Box } from "@mui/material";
+import { Container, useMediaQuery } from "@mui/material";
 import TopRanking from "./TopRanking";
 import FurnitureAds from "./FurnitureAds";
 
@@ -78,29 +78,39 @@ const CommunityPage = () => {
   ]);
 
   const sortedPosts = [...posts].sort((a, b) => b.likes - a.likes || b.views - a.views);
-  const topPost = sortedPosts[0]; // 1등
+  const topPost = sortedPosts[0]; // ✅ 1등 카드
+  const isSmallScreen = useMediaQuery("(max-width:1600px)");
+  const isMediumScreen = useMediaQuery("(max-width:2000px)");
+  const isLargeScreen = useMediaQuery("(min-width:2000px)");
 
-  const isSmallScreen = useMediaQuery("(max-width:1600px)"); // 작은 화면
-  const isMediumScreen = useMediaQuery("(max-width:2000px)"); // 중간 크기 화면
-  const isLargeScreen = useMediaQuery("(min-width:2000px)"); // 큰 화면
-
-  // ✅ 2등 이후 카드들이 가로로 확장되도록 설정
   const otherCardGridSize = isLargeScreen ? 4 : isMediumScreen ? 6 : 12;
 
-  let otherPosts;
-  if (isSmallScreen) {
-    otherPosts = sortedPosts.slice(1, 3); // ✅ 1등~3등 1열 정렬
-  } else if (isLargeScreen) {
-    otherPosts = sortedPosts.slice(1, 7); // ✅ 큰 화면에서는 2~7등 표시
-  } else {
-    otherPosts = sortedPosts.slice(1, 5); // ✅ 중간 화면 이하에서는 2~5등만 표시
+  let otherPosts = [];
+  if (sortedPosts.length > 1) {
+    if (isSmallScreen) {
+      otherPosts = sortedPosts.slice(1, 3);
+    } else if (isLargeScreen) {
+      otherPosts = sortedPosts.slice(1, 7);
+    } else {
+      otherPosts = sortedPosts.slice(1, 5);
+    }
   }
 
+  console.log("topPost", topPost); // ✅ 데이터 확인
+  console.log("otherPosts", otherPosts); // ✅ 데이터 확인
+
   return (
-    <Container maxWidth={false} sx={{  px: "24px",  height: "calc(100vh - 80px)",
-      overflowY: "auto"}}>
-       <TopRanking topPost={topPost} otherPosts={otherPosts} otherCardGridSize={otherCardGridSize} isSmallScreen={isSmallScreen} />
-       <FurnitureAds /> {/* ✅ 가구 광고 추가 */}
+    <Container maxWidth={false} sx={{ px: "24px", height: "calc(100vh - 80px)", overflowY: "auto" }}>
+      {topPost && otherPosts.length > 0 && (
+        <TopRanking
+          topPost={topPost}
+          otherPosts={otherPosts}
+          otherCardGridSize={otherCardGridSize}
+          isSmallScreen={isSmallScreen}
+          key="top-ranking"
+        />
+      )}
+      <FurnitureAds />
     </Container>
   );
 };
