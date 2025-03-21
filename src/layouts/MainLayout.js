@@ -5,10 +5,11 @@ import Header from "./Header/Header";
 import MainContent from "./MainContent";
 
 const MainLayout = () => {
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [showHeader, setShowHeader] = useState(true);
+  const [isTop, setIsTop] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const scrollRef = useRef(null);
   const location = useLocation();
-  const [lastScrollY, setLastScrollY] = useState(0);
 
   const isHomePage = location.pathname === "/";
 
@@ -17,45 +18,42 @@ const MainLayout = () => {
 
     const handleScroll = () => {
       const currentScrollY = scrollRef.current.scrollTop;
-      if (currentScrollY > lastScrollY) {
-        setIsHeaderVisible(false);
-      } else {
-        setIsHeaderVisible(true);
-      }
+      const atTop = currentScrollY === 0;
+      setIsTop(atTop);
+
+      // ✅ 특정 위치(예: 200px) 이상 내려갔을 때만 Header 보이게
+      setShowHeader(currentScrollY <= 50 || currentScrollY < lastScrollY);
+
       setLastScrollY(currentScrollY);
     };
 
-    scrollRef.current.addEventListener("scroll", handleScroll, { passive: true });
+    const scrollEl = scrollRef.current;
+    scrollEl.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
-      if (scrollRef.current) {
-        scrollRef.current.removeEventListener("scroll", handleScroll);
-      }
+      scrollEl.removeEventListener("scroll", handleScroll);
     };
   }, [isHomePage, lastScrollY]);
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
-      {/* ✅ 홈 페이지에서는 Header가 개별적으로 스크롤 관리하도록 변경 */}
-      {!isHomePage && <Header isVisible={isHeaderVisible} />}
+    <Box
+    ref={scrollRef}
+    sx={{
+      height: "100vh",
+      overflowY: isHomePage ? "unset" : "auto",
+      overflowX: "hidden",
+      display: "flex",
+      flexDirection: "column",
 
-      <Container
-        ref={scrollRef}
-        maxWidth={false}
-        disableGutters
-        sx={{
-          flex: 1,
-          overflowY: isHomePage ? "unset" : "auto", // ✅ HomePage에서는 자체 스크롤 관리
-          height: "calc(100vh - 80px)",
-          padding: 0,
-          margin: 0,
-          width: "100%",
-          marginTop: "80px"
-        }}
-      >
-        <MainContent />
-      </Container>
+    }}
+  >
+    {!isHomePage && <Header isVisible={showHeader} isTop={isTop} />}
+  
+    <Box sx={{  marginTop: isHomePage ? 0 : "80px", flexShrink: 0 }}>
+      <MainContent />
     </Box>
+  </Box>
+  
   );
 };
 

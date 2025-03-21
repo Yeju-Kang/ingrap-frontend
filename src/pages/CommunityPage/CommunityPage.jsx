@@ -96,9 +96,6 @@ const CommunityPage = () => {
     }
   }
 
-  console.log("topPost", topPost); // ✅ 데이터 확인
-  console.log("otherPosts", otherPosts); // ✅ 데이터 확인
-
   return (
     <Container maxWidth={false} sx={{ px: "24px", height: "calc(100vh - 80px)" }}>
       {topPost && otherPosts.length > 0 && (
