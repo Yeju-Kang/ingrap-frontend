@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Box, Grid, Typography, Avatar, IconButton } from "@mui/material";
+import { Box, Typography, Avatar, IconButton } from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
@@ -47,12 +47,12 @@ const FurnitureAds = () => {
   };
 
   return (
-    <Box sx={{ mt: 5, p: 2, backgroundColor: "#f8f9fa", borderRadius: "12px", position: "relative" }}>
+    <Box sx={{ mt: 5, p: 2, backgroundColor: "#f8f9fa", borderRadius: "12px", position: "relative", overflow: "hidden" }}>
       <Typography variant="h5" sx={{ fontWeight: "bold", mb: 3 }}>
         추천 가구 브랜드
       </Typography>
 
-      <Box sx={{ position: "relative", overflow: "hidden" }}>
+      <Box sx={{ position: "relative" }}>
         {/* 가구 목록 */}
         <Box
           ref={scrollRef}
@@ -110,12 +110,12 @@ const FurnitureAds = () => {
           ))}
         </Box>
 
-        {/* 좌우 이동 버튼 */}
+        {/* 좌우 이동 버튼 (컨테이너 밖으로 튀어나가지 않게 조정) */}
         <IconButton
           onClick={() => scroll("left")}
           sx={{
             position: "absolute",
-            left: 0,
+            left: "-12px", // ✅ 기존 `0px` → `-16px`로 수정하여 안 잘리게 조정
             top: "50%",
             transform: "translateY(-50%)",
             backgroundColor: "#fff",
@@ -125,13 +125,13 @@ const FurnitureAds = () => {
             display: furnitureItems.length > 3 ? "flex" : "none", // ✅ 가구 브랜드 개수에 따라 버튼 표시/숨김
           }}
         >
-          <ArrowBackIos fontSize="small" />
+          <ArrowBackIos fontSize="small"  sx={{ marginLeft: "-2px" }} />
         </IconButton>
         <IconButton
           onClick={() => scroll("right")}
           sx={{
             position: "absolute",
-            right: 0,
+            right: "-12px", // ✅ 기존 `0px` → `-16px`로 수정하여 안 잘리게 조정
             top: "50%",
             transform: "translateY(-50%)",
             backgroundColor: "#fff",

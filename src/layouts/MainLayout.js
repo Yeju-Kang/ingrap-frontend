@@ -35,8 +35,8 @@ const MainLayout = () => {
   }, [isHomePage, lastScrollY]);
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
-      {/* ✅ 홈 페이지에서는 Header가 개별적으로 스크롤 관리하도록 변경 */}
+    <Box sx={{ display: "flex", flexDirection: "column", height: "100vh", overflowY: isHomePage ? "hidden" : "auto" }}>
+      {/* ✅ HomePage가 아닐 때만 Header 표시 */}
       {!isHomePage && <Header isVisible={isHeaderVisible} />}
 
       <Container
@@ -45,12 +45,10 @@ const MainLayout = () => {
         disableGutters
         sx={{
           flex: 1,
-          overflowY: isHomePage ? "unset" : "auto", // ✅ HomePage에서는 자체 스크롤 관리
           height: "calc(100vh - 80px)",
-          padding: 0,
+          paddingTop: "80px", // ✅ Header 높이만큼 컨텐츠 위치 보정
           margin: 0,
           width: "100%",
-          marginTop: "80px"
         }}
       >
         <MainContent />
