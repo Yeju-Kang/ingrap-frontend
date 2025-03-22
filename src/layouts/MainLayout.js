@@ -5,10 +5,11 @@ import Header from "./Header/Header";
 import MainContent from "./MainContent";
 
 const MainLayout = () => {
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [showHeader, setShowHeader] = useState(true);
+  const [isTop, setIsTop] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const scrollRef = useRef(null);
   const location = useLocation();
-  const [lastScrollY, setLastScrollY] = useState(0);
 
   const isHomePage = location.pathname === "/";
 
@@ -17,20 +18,20 @@ const MainLayout = () => {
 
     const handleScroll = () => {
       const currentScrollY = scrollRef.current.scrollTop;
-      if (currentScrollY > lastScrollY) {
-        setIsHeaderVisible(false);
-      } else {
-        setIsHeaderVisible(true);
-      }
+      const atTop = currentScrollY === 0;
+      setIsTop(atTop);
+
+      // ✅ 특정 위치(예: 200px) 이상 내려갔을 때만 Header 보이게
+      setShowHeader(currentScrollY <= 50 || currentScrollY < lastScrollY);
+
       setLastScrollY(currentScrollY);
     };
 
-    scrollRef.current.addEventListener("scroll", handleScroll, { passive: true });
+    const scrollEl = scrollRef.current;
+    scrollEl.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
-      if (scrollRef.current) {
-        scrollRef.current.removeEventListener("scroll", handleScroll);
-      }
+      scrollEl.removeEventListener("scroll", handleScroll);
     };
   }, [isHomePage, lastScrollY]);
 
@@ -54,6 +55,8 @@ const MainLayout = () => {
         <MainContent />
       </Container>
     </Box>
+  </Box>
+  
   );
 };
 

@@ -7,9 +7,10 @@ import UserMenu from "./UserMenu";
 const Header = ({ isVisible, isTop }) => {
   const [isHovered, setIsHovered] = useState(false);
 
+  const shouldShow = isTop || isVisible || isHovered;
+
   return (
     <>
-      {/* ✅ 헤더 위에 마우스 감지 영역 추가 */}
       {!isTop && (
         <Box
           sx={{
@@ -17,32 +18,35 @@ const Header = ({ isVisible, isTop }) => {
             top: 0,
             left: 0,
             width: "100%",
-            height: "40px", // ✅ 마우스 감지 영역 높이
-            background: "transparent",
+            height: "40px", // 마우스 감지 영역
             zIndex: 999,
+            background: "transparent",
           }}
-          onMouseEnter={() => setIsHovered(true)} // ✅ 마우스 올리면 헤더 보이기
+          onMouseEnter={() => setIsHovered(true)}
         />
       )}
 
-      <Box
-        sx={{
-          position: "fixed",
-          top: isTop || isVisible || isHovered ? 0 : "-80px",
-          left: 0,
-          width: "100%",
-          height: "80px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "0 20px",
-          zIndex: 1000,
-          backgroundColor: "rgba(245, 245, 245, 0.9)",
-          transition: "top 0.3s ease-in-out",
-        }}
-        onMouseEnter={() => setIsHovered(true)} // ✅ 헤더에서 마우스 올리면 유지
-        onMouseLeave={() => setTimeout(() => setIsHovered(false), 500)} // ✅ 마우스 떼면 일정 시간 후 숨김
-      >
+<Box
+  sx={{
+    position: "fixed",
+    top: isTop ? 0 : (shouldShow ? 0 : "-80px"), // ✅ 최상단이면 무조건 top: 0
+    left: 0,
+    width: "100%",
+    height: "80px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "0 20px",
+    zIndex: 1000,
+    backgroundColor: "rgba(245, 245, 245, 0.9)",
+    transition: isTop ? "none" : "top 0.3s ease-in-out", // ✅ 최상단일 땐 transition 제거
+  }}
+  onMouseEnter={() => setIsHovered(true)}
+  onMouseLeave={() => setTimeout(() => setIsHovered(false), 500)}
+>
+
+
+
         <Logo />
         <NavMenu />
         <UserMenu />
@@ -50,5 +54,6 @@ const Header = ({ isVisible, isTop }) => {
     </>
   );
 };
+
 
 export default Header;
