@@ -1,4 +1,4 @@
-import apiClient from "./apiClient";
+import apiClient from "../../api/apiClient";
 
 // ✅ 회원가입 요청
 export const signupUser = async (userData) => {

@@ -1,11 +1,11 @@
 // ProjectPage.jsx (중복없이 완벽한 상태 선언)
 import React, { useState } from "react";
 import { Box } from "@mui/material";
-import Sidebar from "./Sidebar";
-import FilterPanel from "./FilterPanel";
-import ProductList from "./ProductList";
-import RoomArea from "./RoomArea";
-import FurnitureControls from "./FurnitureControls";
+import Sidebar from "../components/Sidebar";
+import FilterPanel from "../components/FilterPanel";
+import ProductList from "../components/ProductList";
+import RoomArea from "../components/RoomArea";
+import FurnitureControls from "../components/FurnitureControls";
 
 const ProjectPage = () => {
   const [furnitureList, setFurnitureList] = useState([]);

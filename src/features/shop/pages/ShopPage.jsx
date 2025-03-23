@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Box, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../../../pages/ShopPage/ShopCard";
-import HeroBanner from "../../../pages/ShopPage/HeroBanner"; // ✅ HeroBanner 추가
-import FilterBar from "../../../pages/ShopPage/FilterBar"; // ✅ 필터 컴포넌트 추가
+import HeroBanner from "../components/HeroBanner"; // ✅ HeroBanner 추가
+import FilterBar from "../components/FilterBar"; // ✅ 필터 컴포넌트 추가
 
 const products = [
   { id: 1, name: "우드 모던 테이블", price: 374000, image: "/assets/images/table1.avif", category: "테이블" },

@@ -1,9 +1,9 @@
 import React from "react";
 import { Card, CardMedia, Grid } from "@mui/material";
-import chair1 from "../../assets/images/chair1-1.png"
-import chair2 from "../../assets/images/chair1-2.glb"
-import bed1 from "../../assets/images/bed1-1.png"
-import bed2 from "../../assets/images/bed1-2.glb"
+import chair1 from "../../../assets/images/chair1-1.png"
+import chair2 from "../../../assets/images/chair1-2.glb"
+import bed1 from "../../../assets/images/bed1-1.png"
+import bed2 from "../../../assets/images/bed1-2.glb"
 
 
 const products = [

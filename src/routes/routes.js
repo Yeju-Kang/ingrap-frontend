@@ -1,15 +1,15 @@
-import ProjectPage from "../pages/ProjectPage/ProjectPage";
+import ProjectPage from "../features/project/pages/ProjectPage";
 import ProductDetailPage from "../pages/ShopPage/ProductDetailPage";
 import useTranslate from "../hooks/useTranslate"; // ✅ 번역 훅 가져오기
 import CartPage from "../features/cart/pages/CartPage";
 import ShopPage from "../features/shop/pages/ShopPage";
 import CommunityPage from "../features/community/pages/CommunityPage";
 import PostDetailPage from "../features/community/components/PostDetailPage";
-import SignUpPage from "../pages/SignUpPage/SignUpPage";
+import SignUpPage from "../features/auth/pages/SignUpPage";
 import LoginPage from "../features/auth/pages/LoginPage";
 import ProfilePage from "../features/user/pages/ProfilePage";
 import CheckoutPage from "../features/checkout/pages/CheckoutPage";
-import PaymentPage from "../pages/PaymentPage/PaymentPage";
+import PaymentPage from "../features/payment/pages/PaymentPage";
 
 
 // ✅ 커스텀 훅으로 변경

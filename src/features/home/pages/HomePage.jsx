@@ -4,10 +4,10 @@ import RoomSection from "../components/RoomSection";
 import TextScreen from "../components/TextScreen";
 import FooterSection from "../components/FooterSection";
 import Header from "../../../layouts/Header/Header"; // ✅ Header 직접 가져옴
-import backgroundImage1 from "../../assets/images/room1.jpg";
-import backgroundImage2 from "../../assets/images/room2.jpg";
-import backgroundImage3 from "../../assets/images/room3.jpg";
-import backgroundImage4 from "../../assets/images/room4.jpg";
+import backgroundImage1 from "../../../assets/images/room1.jpg";
+import backgroundImage2 from "../../../assets/images/room2.jpg";
+import backgroundImage3 from "../../../assets/images/room3.jpg";
+import backgroundImage4 from "../../../assets/images/room4.jpg";
 
 function HomePage() {
   const sections = ["room1", "blackScreen", "room2", "room3", "room4", "footer"];
