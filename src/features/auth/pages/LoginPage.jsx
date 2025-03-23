@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Box, Typography, Button, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector  } from "react-redux";
-import { loginSuccess } from "../../redux/authSlice";
-import Logo from '../../layouts/Header/Logo';
-import apiClient from '../../api/apiClient';
+import { loginSuccess } from "../../../store/authSlice";
+import Logo from '../../../layouts/Header/Logo';
+import apiClient from '../../../api/apiClient';
 
 const LoginPage = () => {
   const navigate = useNavigate();

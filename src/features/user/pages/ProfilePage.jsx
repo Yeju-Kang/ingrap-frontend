@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Box,  Divider, Tabs, Tab} from "@mui/material";
-import ProfileHeader from "./ProfileHeader";
-import EarningsStats from "./EarningsStats";
-import LinkedAccounts from "./LinkedAccounts"
-import PaymentMethods from "./PaymentMethods"
-import StatisticsCards from "./StatisticsCards"
+import ProfileHeader from "../../../pages/ProfilePage/ProfileHeader";
+import EarningsStats from "../../../pages/ProfilePage/EarningsStats";
+import LinkedAccounts from "../../../pages/ProfilePage/LinkedAccounts"
+import PaymentMethods from "../../../pages/ProfilePage/PaymentMethods"
+import StatisticsCards from "../../../pages/ProfilePage/StatisticsCards"
 
 
 const ProfilePage = () => {

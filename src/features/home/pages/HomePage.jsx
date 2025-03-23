@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Box } from "@mui/material";
-import RoomSection from "./RoomSection";
-import TextScreen from "./TextScreen";
-import FooterSection from "./FooterSection";
-import Header from "../../layouts/Header/Header"; // ✅ Header 직접 가져옴
+import RoomSection from "../components/RoomSection";
+import TextScreen from "../components/TextScreen";
+import FooterSection from "../components/FooterSection";
+import Header from "../../../layouts/Header/Header"; // ✅ Header 직접 가져옴
 import backgroundImage1 from "../../assets/images/room1.jpg";
 import backgroundImage2 from "../../assets/images/room2.jpg";
 import backgroundImage3 from "../../assets/images/room3.jpg";
@@ -19,7 +19,6 @@ function HomePage() {
   const [isTop, setIsTop] = useState(true);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
 
-  // ✅ 섹션 감지
   useEffect(() => {
     observerRef.current = new IntersectionObserver(
       (entries) => {
@@ -40,7 +39,6 @@ function HomePage() {
     return () => observerRef.current.disconnect();
   }, []);
 
-  // ✅ 스크롤 방향에 따라 헤더 숨김/보임 제어
   const lastScrollY = useRef(0);
   useEffect(() => {
     const handleScroll = () => {
@@ -62,7 +60,6 @@ function HomePage() {
 
   return (
     <>
-      {/* ✅ Header 항상 렌더링 */}
       <Header isVisible={isHeaderVisible} isTop={isTop} />
 
       <Box

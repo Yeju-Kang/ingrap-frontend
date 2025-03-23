@@ -11,8 +11,6 @@ const PaymentPage = () => {
                 결제가 완료되었습니다!
             </Typography>
             <Typography variant="h6">감사합니다. 주문이 성공적으로 완료되었습니다.</Typography>
-            
-            {/* 🔹 홈으로 이동 버튼 */}
             <Button 
                 variant="contained" 
                 sx={{ mt: 4, backgroundColor: "black", color: "white", fontSize: "18px", py: 1.5 }}

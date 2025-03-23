@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box } from "@mui/material";
-import CartList from "./CartList";
-import OrderSummary from "./OrderSummary";
+import CartList from "../components/CartList";
+import OrderSummary from "../components/OrderSummary";
 
 const initialCartItems = [
   { id: 1, name: "Fifa 19", platform: "PS4", price: 44.00, quantity: 2, image: "/fifa.jpg" },

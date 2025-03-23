@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setLanguage } from "../redux/languageSlice";
+import { setLanguage } from "../store/languageSlice";
 
 const useTranslate = () => {
   const dispatch = useDispatch();

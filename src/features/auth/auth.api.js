@@ -9,3 +9,11 @@ export const signupUser = async (userData) => {
 export const loginUser = async (loginData) => {
     return await apiClient.post("/users/login", loginData);
 };
+
+export const logoutUser = async () => {
+    return apiClient.post("/users/logout");
+  };
+
+  export const checkAuth = async () => {
+    return apiClient.get("/protected");
+  };

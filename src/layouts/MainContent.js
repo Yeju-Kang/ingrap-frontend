@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { useAllRoutes } from "../routes/routes"; // ✅ routes.js에서 가져오기
-import HomePage from "../pages/HomePage/HomePage";
+import HomePage from "../features/home/pages/HomePage";
 
 function MainContent() {
   const allRoutes = useAllRoutes();

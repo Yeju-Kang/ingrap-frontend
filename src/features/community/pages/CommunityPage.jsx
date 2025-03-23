@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, useMediaQuery } from "@mui/material";
-import TopRanking from "./TopRanking";
-import FurnitureAds from "./FurnitureAds";
+import TopRanking from "../components/TopRanking";
+import FurnitureAds from "../components/FurnitureAds";
 
 const CommunityPage = () => {
   const [posts, setPosts] = useState([
