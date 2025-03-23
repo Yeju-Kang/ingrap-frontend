@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import RoomSection from "./RoomSection";
 import TextScreen from "./TextScreen";
 import FooterSection from "./FooterSection";
+import Header from "../../layouts/Header/Header"; // ✅ Header 직접 가져옴
 import backgroundImage1 from "../../assets/images/room1.jpg";
 import backgroundImage2 from "../../assets/images/room2.jpg";
 import backgroundImage3 from "../../assets/images/room3.jpg";
@@ -11,9 +12,14 @@ import backgroundImage4 from "../../assets/images/room4.jpg";
 function HomePage() {
   const sections = ["room1", "blackScreen", "room2", "room3", "room4", "footer"];
   const sectionRefs = useRef([]);
-  const [currentSection, setCurrentSection] = useState(0);
   const observerRef = useRef(null);
+  const homeScrollRef = useRef(null);
 
+  const [currentSection, setCurrentSection] = useState(0);
+  const [isTop, setIsTop] = useState(true);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+
+  // ✅ 섹션 감지
   useEffect(() => {
     observerRef.current = new IntersectionObserver(
       (entries) => {
@@ -34,15 +40,39 @@ function HomePage() {
     return () => observerRef.current.disconnect();
   }, []);
 
+  // ✅ 스크롤 방향에 따라 헤더 숨김/보임 제어
+  const lastScrollY = useRef(0);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!homeScrollRef.current) return;
+
+      const currentScrollY = homeScrollRef.current.scrollTop;
+      const atTop = currentScrollY === 0;
+      setIsTop(atTop);
+
+      setIsHeaderVisible(currentScrollY <= 50 || currentScrollY < lastScrollY.current);
+      lastScrollY.current = currentScrollY;
+    };
+
+    const el = homeScrollRef.current;
+    el?.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => el?.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <>
-      {/* ✅ Header는 MainLayout에서 렌더링되지 않으므로 여기서 유지 */}
+      {/* ✅ Header 항상 렌더링 */}
+      <Header isVisible={isHeaderVisible} isTop={isTop} />
+
       <Box
+        ref={homeScrollRef}
         sx={{
           height: "100vh",
           overflowY: "scroll",
           scrollSnapType: "y mandatory",
           position: "relative",
+          scrollBehavior: "smooth",
         }}
       >
         {sections.map((section, index) => (

@@ -21,7 +21,7 @@ const MainLayout = () => {
       const atTop = currentScrollY === 0;
       setIsTop(atTop);
 
-      // ✅ 특정 위치(예: 200px) 이상 내려갔을 때만 Header 보이게
+      // 특정 위치 이하거나 위로 스크롤할 때 헤더 보여줌
       setShowHeader(currentScrollY <= 50 || currentScrollY < lastScrollY);
 
       setLastScrollY(currentScrollY);
@@ -36,18 +36,25 @@ const MainLayout = () => {
   }, [isHomePage, lastScrollY]);
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", height: "100vh", overflowY: isHomePage ? "hidden" : "auto" }}>
-      {/* ✅ HomePage가 아닐 때만 Header 표시 */}
-      {!isHomePage && <Header isVisible={isHeaderVisible} />}
+    <Box
+      ref={scrollRef}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+        overflowY: isHomePage ? "hidden" : "auto",
+        overflowX: "hidden",
+      }}
+    >
+      {/* 홈이 아닐 때만 헤더 렌더링 */}
+      {!isHomePage && <Header isVisible={showHeader} isTop={isTop} />}
 
       <Container
-        ref={scrollRef}
         maxWidth={false}
         disableGutters
         sx={{
           flex: 1,
-          height: "calc(100vh - 80px)",
-          paddingTop: "80px", // ✅ Header 높이만큼 컨텐츠 위치 보정
+          paddingTop: isHomePage ? 0 : "80px", // ✅ 홈이 아니면 헤더 높이만큼 padding
           margin: 0,
           width: "100%",
         }}
@@ -55,8 +62,6 @@ const MainLayout = () => {
         <MainContent />
       </Container>
     </Box>
-  </Box>
-  
   );
 };
 
