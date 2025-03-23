@@ -11,8 +11,14 @@ export const loginUser = async (loginData) => {
 };
 
 export const logoutUser = async () => {
-    return apiClient.post("/users/logout");
-  };
+  try {
+    const response = await apiClient.post("/users/logout");
+    return response.data; // 필요 시 응답 데이터 반환
+  } catch (error) {
+    console.error("로그아웃 실패", error);
+    throw error;
+  }
+};
 
   export const checkAuth = async () => {
     return apiClient.get("/protected");

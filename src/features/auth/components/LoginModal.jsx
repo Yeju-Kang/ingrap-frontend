@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Typography, Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import Logo from "../../layouts/Header/Logo";
+import Logo from "../../../layouts/Header/Logo";
 
 function LoginModal({ isOpen, onClose }) {
   const navigate = useNavigate();

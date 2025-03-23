@@ -1,10 +1,10 @@
 import ProjectPage from "../features/project/pages/ProjectPage";
-import ProductDetailPage from "../pages/ShopPage/ProductDetailPage";
+import ProductDetailPage from "../features/shop/pages/ProductDetailPage";
 import useTranslate from "../hooks/useTranslate"; // ✅ 번역 훅 가져오기
 import CartPage from "../features/cart/pages/CartPage";
 import ShopPage from "../features/shop/pages/ShopPage";
 import CommunityPage from "../features/community/pages/CommunityPage";
-import PostDetailPage from "../features/community/components/PostDetailPage";
+import PostDetailPage from "../features/community/pages/PostDetailPage";
 import SignUpPage from "../features/auth/pages/SignUpPage";
 import LoginPage from "../features/auth/pages/LoginPage";
 import ProfilePage from "../features/user/pages/ProfilePage";

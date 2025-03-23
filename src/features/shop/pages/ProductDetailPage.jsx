@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Box, CardMedia } from "@mui/material";
-import ThumbnailList from "./ThumbnailList";
-import ProductInfo from "./ProductInfo";
+import ThumbnailList from "../components/ThumbnailList";
+import ProductInfo from "../components/ProductInfo";
 
 const products = [
   { id: 1, name: "우드 모던 테이블", price: 374000, description: "고급스러운 원목 테이블.", image: "../../assets/images/room1.jpg", thumbnails: ["../../assets/images/room1.jpg", "../../assets/images/room1.jpg"] },

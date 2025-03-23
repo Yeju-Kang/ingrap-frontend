@@ -4,9 +4,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const storedUser = JSON.parse(localStorage.getItem("user"));
 
 const initialState = {
-    user: storedUser || null,  // ✅ 로그인 정보 유지
-    isAuthenticated: !!storedUser,  // ✅ 사용자 정보가 있으면 로그인 상태 유지
-    lastVisitedPage: sessionStorage.getItem("lastVisitedPage") || "/",  // ✅ 새로고침해도 유지
+    user: storedUser || null, // ✅ 로그인 정보 유지
+    isAuthenticated: !!storedUser, // ✅ 사용자 정보가 있으면 로그인 상태 유지
+    isAuthLoading: true, // ✅ 인증 체크 중 여부
+    lastVisitedPage: sessionStorage.getItem("lastVisitedPage") || "/", // ✅ 새로고침해도 유지
 };
 
 const authSlice = createSlice({
@@ -16,24 +17,30 @@ const authSlice = createSlice({
         loginSuccess: (state, action) => {
             state.user = action.payload;
             state.isAuthenticated = true;
-
-            // ✅ 로그인 성공 시 사용자 정보만 localStorage에 저장 (토큰 X)
-            localStorage.setItem("user", JSON.stringify(action.payload));
+            localStorage.setItem("user", JSON.stringify(action.payload)); // ✅ 로그인 정보 저장
         },
         logout: (state) => {
             state.user = null;
             state.isAuthenticated = false;
-            state.lastVisitedPage = "/";  // ✅ 로그아웃 시 초기화
-
-            localStorage.removeItem("user");  // ✅ 로컬스토리지에서 사용자 정보 삭제
-            sessionStorage.removeItem("lastVisitedPage");  // ✅ 방문 페이지 정보 삭제
+            state.lastVisitedPage = "/";
+            localStorage.removeItem("user");
+            sessionStorage.removeItem("lastVisitedPage");
         },
         saveLastVisitedPage: (state, action) => {
-            state.lastVisitedPage = action.payload;  // ✅ Redux 상태 업데이트
-            sessionStorage.setItem("lastVisitedPage", action.payload);  // ✅ 세션스토리지에도 저장
+            state.lastVisitedPage = action.payload;
+            sessionStorage.setItem("lastVisitedPage", action.payload);
+        },
+        setAuthLoading: (state, action) => {
+            state.isAuthLoading = action.payload;
         },
     },
 });
 
-export const { loginSuccess, logout, saveLastVisitedPage } = authSlice.actions;
+export const {
+    loginSuccess,
+    logout,
+    saveLastVisitedPage,
+    setAuthLoading, // ✅ export 추가
+} = authSlice.actions;
+
 export default authSlice.reducer;

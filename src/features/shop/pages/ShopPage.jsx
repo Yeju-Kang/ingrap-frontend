@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import ProductCard from "../../../pages/ShopPage/ShopCard";
+import ProductCard from "../components/ShopCard";
 import HeroBanner from "../components/HeroBanner"; // ✅ HeroBanner 추가
 import FilterBar from "../components/FilterBar"; // ✅ 필터 컴포넌트 추가
 
