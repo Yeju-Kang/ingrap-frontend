@@ -9,6 +9,8 @@ const products = [
   { id: 1, name: "우드 모던 테이블", price: 374000, image: "/assets/images/table1.avif", category: "테이블" },
   { id: 2, name: "빈티지 우드 테이블", price: 473000, image: "/assets/images/room1.jpg", category: "테이블" },
   { id: 3, name: "화이트 오크 테이블", price: 407000, image: "/assets/images/room2.jpg", category: "테이블" },
+  { id: 3, name: "화이트 오크 테이블", price: 407000, image: "/assets/images/room2.jpg", category: "테이블" },
+  { id: 3, name: "화이트 오크 테이블", price: 407000, image: "/assets/images/room2.jpg", category: "테이블" },
 ];
 
 const ShopPage = () => {
