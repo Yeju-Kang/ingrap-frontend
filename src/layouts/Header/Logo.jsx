@@ -1,7 +1,7 @@
 import React from "react"
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/images/image2.png";
+import imageMap from "../../assets/imageMap";
 
 function Logo() {
     const navigate = useNavigate();
@@ -10,7 +10,7 @@ function Logo() {
         <Box sx={{ display: "flex", justifyContent: "center", flex: 0 }}>
 <Box
 component="img"
-src={logo}
+src={imageMap.logo.l}
 sx={{
   height: "40px",
   width: "auto",

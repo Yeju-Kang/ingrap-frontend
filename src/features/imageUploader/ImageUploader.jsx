@@ -24,7 +24,7 @@ const ImageUploader = () => {
 
     const extension = file.name.split(".").pop();
     const baseName = file.name.split(".")[0];
-    const fileName = `${uploadType}/${baseName}-${Date.now()}.${extension}`;
+    const fileName = `${uploadType}/${baseName}.${extension}`;
 
     try {
       const presignedUrl = await getPresignedUrl(fileName);

@@ -34,7 +34,7 @@ const ShopPage = () => {
           {filteredProducts.map((product) => (
             <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
               <ProductCard product={product} onClick={() => navigate(`/shop/${product.id}`)} />
-            </Grid>
+            </Grid> 
           ))}
         </Grid>
       </Box>
