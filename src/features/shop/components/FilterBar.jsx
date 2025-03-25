@@ -9,8 +9,8 @@ const categories = [
   { name: "주방", image: imageMap.section.shop.kitchen },
   { name: "욕실", image: imageMap.section.shop.bathroom},
   { name: "테라스", image: imageMap.section.shop.terrace },
-  { name: "야외", image:imageMap.section.shop.lighting},
-  { name: "조명", image:imageMap.section.shop.outdoor },
+  { name: "야외", image:imageMap.section.shop.outdoor},
+  { name: "조명", image:imageMap.section.shop.lighting },
   { name: "상가", image: imageMap.section.shop.store},
 ];
 
