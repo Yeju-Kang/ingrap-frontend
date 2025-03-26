@@ -22,20 +22,20 @@ const TextScreen = ({ isActive }) => {
 
   return (
     <Box
-      sx={{
-        width: "100%",
-        height: "100vh",
-        backgroundColor: "var(--background-color",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "var(--primary-color",
-        fontSize: "3rem",
-        fontWeight: "bold",
-      }}
-    >
-      {text}
-    </Box>
+    sx={{
+      width: "100%",
+      height: "100vh",
+      backgroundColor: "var(--background-color)", // ✅ 괄호 닫음
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      color: "var(--primary-color)",             // ✅ 괄호 닫음
+      fontSize: "3rem",
+      fontWeight: "bold",
+    }}
+  >
+    {text}
+  </Box>
   );
 };
 
