@@ -1,49 +1,32 @@
 import React from "react";
-import { Box, Card, CardMedia, CardContent, Typography } from "@mui/material";
+import { Card, CardMedia, CardContent, Typography } from "@mui/material";
 
-const SpaceCard = ({ space, onClick }) => {
-  // 날짜 포맷 예: 2024.03.26
-  const formattedDate = new Date(space.savedAt).toLocaleDateString("ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
-
+const ShopCard = ({ product, onClick }) => {
   return (
     <Card
-      onClick={onClick}
       sx={{
-        width: "240px",
-        height: "360px",
-        backgroundColor: "#F9F8F6",
-        border: "1px solid #CFCFCF",
-        borderRadius: "12px",
+        width: "280px", // ✅ 고정 크기
         cursor: "pointer",
-        boxShadow: "0 2px 6px rgba(0,0,0,0.06)",
-        display: "flex",
-        flexDirection: "column",
-        overflow: "hidden",
+        flexShrink: 0,
       }}
+      onClick={onClick}
     >
-      {/* 이미지 영역 */}
       <CardMedia
         component="img"
         height="200"
-        image={space.image}
-        alt={space.name}
+        image={product.image}
+        alt={product.name}
       />
-
-      {/* 텍스트 영역 */}
-      <CardContent sx={{ flexGrow: 1 }}>
-        <Typography variant="subtitle1" fontWeight="600" color="#222">
-          {space.name}
+      <CardContent>
+        <Typography variant="subtitle1" fontWeight="bold">
+          {product.name}
         </Typography>
-        <Typography variant="body2" color="text.secondary" mt={0.5}>
-          저장일: {formattedDate}
+        <Typography variant="body2" color="text.secondary">
+          ₩ {product.price.toLocaleString()}
         </Typography>
       </CardContent>
     </Card>
   );
 };
 
-export default SpaceCard;
+export default ShopCard;

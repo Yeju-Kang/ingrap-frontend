@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Card, CardMedia, CardContent, Typography } from "@mui/material";
 
 const SpaceCard = ({ space, onClick }) => {
-  const formattedDate = new Date(space.savedAt).toLocaleDateString("ko-KR", {
+  const formattedDate = new Date(space?.savedAt ?? "").toLocaleDateString("ko-KR", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
