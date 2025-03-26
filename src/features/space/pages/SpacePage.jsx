@@ -17,7 +17,7 @@ const SpacePage = () => {
   return (
     <Box sx={{ px: 4, py: 4,  pt: 1 }}>
     <Box display="flex" alignItems="center" gap={1} mb={2} >
-  <HomeRounded sx={{ color: "var(--primary-color)", fontSize: "2.6rem" }} />
+  <HomeRounded sx={{ color: "var(--primary-color)", fontSize: "2.8rem" }} />
   <Box
     sx={{
       display: "flex",

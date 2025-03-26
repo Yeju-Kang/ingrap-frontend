@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, useMediaQuery } from "@mui/material";
+import { Container, useMediaQuery, Box} from "@mui/material";
 import TopRanking from "../components/TopRanking";
 import FurnitureAds from "../components/FurnitureAds";
 
@@ -97,18 +97,32 @@ const CommunityPage = () => {
   }
 
   return (
-    <Container maxWidth={false} sx={{ px: "24px", height: "calc(100vh - 80px)" }}>
-      {topPost && otherPosts.length > 0 && (
-        <TopRanking
-          topPost={topPost}
-          otherPosts={otherPosts}
-          otherCardGridSize={otherCardGridSize}
-          isSmallScreen={isSmallScreen}
-          key="top-ranking"
-        />
-      )}
-      <FurnitureAds />
-    </Container>
+    <>
+    <Box
+    sx={{
+      width: "100%",
+      height: "50px",
+      border: "1px solid #ddd",
+      display: "flex",
+      alignItems: "center",
+      px: 2,
+    }}
+  >
+   
+    </Box>
+     <Container maxWidth={false} sx={{ px: "24px", height: "calc(100vh - 130px)", paddingTop: "10px" }}>
+     {topPost && otherPosts.length > 0 && (
+       <TopRanking
+         topPost={topPost}
+         otherPosts={otherPosts}
+         otherCardGridSize={otherCardGridSize}
+         isSmallScreen={isSmallScreen}
+         key="top-ranking"
+       />
+     )}
+     <FurnitureAds />
+   </Container>
+   </>
   );
 };
 
