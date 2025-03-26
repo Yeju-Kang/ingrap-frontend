@@ -14,7 +14,11 @@ const ko = {
       title: "Shop"
     },
     space: {
-      title: "Space"
+      title: "Space",
+      modal: {
+        createPromptTitle: "공간을 만들 준비가 되셨나요?",
+        createPromptDescription: "공간의 중심에서 1분간, 천천히 360° 회전하며 3회 이상 촬영해주세요.",
+      }
     },
     cart: {
       title: "장바구니"

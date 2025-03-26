@@ -20,8 +20,8 @@ const useTranslate = () => {
 
   const toggleLanguage = () => {
     const newLanguage = language === "ko" ? "en" : "ko";
-    localStorage.setItem("language", newLanguage); // ✅ localStorage에 저장
-    dispatch(setLanguage(newLanguage)); // ✅ Redux 상태 업데이트
+    localStorage.setItem("language", newLanguage);
+    dispatch(setLanguage(newLanguage)); 
   };
 
   return { translate, language, toggleLanguage };

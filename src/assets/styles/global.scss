@@ -6,7 +6,6 @@
   font-weight: 400;
   font-style: normal;
 }
-
 * {
   box-sizing: border-box;
   background: none; /* 불필요한 배경 제거 */
@@ -44,7 +43,7 @@ html, body {
 /* ✅ MUI 컴포넌트 폰트 강제 적용 */
 .MuiTypography-root, 
 .MuiButton-root {
-  font-family: 'MarinesBold', 'Roboto', 'Helvetica', 'Arial', sans-serif !important;
+  font-family: 'Pretendard-Regular', 'Roboto', 'Helvetica', 'Arial', sans-serif !important;
 }
 
 // ✨ 스크롤바 스타일 (선택 사항)

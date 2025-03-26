@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Card, CardMedia, CardContent, Typography } from "@mui/material";
+import {  Card, CardMedia, CardContent, Typography } from "@mui/material";
 
 const SpaceCard = ({ space, onClick }) => {
   const formattedDate = new Date(space?.savedAt ?? "").toLocaleDateString("ko-KR", {

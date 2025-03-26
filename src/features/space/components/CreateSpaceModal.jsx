@@ -1,7 +1,9 @@
 import React from "react";
 import { Modal, Box, Typography, Button } from "@mui/material";
+import useTranslate from "../../../hooks/useTranslate";
 
 const CreateSpaceModal = ({ open, onClose }) => {
+      const {translate} = useTranslate();
   return (
     <Modal open={open} onClose={onClose}>
       <Box
@@ -19,10 +21,10 @@ const CreateSpaceModal = ({ open, onClose }) => {
           }}
       >
         <Typography variant="h6" fontWeight="bold" mb={2}>
-          공간을 만들 준비가 되셨나요?
+          {translate("space.modal.createPromptTitle")}
         </Typography>
         <Typography variant="body2" color="text.secondary" mb={3}>
-        공간의 중심에 1분간, 천천히 360° 회전하며 3회 이상 촬영해주세요.
+        {translate("space.modal.createPromptDescription")}
         </Typography>
           {/* ✅ QR 이미지 영역 */}
           <Box sx={{ mb: 3 }}>
@@ -37,7 +39,7 @@ const CreateSpaceModal = ({ open, onClose }) => {
           sx={{ backgroundColor: "var(--primary-color)" }}
           onClick={onClose}
         >
-          닫기
+         {translate("common.close")}
         </Button>
       </Box>
     </Modal>
