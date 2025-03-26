@@ -13,8 +13,8 @@ const ko = {
     shop: {
       title: "Shop"
     },
-    project: {
-      title: "Project"
+    space: {
+      title: "Space"
     },
     cart: {
       title: "장바구니"

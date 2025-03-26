@@ -2,7 +2,6 @@ import React from "react";
 import { Box, Card, CardMedia, CardContent, Typography } from "@mui/material";
 
 const SpaceCard = ({ space, onClick }) => {
-  // 날짜 포맷 예: 2024.03.26
   const formattedDate = new Date(space.savedAt).toLocaleDateString("ko-KR", {
     year: "numeric",
     month: "2-digit",
@@ -13,8 +12,8 @@ const SpaceCard = ({ space, onClick }) => {
     <Card
       onClick={onClick}
       sx={{
-        width: "240px",
-        height: "360px",
+        width: "400px",
+        height: "500px",
         backgroundColor: "#F9F8F6",
         border: "1px solid #CFCFCF",
         borderRadius: "12px",
@@ -25,21 +24,28 @@ const SpaceCard = ({ space, onClick }) => {
         overflow: "hidden",
       }}
     >
-      {/* 이미지 영역 */}
       <CardMedia
-        component="img"
-        height="200"
-        image={space.image}
-        alt={space.name}
-      />
-
-      {/* 텍스트 영역 */}
-      <CardContent sx={{ flexGrow: 1 }}>
+  component="img"
+  image={space.image}
+  alt={space.name}
+  sx={{
+    width: "100%",
+    height: "400px",
+    objectFit: "cover", 
+  }}
+/>
+      <CardContent sx={{
+      height: "100px",  
+      boxSizing: "border-box",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+    }}>
         <Typography variant="subtitle1" fontWeight="600" color="#222">
           {space.name}
         </Typography>
         <Typography variant="body2" color="text.secondary" mt={0.5}>
-          저장일: {formattedDate}
+           {formattedDate}
         </Typography>
       </CardContent>
     </Card>
