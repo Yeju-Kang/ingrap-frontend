@@ -29,7 +29,8 @@ const HeroBanner = () => {
         <Typography variant="body1" sx={{ mt: 1 }}>
           창조성과 가정에 어우러진 프리미엄 가구
         </Typography>
-        <Button variant="contained" color="primary" sx={{ mt: 3 }}>
+        <Button variant="contained" sx={{ mt: 3,  backgroundColor: "var(--primary-color)",
+    color: "#fff"}}>
           자세히 보기
         </Button>
       </Box>

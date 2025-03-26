@@ -4,9 +4,10 @@ import { useNavigate } from "react-router-dom";
 import ProductCard from "../components/ShopCard";
 import HeroBanner from "../components/HeroBanner";
 import FilterBar from "../components/FilterBar";
+import imageMap from "../../../assets/imageMap";
 
 const products = [
-  { id: 1, name: "우드 모던 테이블", price: 374000, image: "/assets/images/table1.avif", category: "테이블" },
+  { id: 1, name: "우드 모던 테이블", price: 374000, image: imageMap.section.home.room1, category: "테이블" },
   { id: 2, name: "빈티지 우드 테이블", price: 473000, image: "/assets/images/room1.jpg", category: "테이블" },
   { id: 3, name: "화이트 오크 테이블", price: 407000, image: "/assets/images/room2.jpg", category: "테이블" },
   { id: 4, name: "다크 우드 테이블", price: 450000, image: "/assets/images/room2.jpg", category: "테이블" },
