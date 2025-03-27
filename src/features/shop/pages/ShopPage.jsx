@@ -6,6 +6,9 @@ import HeroBanner from "../components/HeroBanner";
 import FilterBar from "../components/FilterBar";
 import imageMap from "../../../assets/imageMap";
 
+const CARD_WIDTH = 280; 
+const GAP = 24;
+
 const products = [
   { id: 1, name: "우드 모던 테이블", price: 374000, image: imageMap.section.home.room1, category: "테이블" },
   { id: 2, name: "빈티지 우드 테이블", price: 473000, image: "/assets/images/room1.jpg", category: "테이블" },
@@ -30,21 +33,15 @@ const ShopPage = () => {
         setSelectedCategory={setSelectedCategory}
       />
 
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          py: 4,
-        }}
-      >
+   <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
         <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "24px", // 카드 사이 간격
-            px: "120px", // 양끝 여백 고정
-            maxWidth: "1600px",
-            justifyContent: "flex-start",
+            sx={{
+              display: "grid",
+              gridTemplateColumns: `repeat(auto-fill, ${CARD_WIDTH}px)`,
+              gap: `${GAP}px`,
+              justifyContent: "center", 
+              width: "100%",
+              maxWidth: `calc(${CARD_WIDTH * 4 + GAP * 3}px)`, 
           }}
         >
           {filteredProducts.map((product) => (

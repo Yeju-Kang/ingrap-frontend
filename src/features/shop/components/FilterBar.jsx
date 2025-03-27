@@ -16,8 +16,6 @@ const categories = [
 
 
 const FilterBar = ({ selectedCategory, setSelectedCategory }) => {
-  console.log('selectedCategory ', selectedCategory )
-
   return (
     <Box display="flex" justifyContent="center" p={2} sx={{ overflowX: "auto", whiteSpace: "nowrap" }}>
       {categories.map((category) => (
@@ -27,7 +25,7 @@ const FilterBar = ({ selectedCategory, setSelectedCategory }) => {
         sx={{
           cursor: "pointer",
           textAlign: "center",
-          mx: 1,
+          mx: 2.5,
           opacity:
             isEmpty(selectedCategory) || selectedCategory === category.name
               ? 1
@@ -53,7 +51,7 @@ const FilterBar = ({ selectedCategory, setSelectedCategory }) => {
           sx={{
             mt: 1,
             fontSize: "0.75rem",
-            color: "#4e4e4e", // 예주 사이트 텍스트 컬러
+            color: "#4e4e4e",
           }}
         >
           {category.name}
