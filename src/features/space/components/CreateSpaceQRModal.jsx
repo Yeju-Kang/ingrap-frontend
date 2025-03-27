@@ -9,10 +9,10 @@ const CreateSpaceQRModal = ({ open, onClose, uploadUrl }) => {
   return (
     <ModalTemplate open={open} onClose={onClose}>
       <Typography variant="h6" fontWeight="bold" mb={2}>
-        {translate("space.modal.createPromptTitle")}
+        {translate("space.modal.createQRTitle")}
       </Typography>
       <Typography variant="body2" color="text.secondary" mb={3}>
-        {translate("space.modal.createPromptDescription")}
+        {translate("space.modal.createQRDescription")}
       </Typography>
       <Box sx={{ mb: 3 }}>
         <img

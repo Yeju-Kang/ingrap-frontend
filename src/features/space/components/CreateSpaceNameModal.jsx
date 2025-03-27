@@ -3,10 +3,12 @@ import { Typography, Button } from "@mui/material";
 import ModalTemplate from "../../../components/Modal/ModalTemplate";
 import ValidatableTextField from "../../../components/TextField/ValidatableTextField";
 import { isValidName } from "../../../utils/validation/name";
+import useTranslate from "../../../hooks/useTranslate";
 
 const CreateSpaceNameModal = ({ open, onClose, onNext }) => {
   const [spaceName, setSpaceName] = useState("");
   const [hasError, setHasError] = useState(true); // 에러 있으면 true
+  const { translate } = useTranslate();
 
   const handleNext = () => {
     if (!spaceName.trim() || hasError) return;
@@ -16,10 +18,10 @@ const CreateSpaceNameModal = ({ open, onClose, onNext }) => {
   return (
     <ModalTemplate open={open} onClose={onClose}>
       <Typography variant="h6" fontWeight="bold" mb={1.5}>
-      공간을 만들 준비가 되셨나요?
+      {translate("space.modal.createNameTitle")}
 </Typography>
 <Typography variant="body2" color="text.secondary" mb={2}>
-이름을 붙이는 순간, 공간이 시작됩니다
+{translate("space.modal.createNameDescription")}
 </Typography>
 <ValidatableTextField
   label="공간 이름"
