@@ -6,9 +6,10 @@ import { isValidName } from "../../../utils/validation/name";
 
 const CreateSpaceNameModal = ({ open, onClose, onNext }) => {
   const [spaceName, setSpaceName] = useState("");
+  const [hasError, setHasError] = useState(true); // 에러 있으면 true
 
   const handleNext = () => {
-    if (!spaceName.trim()) return;
+    if (!spaceName.trim() || hasError) return;
     onNext(spaceName);
   };
 
@@ -25,16 +26,17 @@ const CreateSpaceNameModal = ({ open, onClose, onNext }) => {
   value={spaceName}
   onChange={setSpaceName}
   validator={isValidName}
+  onErrorChange={setHasError}
 />
 
-      <Button
-        variant="contained"
-        sx={{ backgroundColor: "var(--primary-color)", mr: 1 }}
-        onClick={handleNext}
-        disabled={!spaceName.trim()}
-      >
-        다음
-      </Button>
+<Button
+  variant="contained"
+  sx={{ backgroundColor: "var(--primary-color)", mr: 1 }}
+  onClick={handleNext}
+  disabled={!spaceName.trim() || hasError} // ✅ 에러까지 고려!
+>
+  다음
+</Button>
       <Button
   variant="text"
   onClick={onClose}
