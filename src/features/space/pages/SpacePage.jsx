@@ -3,11 +3,14 @@ import { Box, Typography } from "@mui/material";
 import SpaceCard from "../components/SpaceCard";
 import CreateSpaceCard from "../components/CreateSpaceCard";
 import imageMap from "../../../assets/imageMap";
+import useTranslate from "../../../hooks/useTranslate";
+
 
 const CARD_WIDTH = 400; 
 const GAP = 24;
 
 const SpacePage = () => {
+    const { translate } = useTranslate();
   const MAX_CARDS = 4;
 
   const spaceList = [
@@ -33,7 +36,7 @@ const SpacePage = () => {
               textAlign: "center",
             }}
           >
-            나의 공간들
+          {translate("space.description")}
           </Typography>
           <Box
             sx={{

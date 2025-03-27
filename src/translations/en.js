@@ -4,6 +4,7 @@ const en = {
       close: "Close",
       save: "Save",
       cancel: "Cancel",
+      next: "다음",
     },
     login: {
       title: '로그인'
@@ -15,6 +16,8 @@ const en = {
       },
     space: {
         title: "Space",
+        description: "나의 공간들",
+        name: "공간 이름",
         modal: {
           createQRTitle: "이제 장면을 담아볼까요?",
         createQRDescription: "공간의 중심에서 1분간, 천천히 360° 회전하며 3회 이상 촬영해주세요.",

@@ -11,6 +11,7 @@ import ProfilePage from "../features/user/pages/ProfilePage";
 import CheckoutPage from "../features/checkout/pages/CheckoutPage";
 import PaymentPage from "../features/payment/pages/PaymentPage";
 import DevToolsPage from "../features/devTools/pages/DevToolsPage";
+import EmptyPage from "../features/space/pages/EmptyPage";
 
 
 // ✅ 커스텀 훅으로 변경
@@ -31,6 +32,8 @@ export const useAllRoutes = (isAuthenticated) => {
     { path: "/profile", element: <ProfilePage />, label: null },
     { path: "/payment", element: <PaymentPage />, label: null },
     { path: "/dev/tools", element: <DevToolsPage />, label: null },
+    { path: "/empty", element: <EmptyPage />, label: null },
+
 
   ];
 };

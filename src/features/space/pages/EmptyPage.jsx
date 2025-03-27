@@ -7,7 +7,7 @@ import ProductList from "../components/ProductList";
 import RoomArea from "../components/RoomArea";
 import FurnitureControls from "../components/FurnitureControls";
 
-const SpacePage = () => {
+const EmptyPage = () => {
   const [furnitureList, setFurnitureList] = useState([]);
   const [selectedFurniture, setSelectedFurniture] = useState(null);
   const [weather, setWeather] = useState("sunny");
@@ -85,4 +85,4 @@ const SpacePage = () => {
   );
 };
 
-export default SpacePage;
+export default EmptyPage;

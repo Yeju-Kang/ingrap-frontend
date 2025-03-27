@@ -24,7 +24,7 @@ const CreateSpaceNameModal = ({ open, onClose, onNext }) => {
 {translate("space.modal.createNameDescription")}
 </Typography>
 <ValidatableTextField
-  label="공간 이름"
+  label={translate("space.name")}
   value={spaceName}
   onChange={setSpaceName}
   validator={isValidName}
@@ -35,9 +35,9 @@ const CreateSpaceNameModal = ({ open, onClose, onNext }) => {
   variant="contained"
   sx={{ backgroundColor: "var(--primary-color)", mr: 1 }}
   onClick={handleNext}
-  disabled={!spaceName.trim() || hasError} // ✅ 에러까지 고려!
+  disabled={!spaceName.trim() || hasError}
 >
-  다음
+{translate("common.next")}
 </Button>
       <Button
   variant="text"
@@ -48,12 +48,12 @@ const CreateSpaceNameModal = ({ open, onClose, onNext }) => {
     border: '1px solid var(--primary-color)',
     '&:hover': {
       backgroundColor: 'var(--primary-color)',
-      color: 'var(--white-color)', // hover 시 텍스트 흰색으로 바꿔주면 더 잘 보여
+      color: 'var(--white-color)'
     },
     }
   }
 >
-  닫기
+{translate("common.close")}
 </Button>
     </ModalTemplate>
   );
