@@ -16,10 +16,10 @@ const CreateSpaceNameModal = ({ open, onClose, onNext }) => {
   return (
     <ModalTemplate open={open} onClose={onClose}>
       <Typography variant="h6" fontWeight="bold" mb={1.5}>
-  새로운 공간의 이름을 정해주세요
+      공간을 만들 준비가 되셨나요?
 </Typography>
 <Typography variant="body2" color="text.secondary" mb={2}>
-당신의 영상이 이곳에서 3D 공간으로 피어납니다.
+이름을 붙이는 순간, 공간이 시작됩니다
 </Typography>
 <ValidatableTextField
   label="공간 이름"
