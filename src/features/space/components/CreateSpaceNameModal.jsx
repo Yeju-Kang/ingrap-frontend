@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { Typography, Button, TextField } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import ModalTemplate from "../../../components/Modal/ModalTemplate";
+import ValidatableTextField from "../../../components/TextField/ValidatableTextField";
+import { isValidName } from "../../../utils/validation/name";
 
 const CreateSpaceNameModal = ({ open, onClose, onNext }) => {
   const [spaceName, setSpaceName] = useState("");
@@ -18,14 +20,12 @@ const CreateSpaceNameModal = ({ open, onClose, onNext }) => {
 <Typography variant="body2" color="text.secondary" mb={2}>
 당신의 영상이 이곳에서 3D 공간으로 피어납니다.
 </Typography>
-
-      <TextField
-        label="공간 이름"
-        value={spaceName}
-        onChange={(e) => setSpaceName(e.target.value)}
-        fullWidth
-        sx={{ mb: 3 }}
-      />
+<ValidatableTextField
+  label="공간 이름"
+  value={spaceName}
+  onChange={setSpaceName}
+  validator={isValidName}
+/>
 
       <Button
         variant="contained"
@@ -35,9 +35,22 @@ const CreateSpaceNameModal = ({ open, onClose, onNext }) => {
       >
         다음
       </Button>
-      <Button variant="text" onClick={onClose}>
-        닫기
-      </Button>
+      <Button
+  variant="text"
+  onClick={onClose}
+  sx={{
+    backgroundColor: 'var(--white-color)',
+    color: 'var(--text-color)',
+    border: '1px solid var(--primary-color)',
+    '&:hover': {
+      backgroundColor: 'var(--primary-color)',
+      color: 'var(--white-color)', // hover 시 텍스트 흰색으로 바꿔주면 더 잘 보여
+    },
+    }
+  }
+>
+  닫기
+</Button>
     </ModalTemplate>
   );
 };

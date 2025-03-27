@@ -8,14 +8,12 @@ function LoginModal({ isOpen, onClose }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  if (!isOpen) return null; // ✅ 모달이 닫혀 있으면 렌더링하지 않음
+  if (!isOpen) return null; 
 
-  // ✅ 로그인 버튼 클릭 시 콘솔 출력 (추후 로그인 API 연결 가능)
   const handleLogin = () => {
     console.log("📝 로그인 시도:", { username, password });
   };
 
-  // ✅ 엔터 키 입력 시 로그인 실행
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       handleLogin();
@@ -24,7 +22,6 @@ function LoginModal({ isOpen, onClose }) {
 
   return (
     <Box>
-      {/* ✅ 어두운 배경 오버레이 */}
       <Box
         onClick={onClose} // ✅ 배경 클릭 시 닫힘
         sx={{
@@ -38,7 +35,6 @@ function LoginModal({ isOpen, onClose }) {
         }}
       />
 
-      {/* ✅ 로그인 모달 창 */}
       <Box
         sx={{
           position: "fixed",
@@ -58,7 +54,6 @@ function LoginModal({ isOpen, onClose }) {
           <Logo />
         </Box>
 
-        {/* ✅ 아이디 입력 필드 */}
         <TextField
           label="아이디"
           variant="outlined"
@@ -70,7 +65,6 @@ function LoginModal({ isOpen, onClose }) {
           sx={{ marginBottom: "12px" }}
         />
 
-        {/* ✅ 비밀번호 입력 필드 */}
         <TextField
           label="비밀번호"
           variant="outlined"
@@ -129,20 +123,18 @@ function LoginModal({ isOpen, onClose }) {
           ✖
         </Button>
 
-        {/* ✅ 회원가입 버튼 → 클릭 시 모달 닫고 회원가입 페이지 이동 */}
         <Button
           fullWidth
           sx={{
             backgroundColor: "white",
-            color: "black",
+            color: "var(--text-color)",
             fontWeight: "bold",
             padding: "10px",
             marginTop: "10px",
             border: "1px solid var(--primary-color)",
           }}
           onClick={() => {
-            onClose(); // ✅ 로그인 모달 닫기
-            navigate("/signup"); // ✅ 회원가입 페이지 이동
+            navigate("/signup"); 
           }}
         >
           회원가입

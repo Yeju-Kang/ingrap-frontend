@@ -7,12 +7,11 @@ const SignUpPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [formData, setFormData] = useState({
-    username: '',  // ✅ 이름 (백엔드에서 `username` 사용)
-    email: '',     // ✅ 아이디 → 이메일로 변경
+    username: '',  
+    email: '',    
     password: '',
   });
 
-  // 이전 경로 정보 확인
   const from = location.state?.from || '/';
 
   const handleChange = (e) => {
@@ -24,11 +23,10 @@ const SignUpPage = () => {
     console.log('회원가입 정보:', formData);
 
     try {
-      const response = await signupUser(formData);  // ✅ 회원가입 API 요청
+      const response = await signupUser(formData); 
       alert("회원가입 성공!");
       console.log("회원가입 응답:", response.data);
       
-      // 회원가입 성공 시 로그인 페이지로 이동하며 이전 경로 정보 전달
       navigate('/login', { state: { from } });
     } catch (error) {
       alert("회원가입 실패! 다시 시도해주세요.");
@@ -64,7 +62,7 @@ const SignUpPage = () => {
         <form onSubmit={handleSubmit}>
           <TextField
             label="이름"
-            name="username"  // ✅ 백엔드에서 `username` 사용
+            name="username"
             variant="outlined"
             fullWidth
             required
@@ -75,7 +73,7 @@ const SignUpPage = () => {
 
           <TextField
             label="이메일"
-            name="email"  // ✅ 아이디 → 이메일로 변경
+            name="email" 
             type="email"
             variant="outlined"
             fullWidth
@@ -103,11 +101,11 @@ const SignUpPage = () => {
             variant="contained"
             fullWidth
             sx={{
-              backgroundColor: "black",
+              backgroundColor: " var(--primary-color)",
               color: "white", 
               fontWeight: "bold",
               padding: "10px",
-              "&:hover": { backgroundColor: "#333" },
+              "&:hover": { backgroundColor: "var(--primary-color)" },
             }}
           >
             가입하기

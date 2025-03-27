@@ -11,7 +11,7 @@ const LoginPage = () => {
   const dispatch = useDispatch();  // ✅ Redux Dispatch 추가
   const { lastVisitedPage } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
-    email: '',    // ✅ 백엔드에서 `email` 사용
+    email: '',    
     password: '',
   });
   const [error, setError] = useState(null);
@@ -23,10 +23,8 @@ const LoginPage = () => {
 
         alert("로그인 성공!");
 
-        // ✅ Redux 상태 업데이트
         dispatch(loginSuccess({ email: formData.email }));
 
-        // ✅ Redux에서 `lastVisitedPage` 가져와서 이동
         navigate(lastVisitedPage, { replace: true });
     } catch (error) {
         setError("로그인 실패! 이메일 또는 비밀번호를 확인해주세요.");
@@ -51,9 +49,9 @@ const LoginPage = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '100vh',
+        height: 'calc(100vh - 80px)',
         backgroundColor: '#f5f5f5',
-        paddingTop: '80px', // 헤더 높이만큼 패딩 추가
+        paddingTop: '80px', 
       }}
     >
       <Box
@@ -142,14 +140,20 @@ const LoginPage = () => {
         <Button
           fullWidth
           sx={{
-            backgroundColor: 'white',
-            color: 'black',
+            backgroundColor: 'var(--white-color)',
+            color: 'var(--text-color)',
             fontWeight: 'bold',
             padding: '10px',
             marginTop: '10px',
             border: '1px solid var(--primary-color)',
+            '&:hover': {
+              backgroundColor: 'var(--primary-color)',
+              color: 'white', // hover 시 텍스트 흰색으로 바꿔주면 더 잘 보여
+            },
           }}
-          onClick={handleLogin}
+          onClick={() => {
+            navigate("/signup"); 
+          }}
         >
           회원가입
         </Button>
