@@ -20,6 +20,7 @@ const SpaceCard = ({ space, onClick }) => {
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
+        "&:hover": { transform: "scale(1.02)" },
       }}
     >
       <CardMedia

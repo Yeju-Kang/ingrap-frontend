@@ -16,15 +16,12 @@ const CreateSpaceCard = () => {
 
   const handleCreateSpace = async (spaceName) => {
     try {
-      // 1. 공간 생성 요청
       const spaceRes = await axios.post("/api/space", { name: spaceName });
       const spaceId = spaceRes.data.spaceId;
 
-      // 2. QR 업로드 링크 생성 요청
       const qrRes = await axios.post("/api/uploadlink", { spaceId });
       const url = qrRes.data.uploadUrl;
 
-      // 3. 모달 전환
       setUploadUrl(url);
       setShowNameModal(false);
       setShowQRModal(true);
@@ -48,6 +45,8 @@ const CreateSpaceCard = () => {
           justifyContent: "center",
           position: "relative",
           cursor: "pointer",
+        "&:hover": { transform: "scale(1.02)" },
+
         }}
       >
         <Box
@@ -68,15 +67,11 @@ const CreateSpaceCard = () => {
           <AddIcon fontSize="inherit" />
         </Box>
       </Card>
-
-      {/* 공간 이름 입력 모달 */}
       <CreateSpaceNameModal
         open={showNameModal}
         onClose={() => setShowNameModal(false)}
         onNext={handleCreateSpace}
       />
-
-      {/* QR 안내 모달 */}
       <CreateSpaceQRModal
         open={showQRModal}
         onClose={() => setShowQRModal(false)}
