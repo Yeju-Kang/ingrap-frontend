@@ -1,6 +1,6 @@
 // SpacePage.jsx (중복없이 완벽한 상태 선언)
 import React, { useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import Sidebar from "../components/Sidebar";
 import FilterPanel from "../components/FilterPanel";
 import ProductList from "../components/ProductList";
@@ -76,9 +76,18 @@ const EmptyPage = () => {
           />
         </Box>
 
-        <Box width="180px" sx={{ overflowY: "auto", borderLeft: "1px solid #ddd" }}>
-          <FilterPanel />
-          <ProductList onAddFurniture={handleAddFurniture} />
+        <Box width="300px" 
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            borderLeft: "1px solid #ddd",
+            overflowY: "auto",
+          }}
+        >
+         <Box>
+    <FilterPanel />
+    <ProductList onAddFurniture={handleAddFurniture} />
+  </Box>
         </Box>
       </Box>
     </Box>

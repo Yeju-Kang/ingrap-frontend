@@ -14,7 +14,9 @@ const products = [
 
 const ProductList = ({ onAddFurniture }) => {
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={1}  sx={{
+      padding: "0px 16px",
+    }}>
       {products.map((product) => (
         <Grid item xs={12} sm={6} md={4} key={product.id}>
           <Card
