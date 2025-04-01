@@ -1,9 +1,12 @@
-import React from "react";
-import { OrbitControls, TransformControls, Html } from "@react-three/drei";
+import React, { useRef, useEffect, useState } from "react";
+import { OrbitControls, Html } from "@react-three/drei";
+import { RigidBody, CuboidCollider } from "@react-three/rapier";
 import FurnitureModel from "./FurnitureModel";
 import { IconButton } from "@mui/material";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import { useThree } from "@react-three/fiber";
+import * as THREE from "three";
 
 const SceneContent = ({
   furnitureList,
@@ -11,9 +14,107 @@ const SceneContent = ({
   onSelectFurniture,
   onBackgroundClick,
   weather,
-  setFurnitureList, // ✅ 가구 이동 & 회전 저장을 위한 상태 변경 함수 추가
+  setFurnitureList,
 }) => {
-  // ✅ 날씨별 조명 설정
+  const { camera, raycaster } = useThree();
+  const moveRef = useRef(null);
+  const lastMouse = useRef({ x: 0, y: 0 });
+  const rigidBodyRefs = useRef({});
+  const [dragging, setDragging] = useState(false);
+
+  // 마우스 위치 추적
+  useEffect(() => {
+    const onMouseMove = (e) => {
+      const rect = document.querySelector("canvas").getBoundingClientRect();
+      lastMouse.current = {
+        x: ((e.clientX - rect.left) / rect.width) * 2 - 1,
+        y: -((e.clientY - rect.top) / rect.height) * 2 + 1,
+      };
+    };
+    window.addEventListener("pointermove", onMouseMove);
+    return () => window.removeEventListener("pointermove", onMouseMove);
+  }, []);
+
+  // 가구 드래그 중이면 계속 마우스 따라가도록 위치 업데이트
+  useEffect(() => {
+    if (!dragging || !selectedFurniture) return;
+
+    const update = () => {
+      raycaster.setFromCamera(lastMouse.current, camera);
+      const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+      const intersection = new THREE.Vector3();
+      raycaster.ray.intersectPlane(plane, intersection);
+
+      const pos = [
+        Math.round(intersection.x * 100) / 100,
+        0.05,
+        Math.round(intersection.z * 100) / 100,
+      ];
+
+      const uuid = selectedFurniture.uuid;
+      const rigidBody = rigidBodyRefs.current[uuid];
+      if (rigidBody) {
+        rigidBody.setTranslation({ x: pos[0], y: pos[1], z: pos[2] }, true);
+      }
+
+      setFurnitureList((prev) =>
+        prev.map((item) =>
+          item.uuid === uuid ? { ...item, position: pos } : item
+        )
+      );
+
+      moveRef.current = requestAnimationFrame(update);
+    };
+
+    moveRef.current = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(moveRef.current);
+  }, [dragging, selectedFurniture, camera, raycaster, setFurnitureList]);
+
+  // 가구 클릭해서 선택하거나 놓기
+  const handleSelect = (object, uuid) => {
+    if (selectedFurniture?.uuid === uuid) {
+      // 이미 선택된 상태 → 놓기
+      setDragging(false);
+      onSelectFurniture(null);
+    } else {
+      // 새로 선택
+      onSelectFurniture({ object, uuid });
+      setDragging(true);
+    }
+  };
+
+  const rotateFurniture = (direction) => {
+    if (!selectedFurniture) return;
+
+    setFurnitureList((prev) => {
+      return prev.map((item) => {
+        if (item.uuid !== selectedFurniture.uuid) return item;
+
+        const newYRot = (item.rotation?.[1] || 0) + direction * Math.PI / 2;
+        const newRotation = [
+          item.rotation?.[0] || 0,
+          newYRot,
+          item.rotation?.[2] || 0,
+        ];
+
+        const rigidBody = rigidBodyRefs.current[item.uuid];
+        if (rigidBody) {
+          rigidBody.setRotation(
+            {
+              w: Math.cos(newYRot / 2),
+              x: 0,
+              y: Math.sin(newYRot / 2),
+              z: 0,
+            },
+            true
+          );
+        }
+
+        return { ...item, rotation: newRotation };
+      });
+    });
+  };
+
   const renderWeatherLighting = () => {
     switch (weather) {
       case "sunny":
@@ -27,103 +128,77 @@ const SceneContent = ({
     }
   };
 
-  const rotateFurniture = (direction) => {
-    if (!selectedFurniture) return;
-    setFurnitureList((prevList) =>
-      prevList.map((item) => {
-        if (item.uuid === selectedFurniture.uuid) {
-          const currentRotation = item.rotation || [0, 0, 0]; // ✅ 기본값 추가
-          return {
-            ...item,
-            rotation: [
-              currentRotation[0], // X축 유지
-              currentRotation[1] + direction * (Math.PI / 2), // Y축 회전
-              currentRotation[2], // Z축 유지
-            ],
-          };
-        }
-        return item;
-      })
-    );
-  };
-  
-  
-  
-
-  // ✅ 가구 이동 시 위치 업데이트
-  const handleTransformChange = () => {
-    if (!selectedFurniture) return;
-    setFurnitureList((prevList) =>
-      prevList.map((item) =>
-        item.uuid === selectedFurniture.uuid
-          ? {
-              ...item,
-              position: selectedFurniture.object.position.clone(),
-              rotation: selectedFurniture.object.rotation.clone(),
-            }
-          : item
-      )
-    );
-  };
-
   return (
     <>
       <ambientLight intensity={weather === "night" ? 0.2 : 0.5} />
       {renderWeatherLighting()}
       <OrbitControls enablePan={!selectedFurniture} enableRotate={!selectedFurniture} />
 
-      {/* 방 바닥 */}
-      <mesh position={[0, 0, 0]} onClick={onBackgroundClick}>
-        <boxGeometry args={[10, 0.2, 10]} />
-        <meshStandardMaterial color="#ffffff" />
-      </mesh>
+      {/* 바닥 */}
+      <RigidBody type="fixed" colliders={false}>
+        <mesh position={[0, 0, 0]}>
+          <boxGeometry args={[10, 0.1, 10]} />
+          <meshStandardMaterial color="#ccc" />
+        </mesh>
+        <CuboidCollider args={[5, 0.05, 5]} position={[0, 0, 0]} />
+      </RigidBody>
 
-      {/* 왼쪽 벽 */}
-      <mesh position={[-5, 2.5, 0]} onClick={onBackgroundClick}>
-        <boxGeometry args={[0.2, 5, 10]} />
-        <meshStandardMaterial color="lightgray" />
-      </mesh>
+      {/* 벽 */}
+      <RigidBody type="fixed" colliders={false}>
+        <mesh position={[-5, 2.5, 0]} onClick={onBackgroundClick}>
+          <boxGeometry args={[0.2, 5, 10]} />
+          <meshStandardMaterial color="lightgray" />
+        </mesh>
+        <CuboidCollider args={[0.1, 2.5, 5]} position={[-5, 2.5, 0]} />
+      </RigidBody>
+      <RigidBody type="fixed" colliders={false}>
+        <mesh position={[0, 2.5, -5]} rotation={[0, Math.PI / 2, 0]} onClick={onBackgroundClick}>
+          <boxGeometry args={[0.2, 5, 10]} />
+          <meshStandardMaterial color="lightgray" />
+        </mesh>
+        <CuboidCollider args={[0.1, 2.5, 5]} position={[0, 2.5, -5]} />
+      </RigidBody>
 
-      {/* 뒤쪽 벽 */}
-      <mesh position={[0, 2.5, -5]} rotation={[0, Math.PI / 2, 0]} onClick={onBackgroundClick}>
-        <boxGeometry args={[0.2, 5, 10]} />
-        <meshStandardMaterial color="lightgray" />
-      </mesh>
+      {/* 가구 */}
+      {furnitureList.map((item) => {
+        const isSelected = selectedFurniture?.uuid === item.uuid;
 
-      {/* 가구 모델 렌더링 */}
-      {furnitureList.map((item) => (
-        <group key={item.uuid} position={item.position} rotation={item.rotation}>
-          <FurnitureModel
-            modelPath={item.model}
-            selected={selectedFurniture?.uuid === item.uuid}
-            onSelect={(object) => onSelectFurniture({ object, uuid: item.uuid })}
-          />
-
-          {/* ✅ 선택된 가구 위에 좌/우 회전 버튼 표시 */}
-          {selectedFurniture?.uuid === item.uuid && (
-            <Html position={[0, 1.5, 0]} center>
-              <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                <IconButton onClick={() => rotateFurniture(-1)} color="primary">
-                  <ArrowLeftIcon />
-                </IconButton>
-                <IconButton onClick={() => rotateFurniture(1)} color="primary">
-                  <ArrowRightIcon />
-                </IconButton>
-              </div>
-            </Html>
-          )}
-        </group>
-      ))}
-
-      {/* ✅ 이동 기능 유지 (TransformControls) */}
-      {selectedFurniture && selectedFurniture.object && (
-        <TransformControls
-          object={selectedFurniture.object}
-          mode="translate" // ✅ 이동 모드 유지
-          onPointerDown={(e) => e.stopPropagation()}
-          onObjectChange={handleTransformChange} // ✅ 이동할 때 상태 업데이트
-        />
-      )}
+        return (
+          <RigidBody
+            key={item.uuid}
+            ref={(ref) => {
+              if (ref) rigidBodyRefs.current[item.uuid] = ref;
+            }}
+            position={item.position || [0, 0, 0]}
+            rotation={item.rotation || [0, 0, 0]}
+            colliders={false}
+            restitution={0}
+            friction={1}
+          >
+            <group>
+              <FurnitureModel
+                modelPath={item.model}
+                selected={isSelected}
+                position={[0, 0, 0]}
+                rotation={[0, 0, 0]}
+                onSelect={(obj) => handleSelect(obj, item.uuid)}
+              />
+              {isSelected && (
+                <Html position={[0, 1.5, 0]} center>
+                  <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                    <IconButton onClick={() => rotateFurniture(-1)} color="primary">
+                      <ArrowLeftIcon />
+                    </IconButton>
+                    <IconButton onClick={() => rotateFurniture(1)} color="primary">
+                      <ArrowRightIcon />
+                    </IconButton>
+                  </div>
+                </Html>
+              )}
+            </group>
+          </RigidBody>
+        );
+      })}
     </>
   );
 };

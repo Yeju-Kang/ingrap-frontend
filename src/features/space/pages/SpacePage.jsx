@@ -14,7 +14,7 @@ const SpacePage = () => {
   const MAX_CARDS = 4;
 
   const spaceList = [
-    { id: 1, name: "경렬의 공간", savedAt: "2024-03-26T10:00:00Z", image: imageMap.section.home.room1 },
+    { id: 1, name: "자취방 B", savedAt: "2024-03-26T10:00:00Z", image: imageMap.section.home.room1 },
     { id: 2, name: "회의실 A", savedAt: "2024-03-26T10:00:00Z", image: imageMap.section.home.room2 },
   ];
 
