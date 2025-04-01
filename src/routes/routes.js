@@ -1,13 +1,17 @@
-import ProjectPage from "../pages/ProjectPage/ProjectPage";
-import ProductDetailPage from "../pages/ShopPage/ProductDetailPage";
+import SpacePage from "../features/space/pages/SpacePage";
+import ProductDetailPage from "../features/shop/pages/ProductDetailPage";
 import useTranslate from "../hooks/useTranslate"; // ✅ 번역 훅 가져오기
-import CartPage from "../pages/CartPage/CartPage";
-import ShopPage from "../pages/ShopPage/ShopPage";
-import CommunityPage from "../pages/CommunityPage/CommunityPage";
-import PostDetailPage from "../pages/CommunityPage/PostDetailPage";
-import SignUpPage from "../pages/SignUpPage/SignUpPage";
-import LoginPage from "../pages/LogingPage/LoginPage";
-import ProfilePage from "../pages/ProfilePage/ProfilePage";
+import CartPage from "../features/cart/pages/CartPage";
+import ShopPage from "../features/shop/pages/ShopPage";
+import CommunityPage from "../features/community/pages/CommunityPage";
+import PostDetailPage from "../features/community/pages/PostDetailPage";
+import SignUpPage from "../features/auth/pages/SignUpPage";
+import LoginPage from "../features/auth/pages/LoginPage";
+import ProfilePage from "../features/user/pages/ProfilePage";
+import CheckoutPage from "../features/checkout/pages/CheckoutPage";
+import PaymentPage from "../features/payment/pages/PaymentPage";
+import DevToolsPage from "../features/devTools/pages/DevToolsPage";
+import EmptyPage from "../features/space/pages/EmptyPage";
 
 
 // ✅ 커스텀 훅으로 변경
@@ -15,7 +19,7 @@ export const useAllRoutes = (isAuthenticated) => {
   const { translate } = useTranslate(); // ✅ 번역 함수 가져오기
 
   return [
-    { path: "/project", label: translate("project.title"), element: <ProjectPage /> },
+    { path: "/space", label: translate("space.title"), element: <SpacePage /> },
     { path: "/shop", label: translate("shop.title"), element: <ShopPage /> },
     { path: "/shop/:productId", element: <ProductDetailPage />, label: null },
     { path: "/community", label: translate("community.title"), element: <CommunityPage /> },
@@ -23,7 +27,14 @@ export const useAllRoutes = (isAuthenticated) => {
     { path: "/signup", element: <SignUpPage />, label: null },
     { path: "/login", element: <LoginPage />, label: null },
     { path: "/profile", element: <ProfilePage />, label: null },
-    { path: "/cart",label: null, element: <CartPage /> },
+    { path: "/cart", element: <CartPage />, label: null },
+    { path: "/checkout", element: <CheckoutPage />, label: null },
+    { path: "/profile", element: <ProfilePage />, label: null },
+    { path: "/payment", element: <PaymentPage />, label: null },
+    { path: "/dev/tools", element: <DevToolsPage />, label: null },
+    { path: "/empty", element: <EmptyPage />, label: null },
+
+
   ];
 };
 

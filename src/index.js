@@ -6,7 +6,7 @@ import "./assets/styles/global.scss";
 import { ThemeProvider } from "@mui/material/styles"; // ✅ MUI 테마 적용
 import theme from "./theme"; // ✅ theme.js 가져오기
 import { Provider } from "react-redux"; // ✅ Redux Provider 추가
-import store from "./redux/store"; // ✅ Redux Store 가져오기
+import store from "./store/store"; // ✅ Redux Store 가져오기
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
