@@ -15,13 +15,15 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 
 const categories = [
-  { label: "전체", id: "all" }, // ✅ 추가
+  { label: "전체", id: "all" }, 
   { label: "침대", id: "bed" },
   { label: "테이블", id: "table" },
   { label: "의자", id: "chair" },
   { label: "소파", id: "sofa" },
   { label: "수납장", id: "storage" },
   { label: "조명", id: "lighting" },
+  { label: "바닥", id: "flooring" }, 
+  { label: "벽지", id: "wallpaper" },
 ];
 
 
@@ -49,25 +51,24 @@ const FilterPanel = () => {
       >
         {/* 드롭다운 */}
         <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel id="element-select-label">카테고리</InputLabel>
-          <Select
-            labelId="element-select-label"
-            value={elementType}
-            onChange={(e) => setElementType(e.target.value)}
-            label="카테고리"
-            sx={{
-              borderRadius: "12px",
-              backgroundColor: "#fff",
-            }}
-          >
-            <MenuItem value="전체">전체</MenuItem>
-            <MenuItem value="침대">침대</MenuItem>
-            <MenuItem value="테이블">테이블</MenuItem>
-            <MenuItem value="의자">의자</MenuItem>
-            <MenuItem value="소파">소파</MenuItem>
-            <MenuItem value="수납장">수납장</MenuItem>
-            <MenuItem value="조명">조명</MenuItem>
-          </Select>
+        <InputLabel id="element-select-label">카테고리</InputLabel>
+        <Select
+  labelId="element-select-label"
+  value={elementType}
+  onChange={(e) => setElementType(e.target.value)}
+  label="카테고리"
+  sx={{
+    borderRadius: "12px",
+    backgroundColor: "#fff",
+  }}
+>
+  {categories.map((cat) => (
+    <MenuItem key={cat.id} value={cat.label}>
+      {cat.label}
+    </MenuItem>
+  ))}
+</Select>
+
         </FormControl>
 
         {/* 검색창 */}

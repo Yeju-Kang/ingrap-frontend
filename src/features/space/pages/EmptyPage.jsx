@@ -1,7 +1,8 @@
-// SpacePage.jsx (중복없이 완벽한 상태 선언)
 import React, { useState } from "react";
-import { Box, Divider } from "@mui/material";
-import Sidebar from "../components/Sidebar";
+import { Box } from "@mui/material";
+
+// 🔄 컴포넌트 import 경로 수정
+import Sidebar from "../components/sidebar/Sidebar";
 import FilterPanel from "../components/FilterPanel";
 import ProductList from "../components/ProductList";
 import RoomArea from "../components/RoomArea";
@@ -12,6 +13,8 @@ const EmptyPage = () => {
   const [selectedFurniture, setSelectedFurniture] = useState(null);
   const [weather, setWeather] = useState("sunny");
   const [cameraMode, setCameraMode] = useState("third");
+  const [wallpaper, setWallpaper] = useState(null);
+const [flooring, setFlooring] = useState(null);
 
   const toggleCameraMode = () => {
     setCameraMode((prev) => (prev === "third" ? "firstPerson" : "third"));
@@ -28,9 +31,17 @@ const EmptyPage = () => {
 
   const handleDeleteFurniture = () => {
     if (selectedFurniture) {
-      setFurnitureList((prev) => prev.filter((item) => item.uuid !== selectedFurniture.uuid));
+      setFurnitureList((prev) =>
+        prev.filter((item) => item.uuid !== selectedFurniture.uuid)
+      );
       setSelectedFurniture(null);
     }
+  };
+
+  // 🔄 테마 변경 핸들러
+  const handleThemeChange = (theme) => {
+    // 추후 RoomArea 스타일 변경용으로 확장 가능
+    console.log("선택된 테마:", theme);
   };
 
   return (
@@ -40,7 +51,7 @@ const EmptyPage = () => {
       flexDirection="column"
       overflow="hidden"
     >
-      {/* FurnitureControls */}
+      {/* 상단 가구 제어 바 */}
       <Box
         sx={{
           width: "100%",
@@ -57,18 +68,29 @@ const EmptyPage = () => {
         />
       </Box>
 
+      {/* 메인 영역 */}
       <Box display="flex" flex={1} overflow="hidden">
+        {/* ⬅️ 왼쪽 사이드바 */}
         <Sidebar
           weather={weather}
           setWeather={setWeather}
           cameraMode={cameraMode}
           toggleCameraMode={toggleCameraMode}
+          onWallpaperChange={setWallpaper}
+  onFlooringChange={setFlooring}
         />
-             <Box flex={1} display="flex" flexDirection="column" minWidth={0} minHeight={0}>
 
+        {/* 🏠 방 + 가구 */}
+        <Box
+          flex={1}
+          display="flex"
+          flexDirection="column"
+          minWidth={0}
+          minHeight={0}
+        >
           <RoomArea
             furnitureList={furnitureList}
-            setFurnitureList={setFurnitureList} // ✅ 추가
+            setFurnitureList={setFurnitureList}
             selectedFurniture={selectedFurniture}
             setSelectedFurniture={setSelectedFurniture}
             weather={weather}
@@ -76,7 +98,9 @@ const EmptyPage = () => {
           />
         </Box>
 
-        <Box width="300px" 
+        {/* ➡️ 우측 필터/리스트 */}
+        <Box
+          width="500px"
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -84,10 +108,8 @@ const EmptyPage = () => {
             overflowY: "auto",
           }}
         >
-         <Box>
-    <FilterPanel />
-    <ProductList onAddFurniture={handleAddFurniture} />
-  </Box>
+          <FilterPanel />
+          <ProductList onAddFurniture={handleAddFurniture} />
         </Box>
       </Box>
     </Box>
