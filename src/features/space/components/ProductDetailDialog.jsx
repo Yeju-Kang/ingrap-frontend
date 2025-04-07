@@ -66,7 +66,7 @@ const ProductDetailDialog = ({ open, onClose, product, onApply }) => {
           {/* 닫기 버튼 */}
           <IconButton
             onClick={onClose}
-            sx={{ position: "absolute", top: 8, right: 8 }}
+            sx={{ position: "absolute", top: 0, right: 0, padding: "0px" }}
           >
             <CloseIcon />
           </IconButton>
