@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { OrbitControls, Html } from "@react-three/drei";
+import { OrbitControls, Html, useTexture  } from "@react-three/drei";
 import { RigidBody, CuboidCollider } from "@react-three/rapier";
 import FurnitureModel from "./FurnitureModel";
 import { IconButton } from "@mui/material";
@@ -15,12 +15,19 @@ const SceneContent = ({
   onBackgroundClick,
   weather,
   setFurnitureList,
+  wallpaper,
+  flooring,
 }) => {
   const { camera, raycaster } = useThree();
   const moveRef = useRef(null);
   const lastMouse = useRef({ x: 0, y: 0 });
   const rigidBodyRefs = useRef({});
   const [dragging, setDragging] = useState(false);
+const floorTexture = useTexture(flooring || "/placeholder.jpeg");
+const wallTexture = useTexture(wallpaper || "/placeholder.jpeg");
+const showFloorTexture = flooring && flooring.includes(".jpg");
+const showWallTexture = wallpaper && wallpaper.includes(".jpg");
+  
 
   // 마우스 위치 추적
   useEffect(() => {
@@ -136,28 +143,48 @@ const SceneContent = ({
 
       {/* 바닥 */}
       <RigidBody type="fixed" colliders={false}>
-        <mesh position={[0, 0, 0]}>
-          <boxGeometry args={[10, 0.1, 10]} />
-          <meshStandardMaterial color="#ccc" />
-        </mesh>
-        <CuboidCollider args={[5, 0.05, 5]} position={[0, 0, 0]} />
-      </RigidBody>
+  <mesh position={[0, 0, 0]}>
+    <boxGeometry args={[10, 0.1, 10]} />
+    <meshStandardMaterial
+  map={showFloorTexture ? floorTexture : null}
+  color={!showFloorTexture ? "#ffffff" : undefined}
+  metalness={0.1}
+  roughness={0.7}
+/>
 
-      {/* 벽 */}
-      <RigidBody type="fixed" colliders={false}>
-        <mesh position={[-5, 2.5, 0]} onClick={onBackgroundClick}>
-          <boxGeometry args={[0.2, 5, 10]} />
-          <meshStandardMaterial color="lightgray" />
-        </mesh>
-        <CuboidCollider args={[0.1, 2.5, 5]} position={[-5, 2.5, 0]} />
-      </RigidBody>
-      <RigidBody type="fixed" colliders={false}>
-        <mesh position={[0, 2.5, -5]} rotation={[0, Math.PI / 2, 0]} onClick={onBackgroundClick}>
-          <boxGeometry args={[0.2, 5, 10]} />
-          <meshStandardMaterial color="lightgray" />
-        </mesh>
-        <CuboidCollider args={[0.1, 2.5, 5]} position={[0, 2.5, -5]} />
-      </RigidBody>
+  </mesh>
+  <CuboidCollider args={[5, 0.05, 5]} position={[0, 0, 0]} />
+</RigidBody>
+{/* 왼쪽 벽 */}
+<RigidBody type="fixed" colliders={false}>
+  <mesh position={[-5, 2.5, 0]} onClick={onBackgroundClick}>
+    <boxGeometry args={[0.2, 5, 10]} />
+    <meshStandardMaterial
+  map={showWallTexture ? wallTexture : null}
+  color={!showWallTexture ? "#ffffff" : undefined}
+  metalness={0.05}
+  roughness={0.9}
+/>
+
+  </mesh>
+  <CuboidCollider args={[0.1, 2.5, 5]} position={[-5, 2.5, 0]} />
+</RigidBody>
+
+{/* 뒤쪽 벽 */}
+<RigidBody type="fixed" colliders={false}>
+  <mesh position={[0, 2.5, -5]} rotation={[0, Math.PI / 2, 0]} onClick={onBackgroundClick}>
+    <boxGeometry args={[0.2, 5, 10]} />
+    <meshStandardMaterial
+  map={showWallTexture ? wallTexture : null}
+  color={!showWallTexture ? "#ffffff" : undefined}
+  metalness={0.05}
+  roughness={0.9}
+/>
+
+  </mesh>
+  <CuboidCollider args={[0.1, 2.5, 5]} position={[0, 2.5, -5]} />
+</RigidBody>
+
 
       {/* 가구 */}
       {furnitureList.map((item) => {

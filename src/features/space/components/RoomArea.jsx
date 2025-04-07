@@ -4,7 +4,7 @@ import { Canvas } from "@react-three/fiber";
 import SceneContent from "./SceneContent";
 import { Physics } from "@react-three/rapier";
 
-const RoomArea = ({ furnitureList, selectedFurniture, setSelectedFurniture, weather, setFurnitureList }) => {
+const RoomArea = ({ furnitureList, selectedFurniture, setSelectedFurniture, weather, setFurnitureList, wallpaper, flooring}) => {
   const controlsRef = useRef();
 
   const handleBackgroundClick = () => {
@@ -23,6 +23,8 @@ const RoomArea = ({ furnitureList, selectedFurniture, setSelectedFurniture, weat
             controlsRef={controlsRef}
             onBackgroundClick={handleBackgroundClick}
             weather={weather}
+            wallpaper={wallpaper}
+            flooring={flooring}
           />
         </Physics>
       </Canvas>

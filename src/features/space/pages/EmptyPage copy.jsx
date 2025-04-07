@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Box } from "@mui/material";
+
+// 🔄 컴포넌트 import 경로 수정
 import Sidebar from "../components/sidebar/Sidebar";
 import FilterPanel from "../components/FilterPanel";
 import ProductList from "../components/ProductList";
 import RoomArea from "../components/RoomArea";
 import FurnitureControls from "../components/FurnitureControls";
-import ProductDetailDialog from "../components/ProductDetailDialog"; // ✅ 새로 만든 상세 팝업
 
 const EmptyPage = () => {
   const [furnitureList, setFurnitureList] = useState([]);
@@ -13,9 +14,7 @@ const EmptyPage = () => {
   const [weather, setWeather] = useState("sunny");
   const [cameraMode, setCameraMode] = useState("third");
   const [wallpaper, setWallpaper] = useState(null);
-  const [flooring, setFlooring] = useState(null);
-
-  const [previewFurniture, setPreviewFurniture] = useState(null); // ✅ 상세 팝업용
+const [flooring, setFlooring] = useState(null);
 
   const toggleCameraMode = () => {
     setCameraMode((prev) => (prev === "third" ? "firstPerson" : "third"));
@@ -39,12 +38,10 @@ const EmptyPage = () => {
     }
   };
 
-  const handleProductClick = (furniture) => {
-    setPreviewFurniture(furniture); // ✅ 상세 팝업 열기
-  };
-
-  const handleApplyToRoom = (furniture) => {
-    handleAddFurniture(furniture);
+  // 🔄 테마 변경 핸들러
+  const handleThemeChange = (theme) => {
+    // 추후 RoomArea 스타일 변경용으로 확장 가능
+    console.log("선택된 테마:", theme);
   };
 
   return (
@@ -71,19 +68,26 @@ const EmptyPage = () => {
         />
       </Box>
 
+      {/* 메인 영역 */}
       <Box display="flex" flex={1} overflow="hidden">
-        {/* 왼쪽 사이드바 */}
+        {/* ⬅️ 왼쪽 사이드바 */}
         <Sidebar
           weather={weather}
           setWeather={setWeather}
           cameraMode={cameraMode}
           toggleCameraMode={toggleCameraMode}
           onWallpaperChange={setWallpaper}
-          onFlooringChange={setFlooring}
+  onFlooringChange={setFlooring}
         />
 
-        {/* Room Area */}
-        <Box flex={1} display="flex" flexDirection="column" minWidth={0} minHeight={0}>
+        {/* 🏠 방 + 가구 */}
+        <Box
+          flex={1}
+          display="flex"
+          flexDirection="column"
+          minWidth={0}
+          minHeight={0}
+        >
           <RoomArea
             furnitureList={furnitureList}
             setFurnitureList={setFurnitureList}
@@ -96,7 +100,7 @@ const EmptyPage = () => {
           />
         </Box>
 
-        {/* 우측 필터/리스트 */}
+        {/* ➡️ 우측 필터/리스트 */}
         <Box
           width="500px"
           sx={{
@@ -107,17 +111,9 @@ const EmptyPage = () => {
           }}
         >
           <FilterPanel />
-          <ProductList onProductClick={handleProductClick} />
+          <ProductList onAddFurniture={handleAddFurniture} />
         </Box>
       </Box>
-
-      {/* 🪑 가구 상세 팝업 */}
-      <ProductDetailDialog
-        open={!!previewFurniture}
-        product={previewFurniture}
-        onClose={() => setPreviewFurniture(null)}
-        onApply={handleApplyToRoom}
-      />
     </Box>
   );
 };
