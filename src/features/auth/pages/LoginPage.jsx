@@ -44,25 +44,27 @@ const LoginPage = () => {
 
   return (
     <Box
-  sx={{
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    overflow: "hidden",
-    height: "100%",
-  }}
->
+      sx={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        overflow: "hidden",
+      }}
+    >
       <Box
         sx={{
           width: 880,
           height: 480,
           display: "flex",
-          boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
-          borderRadius: "16px",
+          borderRadius: "12px",
+          overflow: "hidden",
+          boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
           bgcolor: "white",
         }}
       >
@@ -74,7 +76,7 @@ const LoginPage = () => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            background: "#fff",
+            bgcolor: "#ffffff",
           }}
         >
           <Logo />
@@ -122,6 +124,7 @@ const LoginPage = () => {
               fontWeight: 600,
               mb: 2,
               "&:hover": { bgcolor: "#a5a088" },
+              borderRadius: 2,
             }}
           >
             로그인
@@ -146,6 +149,7 @@ const LoginPage = () => {
               fontWeight: 600,
               borderColor: "#b8b297",
               color: "#5f5b48",
+              borderRadius: 1,
               "&:hover": {
                 bgcolor: "#f6f5f0",
               },
@@ -155,29 +159,32 @@ const LoginPage = () => {
           </Button>
         </Box>
 
-        {/* 오른쪽 프로모션 영역 */}
+        {/* 오른쪽 프로모션 이미지 */}
         <Box
-  sx={{
-    width: "50%",
-    height: "100%", // 💡 높이도 명확히 지정
-    backgroundColor: "#f3f1e8",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
-  }}
->
-  <img
-    src={promoImage}
-    alt="Furniture Contest"
-    style={{
-      width: "100%",
-      height: "100%",
-      objectFit: "cover", // ✅ 꽉 차게!
-    }}
-  />
-</Box>
-
+          sx={{
+            width: "50%",
+            height: "100%",
+            backgroundColor: "#f3f1e8",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "relative",
+            borderTopRightRadius: "12px",
+            borderBottomRightRadius: "12px",
+            overflow: "hidden",
+          }}
+        >
+          <img
+            src={promoImage}
+            alt="Furniture Contest"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
+            }}
+          />
+        </Box>
       </Box>
     </Box>
   );

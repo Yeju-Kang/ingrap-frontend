@@ -41,7 +41,7 @@ const SpacePage = () => {
           <Box
             sx={{
               height: "2px",
-              width: "120px",
+              width: "120%",
               backgroundColor: "var(--primary-color)",
               borderRadius: "2px",
               mt: "8px",
