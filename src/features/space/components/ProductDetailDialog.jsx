@@ -36,52 +36,55 @@ const ProductDetailDialog = ({ open, onClose, product, onApply }) => {
     <>
       {/* 오른쪽 외부 고정 아이콘 버튼 */}
       {open && (
-        <Box
-          sx={{
-            position: "fixed",
-            top: "50%",
-            right: "calc((100vw - 960px) / 2 - 45px)", // 팝업 우측 바깥 위치 (팝업 가로폭이 960px 기준)
-            transform: "translateY(-50%)",
-            zIndex: 1501, // Dialog 위에 올라오게
-            display: "flex",
-            flexDirection: "column",
-            gap: 1,
-          }}
-        >
-          <Tooltip title="장바구니 담기" placement="left">
-            <IconButton
-              sx={{
-                background: "#f0f0f0",
-                borderRadius: "50%",
-                width: 48,
-                height: 48,
-                border: "1px solid #d0d0d0",
-                "&:hover": {
-                  background: "#e0e0e0",
-                },
-              }}
-            >
-              <ShoppingBagIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="즐겨찾기 추가" placement="left">
-            <IconButton
-              sx={{
-                background: "#f0f0f0",
-                borderRadius: "50%",
-                width: 48,
-                height: 48,
-                border: "1px solid #d0d0d0",
-                "&:hover": {
-                  background: "#e0e0e0",
-                },
-              }}
-            >
-              <FavoriteBorderIcon />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      )}
+  <Box
+    sx={{
+      position: "fixed",
+      top: "50%",
+      right: "calc((100vw - 960px) / 2 - 19px)", // 버튼 너비(48px)만큼 딱 붙여줌
+      transform: "translateY(-50%)",
+      zIndex: 1501,
+      display: "flex",
+      flexDirection: "column",
+    }}
+  >
+    <Tooltip title="장바구니 담기" placement="left">
+    <IconButton
+  sx={{
+    background: "#f0f0f0",
+    width: 48,
+    height: 48,
+    border: "1px solid #d0d0d0",
+    borderRadius: "0 24px 24px 0", // ✅ 오른쪽이 둥근 책갈피형
+    marginBottom: "4px", // 버튼 사이 여백
+    "&:hover": {
+      background: "#e0e0e0",
+    },
+  }}
+>
+        <ShoppingBagIcon />
+      </IconButton>
+    </Tooltip>
+
+    <Tooltip title="즐겨찾기 추가" placement="left">
+    <IconButton
+  sx={{
+    background: "#f0f0f0",
+    width: 48,
+    height: 48,
+    border: "1px solid #d0d0d0",
+    borderRadius: "0 24px 24px 0", // ✅ 오른쪽이 둥근 책갈피형
+    "&:hover": {
+      background: "#e0e0e0",
+    },
+  }}
+>
+        <FavoriteBorderIcon />
+      </IconButton>
+    </Tooltip>
+  </Box>
+)}
+
+
 
       <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
         <Box display="flex" flexDirection="row" p={3} bgcolor="#fdfdfb">
