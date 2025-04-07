@@ -1,162 +1,183 @@
-import React, { useState } from 'react';
-import { Box, Typography, Button, TextField } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector  } from "react-redux";
+import React, { useState } from "react";
+import {
+  Box,
+  Typography,
+  Button,
+  TextField,
+  Divider,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess } from "../../../store/authSlice";
-import Logo from '../../../layouts/Header/Logo';
-import apiClient from '../../../api/apiClient';
+import Logo from "../../../layouts/Header/Logo";
+import apiClient from "../../../api/apiClient";
+
+// 이미지
+import bgImage from "../../../assets/images/login-bg-blur.png";
+import promoImage from "../../../assets/images/promo-furniture-contest.png";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();  // ✅ Redux Dispatch 추가
+  const dispatch = useDispatch();
   const { lastVisitedPage } = useSelector((state) => state.auth);
-  const [formData, setFormData] = useState({
-    email: '',    
-    password: '',
-  });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState(null);
-
 
   const handleLogin = async () => {
     try {
-        const response = await apiClient.post("/users/login", formData);
-
-        alert("로그인 성공!");
-
-        dispatch(loginSuccess({ email: formData.email }));
-
-        navigate(lastVisitedPage, { replace: true });
+      const response = await apiClient.post("/users/login", formData);
+      alert("로그인 성공!");
+      dispatch(loginSuccess({ email: formData.email }));
+      navigate(lastVisitedPage, { replace: true });
     } catch (error) {
-        setError("로그인 실패! 이메일 또는 비밀번호를 확인해주세요.");
-        console.error("로그인 오류:", error);
+      setError("로그인 실패! 이메일 또는 비밀번호를 확인해주세요.");
+      console.error("로그인 오류:", error);
     }
-};
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      handleLogin();
-    }
+    if (event.key === "Enter") handleLogin();
   };
 
   return (
     <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: 'calc(100vh - 80px)',
-        backgroundColor: '#f5f5f5',
-        paddingTop: '80px', 
-      }}
-    >
+  sx={{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundImage: `url(${bgImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    overflow: "hidden",
+    height: "100%",
+  }}
+>
       <Box
         sx={{
-          backgroundColor: 'white',
-          padding: '24px',
-          borderRadius: '10px',
-          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3)',
-          width: '320px',
-          textAlign: 'center',
+          width: 880,
+          height: 480,
+          display: "flex",
+          boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
+          borderRadius: "16px",
+          bgcolor: "white",
         }}
       >
-        <Box sx={{ marginBottom: '12px' }}>
-          <Logo />
-        </Box>
-
-        {error && (
-          <Typography color="error" sx={{ marginBottom: "12px" }}>
-            {error}
-          </Typography>
-        )}
-
-        <TextField
-          label='이메일'
-          name="email"  // ✅ `email`로 변경
-          variant='outlined'
-          fullWidth
-          size='small'
-          value={formData.email}
-          onChange={handleChange}
-          onKeyPress={handleKeyPress}
-          sx={{ marginBottom: '12px' }}
-        />
-
-        <TextField
-          label='비밀번호'
-          name="password"
-          variant='outlined'
-          fullWidth
-          size='small'
-          type='password'
-          value={formData.password}
-          onChange={handleChange}
-          onKeyPress={handleKeyPress}
-          sx={{ marginBottom: '20px' }}
-        />
-
-        <Button
-          fullWidth
+        {/* 왼쪽 로그인 */}
+        <Box
           sx={{
-            backgroundColor: 'var(--primary-color)',
-            color: 'white',
-            fontWeight: 'bold',
-            padding: '12px',
-            marginBottom: '10px',
-            '&:hover': { backgroundColor: 'var(--primary-color)' },
+            width: "50%",
+            p: 4,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            background: "#fff",
           }}
-          onClick={handleLogin}
         >
-          로그인
-        </Button>
+          <Logo />
+          <Typography variant="h5" fontWeight={600} mt={2} mb={3}>
+            Welcome!
+          </Typography>
 
-        <Box display='flex' justifyContent='end' alignItems='center'>
-          <Box display='flex' gap={1}>
-            <Typography
-              variant='body2'
-              sx={{ cursor: 'pointer', color: 'gray' }}
-            >
+          {error && (
+            <Typography color="error" mb={2}>
+              {error}
+            </Typography>
+          )}
+
+          <TextField
+            label="이메일"
+            name="email"
+            variant="outlined"
+            fullWidth
+            size="small"
+            value={formData.email}
+            onChange={handleChange}
+            onKeyPress={handleKeyPress}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            label="비밀번호"
+            name="password"
+            type="password"
+            variant="outlined"
+            fullWidth
+            size="small"
+            value={formData.password}
+            onChange={handleChange}
+            onKeyPress={handleKeyPress}
+            sx={{ mb: 3 }}
+          />
+
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={handleLogin}
+            sx={{
+              bgcolor: "#b8b297",
+              color: "white",
+              fontWeight: 600,
+              mb: 2,
+              "&:hover": { bgcolor: "#a5a088" },
+            }}
+          >
+            로그인
+          </Button>
+
+          <Box display="flex" justifyContent="space-between" mb={2}>
+            <Typography variant="body2" sx={{ cursor: "pointer", color: "#888" }}>
               아이디 찾기
             </Typography>
-            <Typography
-              variant='body2'
-              sx={{ cursor: 'pointer', color: 'gray' }}
-            >
-              |
-            </Typography>
-            <Typography
-              variant='body2'
-              sx={{ cursor: 'pointer', color: 'gray' }}
-            >
+            <Typography variant="body2" sx={{ cursor: "pointer", color: "#888" }}>
               비밀번호 찾기
             </Typography>
           </Box>
+
+          <Divider sx={{ mb: 2 }}>또는</Divider>
+
+          <Button
+            fullWidth
+            onClick={() => navigate("/signup")}
+            variant="outlined"
+            sx={{
+              fontWeight: 600,
+              borderColor: "#b8b297",
+              color: "#5f5b48",
+              "&:hover": {
+                bgcolor: "#f6f5f0",
+              },
+            }}
+          >
+            회원가입
+          </Button>
         </Box>
 
-        <Button
-          fullWidth
-          sx={{
-            backgroundColor: 'var(--white-color)',
-            color: 'var(--text-color)',
-            fontWeight: 'bold',
-            padding: '10px',
-            marginTop: '10px',
-            border: '1px solid var(--primary-color)',
-            '&:hover': {
-              backgroundColor: 'var(--primary-color)',
-              color: 'white', // hover 시 텍스트 흰색으로 바꿔주면 더 잘 보여
-            },
-          }}
-          onClick={() => {
-            navigate("/signup"); 
-          }}
-        >
-          회원가입
-        </Button>
+        {/* 오른쪽 프로모션 영역 */}
+        <Box
+  sx={{
+    width: "50%",
+    height: "100%", // 💡 높이도 명확히 지정
+    backgroundColor: "#f3f1e8",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+  }}
+>
+  <img
+    src={promoImage}
+    alt="Furniture Contest"
+    style={{
+      width: "100%",
+      height: "100%",
+      objectFit: "cover", // ✅ 꽉 차게!
+    }}
+  />
+</Box>
+
       </Box>
     </Box>
   );
