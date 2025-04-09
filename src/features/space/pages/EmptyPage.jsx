@@ -5,7 +5,6 @@ import FilterPanel from "../components/FilterPanel";
 import ProductList from "../components/ProductList";
 import RoomArea from "../components/RoomArea";
 import FurnitureControls from "../components/FurnitureControls";
-import WallpaperSelector from "../components/WallpaperSelector"
 
 const EmptyPage = () => {
   const [furnitureList, setFurnitureList] = useState([]);
@@ -96,8 +95,12 @@ const EmptyPage = () => {
           }}
         >
           <FilterPanel />
-          <ProductList onAddFurniture={handleAddFurniture} />
-          <WallpaperSelector onSelect={setWallpaper} />
+          <ProductList
+  onAddFurniture={handleAddFurniture}
+  onSetWallpaper={setWallpaper}
+  onSetFlooring={setFlooring}
+/>
+
         </Box>
       </Box>
     </Box>
