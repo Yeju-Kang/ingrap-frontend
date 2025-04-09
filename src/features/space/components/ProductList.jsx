@@ -6,16 +6,26 @@ import {
   Typography,
   Grid,
 } from "@mui/material";
-import ProductDetailDialog from "./ProductDetailDialog"; // 새로 만든 팝업 컴포넌트 import
+import ProductDetailDialog from "./ProductDetailDialog";
 
-// 예시 상품
 const products = [
   { id: 1, name: "원목 테이블", model: "/chair.glb", image: "/chair.png" },
   { id: 2, name: "화이트 오크 테이블", model: "/bed.glb", image: "/bed.png" },
 ];
 
-const ProductList = ({ onAddFurniture }) => {
+const ProductList = ({ onAddFurniture, onProductClick }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const handleApplyProduct = (productData) => {
+    if (onAddFurniture) {
+      onAddFurniture({
+        ...productData,
+        uuid: Date.now(),
+        position: [Math.random() * 4 - 2, 0.1, Math.random() * 4 - 2],
+      });
+    }
+    setSelectedProduct(null);
+  };
 
   return (
     <>
@@ -57,11 +67,12 @@ const ProductList = ({ onAddFurniture }) => {
         ))}
       </Grid>
 
+      {/* ✅ 상세 팝업 */}
       <ProductDetailDialog
         open={!!selectedProduct}
-        product={selectedProduct}
         onClose={() => setSelectedProduct(null)}
-        onApply={onAddFurniture}
+        product={selectedProduct}
+        onApply={handleApplyProduct}
       />
     </>
   );

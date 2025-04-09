@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { OrbitControls, Html, useTexture  } from "@react-three/drei";
+import { OrbitControls, Html, useTexture } from "@react-three/drei";
 import { RigidBody, CuboidCollider } from "@react-three/rapier";
 import FurnitureModel from "./FurnitureModel";
 import { IconButton } from "@mui/material";
@@ -23,13 +23,17 @@ const SceneContent = ({
   const lastMouse = useRef({ x: 0, y: 0 });
   const rigidBodyRefs = useRef({});
   const [dragging, setDragging] = useState(false);
-const floorTexture = useTexture(flooring || "/placeholder.jpeg");
-const wallTexture = useTexture(wallpaper || "/placeholder.jpeg");
-const showFloorTexture = flooring && flooring.includes(".jpg");
-const showWallTexture = wallpaper && wallpaper.includes(".jpg");
-  
 
-  // 마우스 위치 추적
+  const floorTexture = useTexture(flooring || "/placeholder.jpeg");
+  const wallTexture = useTexture(wallpaper || "/placeholder.jpeg");
+
+  // ✨ 색상 공간 보정
+  floorTexture.colorSpace = THREE.SRGBColorSpace;
+  wallTexture.colorSpace = THREE.SRGBColorSpace;
+
+  const showFloorTexture = flooring && (flooring.endsWith(".jpg") || flooring.endsWith(".png"));
+  const showWallTexture = wallpaper && (wallpaper.endsWith(".jpg") || wallpaper.endsWith(".png"));
+
   useEffect(() => {
     const onMouseMove = (e) => {
       const rect = document.querySelector("canvas").getBoundingClientRect();
@@ -42,7 +46,6 @@ const showWallTexture = wallpaper && wallpaper.includes(".jpg");
     return () => window.removeEventListener("pointermove", onMouseMove);
   }, []);
 
-  // 가구 드래그 중이면 계속 마우스 따라가도록 위치 업데이트
   useEffect(() => {
     if (!dragging || !selectedFurniture) return;
 
@@ -65,9 +68,7 @@ const showWallTexture = wallpaper && wallpaper.includes(".jpg");
       }
 
       setFurnitureList((prev) =>
-        prev.map((item) =>
-          item.uuid === uuid ? { ...item, position: pos } : item
-        )
+        prev.map((item) => (item.uuid === uuid ? { ...item, position: pos } : item))
       );
 
       moveRef.current = requestAnimationFrame(update);
@@ -77,14 +78,11 @@ const showWallTexture = wallpaper && wallpaper.includes(".jpg");
     return () => cancelAnimationFrame(moveRef.current);
   }, [dragging, selectedFurniture, camera, raycaster, setFurnitureList]);
 
-  // 가구 클릭해서 선택하거나 놓기
   const handleSelect = (object, uuid) => {
     if (selectedFurniture?.uuid === uuid) {
-      // 이미 선택된 상태 → 놓기
       setDragging(false);
       onSelectFurniture(null);
     } else {
-      // 새로 선택
       onSelectFurniture({ object, uuid });
       setDragging(true);
     }
@@ -93,8 +91,8 @@ const showWallTexture = wallpaper && wallpaper.includes(".jpg");
   const rotateFurniture = (direction) => {
     if (!selectedFurniture) return;
 
-    setFurnitureList((prev) => {
-      return prev.map((item) => {
+    setFurnitureList((prev) =>
+      prev.map((item) => {
         if (item.uuid !== selectedFurniture.uuid) return item;
 
         const newYRot = (item.rotation?.[1] || 0) + direction * Math.PI / 2;
@@ -118,73 +116,59 @@ const showWallTexture = wallpaper && wallpaper.includes(".jpg");
         }
 
         return { ...item, rotation: newRotation };
-      });
-    });
-  };
-
-  const renderWeatherLighting = () => {
-    switch (weather) {
-      case "sunny":
-        return <directionalLight position={[10, 10, 10]} intensity={1.2} color="#fff4e5" />;
-      case "night":
-        return <directionalLight position={[-5, 10, -5]} intensity={0.3} color="#7f8c8d" />;
-      case "rainy":
-        return <directionalLight position={[0, 10, 0]} intensity={0.6} color="#95a5a6" />;
-      default:
-        return <directionalLight position={[10, 10, 10]} intensity={1} />;
-    }
+      })
+    );
   };
 
   return (
     <>
-      <ambientLight intensity={weather === "night" ? 0.2 : 0.5} />
-      {renderWeatherLighting()}
+      {/* 💡 전체 공간 밝게 */}
+      <ambientLight intensity={1.2} color="#ffffff" />
+      <directionalLight position={[0, 8, 0]} intensity={2} color="#ffffff" castShadow={false} />
+
       <OrbitControls enablePan={!selectedFurniture} enableRotate={!selectedFurniture} />
 
       {/* 바닥 */}
       <RigidBody type="fixed" colliders={false}>
-  <mesh position={[0, 0, 0]}>
-    <boxGeometry args={[10, 0.1, 10]} />
-    <meshStandardMaterial
-  map={showFloorTexture ? floorTexture : null}
-  color={!showFloorTexture ? "#ffffff" : undefined}
-  metalness={0.1}
-  roughness={0.7}
-/>
+        <mesh position={[0, 0, 0]}>
+          <boxGeometry args={[10, 0.1, 10]} />
+          <meshStandardMaterial
+            map={showFloorTexture ? floorTexture : null}
+            color={!showFloorTexture ? "#e0e0e0" : undefined}
+            metalness={0.1}
+            roughness={0.8}
+          />
+        </mesh>
+        <CuboidCollider args={[5, 0.05, 5]} position={[0, 0, 0]} />
+      </RigidBody>
 
-  </mesh>
-  <CuboidCollider args={[5, 0.05, 5]} position={[0, 0, 0]} />
-</RigidBody>
-{/* 왼쪽 벽 */}
-<RigidBody type="fixed" colliders={false}>
-  <mesh position={[-5, 2.5, 0]} onClick={onBackgroundClick}>
-    <boxGeometry args={[0.2, 5, 10]} />
-    <meshStandardMaterial
-  map={showWallTexture ? wallTexture : null}
-  color={!showWallTexture ? "#ffffff" : undefined}
-  metalness={0.05}
-  roughness={0.9}
-/>
+      {/* 왼쪽 벽 */}
+      <RigidBody type="fixed" colliders={false}>
+        <mesh position={[-5, 2.5, 0]} onClick={onBackgroundClick}>
+          <boxGeometry args={[0.2, 5, 10]} />
+          <meshStandardMaterial
+            map={showWallTexture ? wallTexture : null}
+            color={!showWallTexture ? "#f5f5f5" : undefined}
+            metalness={0.05}
+            roughness={0.95}
+          />
+        </mesh>
+        <CuboidCollider args={[0.1, 2.5, 5]} position={[-5, 2.5, 0]} />
+      </RigidBody>
 
-  </mesh>
-  <CuboidCollider args={[0.1, 2.5, 5]} position={[-5, 2.5, 0]} />
-</RigidBody>
-
-{/* 뒤쪽 벽 */}
-<RigidBody type="fixed" colliders={false}>
-  <mesh position={[0, 2.5, -5]} rotation={[0, Math.PI / 2, 0]} onClick={onBackgroundClick}>
-    <boxGeometry args={[0.2, 5, 10]} />
-    <meshStandardMaterial
-  map={showWallTexture ? wallTexture : null}
-  color={!showWallTexture ? "#ffffff" : undefined}
-  metalness={0.05}
-  roughness={0.9}
-/>
-
-  </mesh>
-  <CuboidCollider args={[0.1, 2.5, 5]} position={[0, 2.5, -5]} />
-</RigidBody>
-
+      {/* 뒤쪽 벽 */}
+      <RigidBody type="fixed" colliders={false}>
+        <mesh position={[0, 2.5, -5]} rotation={[0, Math.PI / 2, 0]} onClick={onBackgroundClick}>
+          <boxGeometry args={[0.2, 5, 10]} />
+          <meshStandardMaterial
+            map={showWallTexture ? wallTexture : null}
+            color={!showWallTexture ? "#f5f5f5" : undefined}
+            metalness={0.05}
+            roughness={0.95}
+          />
+        </mesh>
+        <CuboidCollider args={[0.1, 2.5, 5]} position={[0, 2.5, -5]} />
+      </RigidBody>
 
       {/* 가구 */}
       {furnitureList.map((item) => {

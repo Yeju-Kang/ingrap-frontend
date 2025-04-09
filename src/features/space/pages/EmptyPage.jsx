@@ -5,7 +5,7 @@ import FilterPanel from "../components/FilterPanel";
 import ProductList from "../components/ProductList";
 import RoomArea from "../components/RoomArea";
 import FurnitureControls from "../components/FurnitureControls";
-import ProductDetailDialog from "../components/ProductDetailDialog"; // ✅ 새로 만든 상세 팝업
+import WallpaperSelector from "../components/WallpaperSelector"
 
 const EmptyPage = () => {
   const [furnitureList, setFurnitureList] = useState([]);
@@ -14,8 +14,6 @@ const EmptyPage = () => {
   const [cameraMode, setCameraMode] = useState("third");
   const [wallpaper, setWallpaper] = useState(null);
   const [flooring, setFlooring] = useState(null);
-
-  const [previewFurniture, setPreviewFurniture] = useState(null); // ✅ 상세 팝업용
 
   const toggleCameraMode = () => {
     setCameraMode((prev) => (prev === "third" ? "firstPerson" : "third"));
@@ -39,14 +37,6 @@ const EmptyPage = () => {
     }
   };
 
-  const handleProductClick = (furniture) => {
-    setPreviewFurniture(furniture); // ✅ 상세 팝업 열기
-  };
-
-  const handleApplyToRoom = (furniture) => {
-    handleAddFurniture(furniture);
-  };
-
   return (
     <Box
       height="calc(100vh - 80px)"
@@ -54,7 +44,7 @@ const EmptyPage = () => {
       flexDirection="column"
       overflow="hidden"
     >
-      {/* 상단 가구 제어 바 */}
+      {/* 상단 컨트롤 */}
       <Box
         sx={{
           width: "100%",
@@ -71,8 +61,8 @@ const EmptyPage = () => {
         />
       </Box>
 
+      {/* 메인 영역 */}
       <Box display="flex" flex={1} overflow="hidden">
-        {/* 왼쪽 사이드바 */}
         <Sidebar
           weather={weather}
           setWeather={setWeather}
@@ -82,7 +72,6 @@ const EmptyPage = () => {
           onFlooringChange={setFlooring}
         />
 
-        {/* Room Area */}
         <Box flex={1} display="flex" flexDirection="column" minWidth={0} minHeight={0}>
           <RoomArea
             furnitureList={furnitureList}
@@ -96,7 +85,7 @@ const EmptyPage = () => {
           />
         </Box>
 
-        {/* 우측 필터/리스트 */}
+        {/* 우측 영역 */}
         <Box
           width="500px"
           sx={{
@@ -107,17 +96,10 @@ const EmptyPage = () => {
           }}
         >
           <FilterPanel />
-          <ProductList onProductClick={handleProductClick} />
+          <ProductList onAddFurniture={handleAddFurniture} />
+          <WallpaperSelector onSelect={setWallpaper} />
         </Box>
       </Box>
-
-      {/* 🪑 가구 상세 팝업 */}
-      <ProductDetailDialog
-        open={!!previewFurniture}
-        product={previewFurniture}
-        onClose={() => setPreviewFurniture(null)}
-        onApply={handleApplyToRoom}
-      />
     </Box>
   );
 };
