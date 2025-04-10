@@ -27,7 +27,6 @@ const SceneContent = ({
   const floorTexture = useTexture(flooring || "/placeholder.jpeg");
   const wallTexture = useTexture(wallpaper || "/placeholder.jpeg");
 
-  // ✨ 색상 공간 보정
   floorTexture.colorSpace = THREE.SRGBColorSpace;
   wallTexture.colorSpace = THREE.SRGBColorSpace;
 
@@ -122,9 +121,18 @@ const SceneContent = ({
 
   return (
     <>
-      {/* 💡 전체 공간 밝게 */}
-      <ambientLight intensity={1.2} color="#ffffff" />
-      <directionalLight position={[0, 8, 0]} intensity={2} color="#ffffff" castShadow={false} />
+      {/* 💡 공간을 밝게 비추는 조명들 */}
+      <ambientLight intensity={1.5} color="#ffffff" />
+      <directionalLight position={[0, 8, 5]} intensity={3} color="#ffffff" />
+
+      {/* 천장 중앙에 매우 밝은 포인트 조명 */}
+      <pointLight
+        position={[0, 8, 0]}
+        intensity={80}
+        distance={30}
+        decay={2}
+        color="#ffffff"
+      />
 
       <OrbitControls enablePan={!selectedFurniture} enableRotate={!selectedFurniture} />
 
@@ -170,7 +178,7 @@ const SceneContent = ({
         <CuboidCollider args={[0.1, 2.5, 5]} position={[0, 2.5, -5]} />
       </RigidBody>
 
-      {/* 가구 */}
+      {/* 가구들 */}
       {furnitureList.map((item) => {
         const isSelected = selectedFurniture?.uuid === item.uuid;
 

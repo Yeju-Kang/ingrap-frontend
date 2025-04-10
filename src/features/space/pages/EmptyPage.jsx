@@ -5,6 +5,7 @@ import FilterPanel from "../components/FilterPanel";
 import ProductList from "../components/ProductList";
 import RoomArea from "../components/RoomArea";
 import FurnitureControls from "../components/FurnitureControls";
+import ProductDetailDialog from "../components/ProductDetailDialog";
 
 const EmptyPage = () => {
   const [furnitureList, setFurnitureList] = useState([]);
@@ -13,6 +14,10 @@ const EmptyPage = () => {
   const [cameraMode, setCameraMode] = useState("third");
   const [wallpaper, setWallpaper] = useState(null);
   const [flooring, setFlooring] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchKeyword, setSearchKeyword] = useState("");
+
+  const [previewProduct, setPreviewProduct] = useState(null); // 팝업용
 
   const toggleCameraMode = () => {
     setCameraMode((prev) => (prev === "third" ? "firstPerson" : "third"));
@@ -36,14 +41,18 @@ const EmptyPage = () => {
     }
   };
 
+  const handleApplyProduct = (product) => {
+    if (product.type === "wallpaper") {
+      setWallpaper(product.image);
+    } else if (product.type === "flooring") {
+      setFlooring(product.image);
+    } else {
+      handleAddFurniture(product);
+    }
+  };
+
   return (
-    <Box
-      height="calc(100vh - 80px)"
-      display="flex"
-      flexDirection="column"
-      overflow="hidden"
-    >
-      {/* 상단 컨트롤 */}
+    <Box height="calc(100vh - 80px)" display="flex" flexDirection="column" overflow="hidden">
       <Box
         sx={{
           width: "100%",
@@ -60,7 +69,6 @@ const EmptyPage = () => {
         />
       </Box>
 
-      {/* 메인 영역 */}
       <Box display="flex" flex={1} overflow="hidden">
         <Sidebar
           weather={weather}
@@ -84,7 +92,6 @@ const EmptyPage = () => {
           />
         </Box>
 
-        {/* 우측 영역 */}
         <Box
           width="500px"
           sx={{
@@ -94,15 +101,28 @@ const EmptyPage = () => {
             overflowY: "auto",
           }}
         >
-          <FilterPanel />
-          <ProductList
-  onAddFurniture={handleAddFurniture}
-  onSetWallpaper={setWallpaper}
-  onSetFlooring={setFlooring}
+         <FilterPanel
+  selectedCategory={selectedCategory}
+  onCategoryChange={setSelectedCategory}
+  searchKeyword={searchKeyword}
+  onSearchChange={setSearchKeyword}
 />
 
+<ProductList
+  selectedCategory={selectedCategory}
+  searchKeyword={searchKeyword}
+  onProductClick={setPreviewProduct}
+/>
         </Box>
       </Box>
+
+      {/* 🪑 상세 팝업 */}
+      <ProductDetailDialog
+        open={!!previewProduct}
+        product={previewProduct}
+        onClose={() => setPreviewProduct(null)}
+        onApply={handleApplyProduct}
+      />
     </Box>
   );
 };

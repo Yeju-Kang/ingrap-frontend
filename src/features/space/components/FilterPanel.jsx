@@ -27,74 +27,67 @@ const categories = [
 ];
 
 
-const FilterPanel = () => {
-  const [selectedCategory, setSelectedCategory] = useState("all"); // "전체"로 시작
+const FilterPanel = ({ selectedCategory, onCategoryChange, searchKeyword, onSearchChange  }) => {
   const [search, setSearch] = useState("");
-  const [elementType, setElementType] = useState("전체");
 
-  const handleCategoryClick = (categoryId) => {
-    setSelectedCategory(categoryId);
+  const handleChange = (e) => {
+    onCategoryChange(e.target.value);
   };
 
-  const filteredCategories = categories.filter((cat) =>
-    cat.label.toLowerCase().includes(search.toLowerCase())
-  );
-
   return (
-      <Box
-        sx={{
-          width: "100%",
-          backgroundColor: "#f9f9f6",
-          padding: "24px 16px 0px 16px",
-          boxSizing: "border-box",
-        }}
-      >
-        {/* 드롭다운 */}
-        <FormControl fullWidth sx={{ mb: 2 }}>
+    <Box
+      sx={{
+        width: "100%",
+        backgroundColor: "#f9f9f6",
+        padding: "24px 16px 0px 16px",
+        boxSizing: "border-box",
+      }}
+    >
+      {/* 드롭다운 */}
+      <FormControl fullWidth sx={{ mb: 2 }}>
         <InputLabel id="element-select-label">카테고리</InputLabel>
         <Select
-  labelId="element-select-label"
-  value={elementType}
-  onChange={(e) => setElementType(e.target.value)}
-  label="카테고리"
-  sx={{
-    borderRadius: "12px",
-    backgroundColor: "#fff",
-  }}
->
-  {categories.map((cat) => (
-    <MenuItem key={cat.id} value={cat.label}>
-      {cat.label}
-    </MenuItem>
-  ))}
-</Select>
-
-        </FormControl>
-
-        {/* 검색창 */}
-        <Paper
-          component="form"
+          labelId="element-select-label"
+          value={selectedCategory}
+          onChange={handleChange}
+          label="카테고리"
           sx={{
-            display: "flex",
-            alignItems: "center",
-            padding: "4px 12px",
-            borderRadius: "30px",
-            boxShadow: "none",
-            backgroundColor: "#f0f0ea",
-            mb: 2,
+            borderRadius: "12px",
+            backgroundColor: "#fff",
           }}
-          onSubmit={(e) => e.preventDefault()}
         >
-          <SearchIcon sx={{ color: "#888", mr: 1 }} />
-          <InputBase
-            placeholder="가구 검색"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            sx={{ flex: 1 }}
-          />
-        </Paper>
-        <Divider sx={{ mb: 2 }} />
-      </Box>
+          {categories.map((cat) => (
+            <MenuItem key={cat.id} value={cat.id}>
+              {cat.label}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      {/* 검색창 */}
+      <Paper
+        component="form"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          padding: "4px 12px",
+          borderRadius: "30px",
+          boxShadow: "none",
+          backgroundColor: "#f0f0ea",
+          mb: 2,
+        }}
+        onSubmit={(e) => e.preventDefault()}
+      >
+        <SearchIcon sx={{ color: "#888", mr: 1 }} />
+        <InputBase
+    placeholder="검색"
+    value={searchKeyword}
+    onChange={(e) => onSearchChange(e.target.value)}
+    sx={{ flex: 1 }}
+  />
+      </Paper>
+      <Divider sx={{ mb: 2 }} />
+    </Box>
   );
 };
 

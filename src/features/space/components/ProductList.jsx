@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Card,
   CardMedia,
@@ -8,35 +8,25 @@ import {
 } from "@mui/material";
 
 const products = [
-  { id: 1, name: "원목 테이블", type: "furniture", model: "/chair.glb", image: "/chair.png" },
-  { id: 2, name: "화이트 오크 테이블", type: "furniture", model: "/bed.glb", image: "/bed.png" },
-  { id: 3, name: "화이트 벽지", type: "wallpaper", image: "/textures/wallpaper/Wallpaper001A_4K-PNG_Color.png" },
-  { id: 4, name: "우드 바닥", type: "wallpaper", image: "/textures/wallpaper/Fabric058_4K-PNG_Color.png" },
+  { id: 1, name: "원목 의자자", type: "chair", model: "/chair.glb", image: "/chair.png", category: "table" },
+  { id: 2, name: "화이트 침대", type: "bed", model: "/bed.glb", image: "/bed.png", category: "table" },
+  { id: 3, name: "화이트 벽지", type: "wallpaper", image: "/textures/wallpaper/Wallpaper001A_4K-PNG_Color.png", category: "wallpaper" },
+  { id: 4, name: "우드 바닥", type: "flooring", image: "/textures/wallpaper/Fabric058_4K-PNG_Color.png", category: "flooring" },
 ];
 
-const ProductList = ({ onAddFurniture, onSetWallpaper, onSetFlooring }) => {
-  const handleClick = (product) => {
-    switch (product.type) {
-      case "furniture":
-        onAddFurniture(product);
-        break;
-      case "wallpaper":
-        onSetWallpaper(product.image);
-        break;
-      case "flooring":
-        onSetFlooring(product.image);
-        break;
-      default:
-        break;
-    }
-  };
-
+const ProductList = ({ onProductClick, selectedCategory = "all", searchKeyword = "" }) => {
+  const filtered = products.filter((p) => {
+    const matchCategory = selectedCategory === "all" || p.category === selectedCategory;
+    const matchKeyword = p.name.toLowerCase().includes(searchKeyword.toLowerCase());
+    return matchCategory && matchKeyword;
+  });
+  
   return (
     <Grid container spacing={2} sx={{ padding: "0px 16px" }}>
-      {products.map((product) => (
+      {filtered.map((product) => (
         <Grid item xs={12} sm={6} key={product.id}>
           <Card
-            onClick={() => handleClick(product)}
+            onClick={() => onProductClick(product)}
             sx={{
               cursor: "pointer",
               boxShadow: "none",
