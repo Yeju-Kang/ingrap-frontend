@@ -43,7 +43,6 @@ const FilterPanel = ({ selectedCategory, onCategoryChange, searchKeyword, onSear
         boxSizing: "border-box",
       }}
     >
-      {/* 드롭다운 */}
       <FormControl fullWidth sx={{ mb: 2 }}>
         <InputLabel id="element-select-label">카테고리</InputLabel>
         <Select
@@ -64,7 +63,6 @@ const FilterPanel = ({ selectedCategory, onCategoryChange, searchKeyword, onSear
         </Select>
       </FormControl>
 
-      {/* 검색창 */}
       <Paper
         component="form"
         sx={{

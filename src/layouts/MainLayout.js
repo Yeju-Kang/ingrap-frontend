@@ -21,7 +21,6 @@ const MainLayout = () => {
       const atTop = currentScrollY === 0;
       setIsTop(atTop);
 
-      // 특정 위치 이하거나 위로 스크롤할 때 헤더 보여줌
       setShowHeader(currentScrollY <= 50 || currentScrollY < lastScrollY);
 
       setLastScrollY(currentScrollY);

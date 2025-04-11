@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Box } from "@mui/material";
 import Sidebar from "../components/sidebar/Sidebar";
 import FilterPanel from "../components/FilterPanel";
@@ -16,12 +16,10 @@ const EmptyPage = () => {
   const [flooring, setFlooring] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [previewProduct, setPreviewProduct] = useState(null);
+  const [panelWidth, setPanelWidth] = useState(500);
 
-  const [previewProduct, setPreviewProduct] = useState(null); // 팝업용
-
-  const toggleCameraMode = () => {
-    setCameraMode((prev) => (prev === "third" ? "firstPerson" : "third"));
-  };
+  const panelRef = useRef();
 
   const handleAddFurniture = (furniture) => {
     const newFurniture = {
@@ -51,6 +49,28 @@ const EmptyPage = () => {
     }
   };
 
+  // 마우스로 사이즈 조절 핸들
+  const handleMouseDown = (e) => {
+    e.preventDefault();
+    const startX = e.clientX;
+    const startWidth = panelRef.current.offsetWidth;
+
+    const onMouseMove = (moveEvent) => {
+      const newWidth = startWidth - (moveEvent.clientX - startX);
+      if (newWidth >= 300 && newWidth <= 800) {
+        setPanelWidth(newWidth);
+      }
+    };
+
+    const onMouseUp = () => {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+    };
+
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+  };
+
   return (
     <Box height="calc(100vh - 80px)" display="flex" flexDirection="column" overflow="hidden">
       <Box
@@ -74,7 +94,9 @@ const EmptyPage = () => {
           weather={weather}
           setWeather={setWeather}
           cameraMode={cameraMode}
-          toggleCameraMode={toggleCameraMode}
+          toggleCameraMode={() =>
+            setCameraMode((prev) => (prev === "third" ? "firstPerson" : "third"))
+          }
           onWallpaperChange={setWallpaper}
           onFlooringChange={setFlooring}
         />
@@ -92,31 +114,46 @@ const EmptyPage = () => {
           />
         </Box>
 
+        {/* 📏 사이즈 조절 핸들 */}
         <Box
-          width="500px"
+          onMouseDown={handleMouseDown}
           sx={{
+            width: "6px",
+            cursor: "ew-resize",
+            backgroundColor: "#ddd",
+            zIndex: 1,
+          }}
+        />
+
+        {/* 📦 조절 가능한 우측 패널 */}
+        <Box
+          ref={panelRef}
+          sx={{
+            width: `${panelWidth}px`,
             display: "flex",
             flexDirection: "column",
             borderLeft: "1px solid #ddd",
             overflowY: "auto",
+            minWidth: "300px",
+            maxWidth: "800px",
           }}
         >
-         <FilterPanel
-  selectedCategory={selectedCategory}
-  onCategoryChange={setSelectedCategory}
-  searchKeyword={searchKeyword}
-  onSearchChange={setSearchKeyword}
-/>
+          <FilterPanel
+            selectedCategory={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+            searchKeyword={searchKeyword}
+            onSearchChange={setSearchKeyword}
+          />
 
-<ProductList
-  selectedCategory={selectedCategory}
-  searchKeyword={searchKeyword}
-  onProductClick={setPreviewProduct}
-/>
+          <ProductList
+            selectedCategory={selectedCategory}
+            searchKeyword={searchKeyword}
+            onProductClick={setPreviewProduct}
+          />
         </Box>
       </Box>
 
-      {/* 🪑 상세 팝업 */}
+      {/* 상세 팝업 */}
       <ProductDetailDialog
         open={!!previewProduct}
         product={previewProduct}
