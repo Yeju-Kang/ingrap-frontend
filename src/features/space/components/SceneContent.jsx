@@ -121,25 +121,15 @@ const SceneContent = ({
 
   return (
     <>
-      {/* 💡 공간을 밝게 비추는 조명들 */}
       <ambientLight intensity={1.5} color="#ffffff" />
       <directionalLight position={[0, 8, 5]} intensity={3} color="#ffffff" />
-
-      {/* 천장 중앙에 매우 밝은 포인트 조명 */}
-      <pointLight
-        position={[0, 8, 0]}
-        intensity={80}
-        distance={30}
-        decay={2}
-        color="#ffffff"
-      />
-
+      <pointLight position={[0, 8, 0]} intensity={80} distance={30} decay={2} color="#ffffff" />
       <OrbitControls enablePan={!selectedFurniture} enableRotate={!selectedFurniture} />
 
-      {/* 바닥 */}
+      {/* 바닥 (5.5m x 5.5m) */}
       <RigidBody type="fixed" colliders={false}>
         <mesh position={[0, 0, 0]}>
-          <boxGeometry args={[10, 0.1, 10]} />
+          <boxGeometry args={[5.5, 0.2, 5.5]} />
           <meshStandardMaterial
             map={showFloorTexture ? floorTexture : null}
             color={!showFloorTexture ? "#e0e0e0" : undefined}
@@ -147,13 +137,13 @@ const SceneContent = ({
             roughness={0.8}
           />
         </mesh>
-        <CuboidCollider args={[5, 0.05, 5]} position={[0, 0, 0]} />
+        <CuboidCollider args={[2.75, 0.05, 2.75]} position={[0, 0, 0]} />
       </RigidBody>
 
       {/* 왼쪽 벽 */}
       <RigidBody type="fixed" colliders={false}>
-        <mesh position={[-5, 2.5, 0]} onClick={onBackgroundClick}>
-          <boxGeometry args={[0.2, 5, 10]} />
+        <mesh position={[-2.75, 1, 0]} onClick={onBackgroundClick}>
+          <boxGeometry args={[0.2, 2, 5.5]} />
           <meshStandardMaterial
             map={showWallTexture ? wallTexture : null}
             color={!showWallTexture ? "#f5f5f5" : undefined}
@@ -161,13 +151,13 @@ const SceneContent = ({
             roughness={0.95}
           />
         </mesh>
-        <CuboidCollider args={[0.1, 2.5, 5]} position={[-5, 2.5, 0]} />
+        <CuboidCollider args={[0.1, 2.5, 2.75]} position={[-2.75, 2.5, 0]} />
       </RigidBody>
 
-      {/* 뒤쪽 벽 */}
+      {/* 뒷 벽 */}
       <RigidBody type="fixed" colliders={false}>
-        <mesh position={[0, 2.5, -5]} rotation={[0, Math.PI / 2, 0]} onClick={onBackgroundClick}>
-          <boxGeometry args={[0.2, 5, 10]} />
+        <mesh position={[0, 1, -2.75]} rotation={[0, Math.PI / 2, 0]} onClick={onBackgroundClick}>
+          <boxGeometry args={[0.2, 2, 5.5]} />
           <meshStandardMaterial
             map={showWallTexture ? wallTexture : null}
             color={!showWallTexture ? "#f5f5f5" : undefined}
@@ -175,10 +165,10 @@ const SceneContent = ({
             roughness={0.95}
           />
         </mesh>
-        <CuboidCollider args={[0.1, 2.5, 5]} position={[0, 2.5, -5]} />
+        <CuboidCollider args={[0.1, 2.5, 2.75]} position={[0, 2.5, -2.75]} />
       </RigidBody>
 
-      {/* 가구들 */}
+      {/* 가구 렌더링 */}
       {furnitureList.map((item) => {
         const isSelected = selectedFurniture?.uuid === item.uuid;
 
