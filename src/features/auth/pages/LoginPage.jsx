@@ -68,39 +68,39 @@ const LoginPage = () => {
           bgcolor: "white",
         }}
       >
-        {/* 왼쪽 로그인 */}
-        <Box
-          sx={{
-            width: "50%",
-            p: 4,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            bgcolor: "#ffffff",
-          }}
-        >
-          <Logo />
-          <Typography variant="h5" fontWeight={600} mt={2} mb={3}>
-            Welcome!
-          </Typography>
+<Box
+  sx={{
+    width: "50%",
+    p: 4,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center", // ✅ 추가: 가운데 정렬
+    bgcolor: "#ffffff",
+  }}
+>
+  <Typography variant="h4" fontWeight={700} mb={4} align="center" color="#333">
+    Welcome!
+  </Typography>
 
-          {error && (
-            <Typography color="error" mb={2}>
-              {error}
-            </Typography>
-          )}
+  {error && (
+    <Typography color="error" mb={2}>
+      {error}
+    </Typography>
+  )}
 
-          <TextField
-            label="이메일"
-            name="email"
-            variant="outlined"
-            fullWidth
-            size="small"
-            value={formData.email}
-            onChange={handleChange}
-            onKeyPress={handleKeyPress}
-            sx={{ mb: 2 }}
-          />
+  <TextField
+    label="이메일"
+    name="email"
+    variant="outlined"
+    fullWidth
+    size="small"
+    value={formData.email}
+    onChange={handleChange}
+    onKeyPress={handleKeyPress}
+    sx={{ mb: 2 }}
+  />
+
           <TextField
             label="비밀번호"
             name="password"
