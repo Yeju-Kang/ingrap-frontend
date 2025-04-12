@@ -13,7 +13,11 @@ const RoomArea = ({ furnitureList, selectedFurniture, setSelectedFurniture, weat
 
   return (
     <Box flex={1}>
-      <Canvas camera={{ position: [5, 5, 10], fov: 50 }} shadows>
+      <Canvas
+  camera={{ position: [5, 5, 10], fov: 50 }}
+  shadows
+  style={{ backgroundColor: "var(--text-color)" }} // ✅ 여기 추가!
+>
         <Physics gravity={[0, -9.81, 0]}>
           <SceneContent
             furnitureList={furnitureList}
