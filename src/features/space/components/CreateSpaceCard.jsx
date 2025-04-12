@@ -5,13 +5,17 @@ import CreateSpaceNameModal from "../components/CreateSpaceNameModal";
 import CreateSpaceQRModal from "../components/CreateSpaceQRModal";
 import axios from "axios";
 
-const CreateSpaceCard = () => {
+const CreateSpaceCard = ({ onClick, disableInternalModal = false }) => {
   const [showNameModal, setShowNameModal] = useState(false);
   const [showQRModal, setShowQRModal] = useState(false);
   const [uploadUrl, setUploadUrl] = useState("");
 
   const handleStart = () => {
-    setShowNameModal(true);
+    if (disableInternalModal && onClick) {
+      onClick(); // 외부에서 처리할 수 있도록만 실행
+    } else {
+      setShowNameModal(true); // 기존 모달 동작
+    }
   };
 
   const handleCreateSpace = async (spaceName) => {
@@ -45,8 +49,7 @@ const CreateSpaceCard = () => {
           justifyContent: "center",
           position: "relative",
           cursor: "pointer",
-        "&:hover": { transform: "scale(1.02)" },
-
+          "&:hover": { transform: "scale(1.02)" },
         }}
       >
         <Box
@@ -67,16 +70,21 @@ const CreateSpaceCard = () => {
           <AddIcon fontSize="inherit" />
         </Box>
       </Card>
-      <CreateSpaceNameModal
-        open={showNameModal}
-        onClose={() => setShowNameModal(false)}
-        onNext={handleCreateSpace}
-      />
-      <CreateSpaceQRModal
-        open={showQRModal}
-        onClose={() => setShowQRModal(false)}
-        uploadUrl={uploadUrl}
-      />
+
+      {!disableInternalModal && (
+        <>
+          <CreateSpaceNameModal
+            open={showNameModal}
+            onClose={() => setShowNameModal(false)}
+            onNext={handleCreateSpace}
+          />
+          <CreateSpaceQRModal
+            open={showQRModal}
+            onClose={() => setShowQRModal(false)}
+            uploadUrl={uploadUrl}
+          />
+        </>
+      )}
     </>
   );
 };

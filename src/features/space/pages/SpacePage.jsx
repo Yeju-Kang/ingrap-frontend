@@ -1,18 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import SpaceCard from "../components/SpaceCard";
 import CreateSpaceCard from "../components/CreateSpaceCard";
+import ModeSelectModal from "../components/ModeSelectModal";
+import CreateSpaceNameModal from "../components/CreateSpaceNameModal";
 import imageMap from "../../../assets/imageMap";
 import useTranslate from "../../../hooks/useTranslate";
 
-
-const CARD_WIDTH = 400; 
+const CARD_WIDTH = 400;
 const GAP = 24;
 
 const SpacePage = () => {
-    const { translate } = useTranslate();
-  const MAX_CARDS = 4;
+  const { translate } = useTranslate();
+  const navigate = useNavigate();
+  const [showModeSelect, setShowModeSelect] = useState(false);
+  const [showNameModal, setShowNameModal] = useState(false);
 
+  const MAX_CARDS = 4;
   const spaceList = [
     { id: 1, name: "자취방 B", savedAt: "2024-03-26T10:00:00Z", image: imageMap.section.home.room1 },
     { id: 2, name: "회의실 A", savedAt: "2024-03-26T10:00:00Z", image: imageMap.section.home.room2 },
@@ -20,6 +25,12 @@ const SpacePage = () => {
 
   const visibleSpaces = spaceList.slice(0, MAX_CARDS);
   const remaining = MAX_CARDS - visibleSpaces.length;
+
+  const handleCreateSpace = (spaceName) => {
+    console.log("생성할 공간 이름:", spaceName);
+    setShowNameModal(false);
+    navigate("/empty"); // ✅ 빈 공간 페이지로 이동
+  };
 
   return (
     <Box sx={{ px: 4, py: 4, pt: 1 }}>
@@ -36,7 +47,7 @@ const SpacePage = () => {
               textAlign: "center",
             }}
           >
-          {translate("space.description")}
+            {translate("space.description")}
           </Typography>
           <Box
             sx={{
@@ -57,9 +68,9 @@ const SpacePage = () => {
             display: "grid",
             gridTemplateColumns: `repeat(auto-fill, ${CARD_WIDTH}px)`,
             gap: `${GAP}px`,
-            justifyContent: "center", 
+            justifyContent: "center",
             width: "100%",
-            maxWidth: `calc(${CARD_WIDTH * 4 + GAP * 3}px)`, 
+            maxWidth: `calc(${CARD_WIDTH * 4 + GAP * 3}px)`
           }}
         >
           {visibleSpaces.map((space) => (
@@ -67,10 +78,27 @@ const SpacePage = () => {
           ))}
 
           {Array.from({ length: remaining }).map((_, index) => (
-            <CreateSpaceCard key={`create-${index}`} />
+            <CreateSpaceCard key={`create-${index}`} onClick={() => setShowModeSelect(true)} disableInternalModal />
           ))}
         </Box>
       </Box>
+
+      <ModeSelectModal
+        open={showModeSelect}
+        onClose={() => setShowModeSelect(false)}
+        onSelect={(mode) => {
+          setShowModeSelect(false);
+          if (mode === "empty") {
+            setShowNameModal(true);
+          }
+        }}
+      />
+
+      <CreateSpaceNameModal
+        open={showNameModal}
+        onClose={() => setShowNameModal(false)}
+        onNext={handleCreateSpace}
+      />
     </Box>
   );
 };
