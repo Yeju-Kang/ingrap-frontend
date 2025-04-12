@@ -172,12 +172,13 @@ const EmptyPage = () => {
             searchKeyword={searchKeyword}
             onSearchChange={setSearchKeyword}
           />
+<ProductList
+  panelWidth={panelWidth} // ✅ 추가
+  selectedCategory={selectedCategory}
+  searchKeyword={searchKeyword}
+  onProductClick={setPreviewProduct}
+/>
 
-          <ProductList
-            selectedCategory={selectedCategory}
-            searchKeyword={searchKeyword}
-            onProductClick={setPreviewProduct}
-          />
         </Box>
       </Box>
 
