@@ -116,14 +116,42 @@ const EmptyPage = () => {
 
         {/* 📏 사이즈 조절 핸들 */}
         <Box
-          onMouseDown={handleMouseDown}
-          sx={{
-            width: "6px",
-            cursor: "ew-resize",
-            backgroundColor: "#ddd",
-            zIndex: 1,
-          }}
-        />
+  onMouseDown={handleMouseDown}
+  sx={{
+    width: "10px", // 좀 더 여유 있게
+    cursor: "ew-resize",
+    backgroundColor: "#e0e0e0",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+    zIndex: 1,
+    transition: "background-color 0.2s",
+  }}
+>
+  {/* 🎨 드래그 힌트용 점 3개 (⋮ 형태) */}
+  <Box
+    sx={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "3px",
+    }}
+  >
+    {[...Array(3)].map((_, i) => (
+      <Box
+        key={i}
+        sx={{
+          width: "5px",
+          height: "5px",
+          backgroundColor: "#999",
+          borderRadius: "50%",
+        }}
+      />
+    ))}
+  </Box>
+</Box>
 
         {/* 📦 조절 가능한 우측 패널 */}
         <Box
