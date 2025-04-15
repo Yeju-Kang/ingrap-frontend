@@ -7,31 +7,35 @@ import {
   Divider,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { loginSuccess } from "../../../store/authSlice";
-import Logo from "../../../layouts/Header/Logo";
-import apiClient from "../../../api/apiClient";
+import { useSelector } from "react-redux";
+import useLogin from "../../../hooks/useLogin"; // ✅ 커스텀 훅 사용
 
-// 이미지
 import bgImage from "../../../assets/images/login-bg-blur.png";
 import promoImage from "../../../assets/images/promo-furniture-contest.png";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { lastVisitedPage } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState(null);
+  const login = useLogin();
 
   const handleLogin = async () => {
     try {
-      const response = await apiClient.post("/users/login", formData);
-      alert("로그인 성공!");
-      dispatch(loginSuccess({ email: formData.email }));
-      navigate(lastVisitedPage, { replace: true });
-    } catch (error) {
+      await login(formData);
+
+      // ✅ pendingSpaceId 및 pendingSpaceName 처리
+      const pendingSpaceId = localStorage.getItem("pendingSpaceId");
+      if (pendingSpaceId) {
+        navigate(`/space/${pendingSpaceId}`, { replace: true });
+        // ❗ 이름은 SpaceEditorPage에서 삭제되므로 여기선 유지
+        // localStorage.removeItem("pendingSpaceId"); ← ❌ 여기선 삭제 안 함
+      } else {
+        navigate(lastVisitedPage, { replace: true });
+      }
+    } catch (err) {
       setError("로그인 실패! 이메일 또는 비밀번호를 확인해주세요.");
-      console.error("로그인 오류:", error);
+      console.error("로그인 오류:", err);
     }
   };
 
@@ -68,38 +72,38 @@ const LoginPage = () => {
           bgcolor: "white",
         }}
       >
-<Box
-  sx={{
-    width: "50%",
-    p: 4,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center", // ✅ 추가: 가운데 정렬
-    bgcolor: "#ffffff",
-  }}
->
-  <Typography variant="h4" fontWeight={700} mb={4} align="center" color="#333">
-    Welcome!
-  </Typography>
+        <Box
+          sx={{
+            width: "50%",
+            p: 4,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            bgcolor: "#ffffff",
+          }}
+        >
+          <Typography variant="h4" fontWeight={700} mb={4} align="center" color="#333">
+            Welcome!
+          </Typography>
 
-  {error && (
-    <Typography color="error" mb={2}>
-      {error}
-    </Typography>
-  )}
+          {error && (
+            <Typography color="error" mb={2}>
+              {error}
+            </Typography>
+          )}
 
-  <TextField
-    label="이메일"
-    name="email"
-    variant="outlined"
-    fullWidth
-    size="small"
-    value={formData.email}
-    onChange={handleChange}
-    onKeyPress={handleKeyPress}
-    sx={{ mb: 2 }}
-  />
+          <TextField
+            label="이메일"
+            name="email"
+            variant="outlined"
+            fullWidth
+            size="small"
+            value={formData.email}
+            onChange={handleChange}
+            onKeyPress={handleKeyPress}
+            sx={{ mb: 2 }}
+          />
 
           <TextField
             label="비밀번호"

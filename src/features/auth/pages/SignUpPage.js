@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { signupUser } from '../auth.api';  // ✅ 회원가입 API 호출
+import { signupUser } from '../authApi';  // ✅ 회원가입 API 호출
 
 const SignUpPage = () => {
   const navigate = useNavigate();

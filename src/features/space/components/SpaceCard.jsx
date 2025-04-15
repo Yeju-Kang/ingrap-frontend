@@ -8,6 +8,8 @@ const SpaceCard = ({ space, onClick }) => {
     day: "2-digit",
   });
 
+  console.log('space : ', space)
+
   return (
     <Card
       onClick={onClick}
@@ -44,7 +46,7 @@ const SpaceCard = ({ space, onClick }) => {
           {space.name}
         </Typography>
         <Typography variant="body2" color="text.secondary" mt={0.5}>
-           {formattedDate}
+           {space.updatedAt}
         </Typography>
       </CardContent>
     </Card>

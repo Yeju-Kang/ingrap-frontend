@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, Box, Button, Typography } from "@mui/material";
+import { Dialog, Box, Button, Typography } from "@mui/material";
 
 const ModeSelectModal = ({ open, onClose, onSelect }) => {
   return (
@@ -44,18 +44,21 @@ const ModeSelectModal = ({ open, onClose, onSelect }) => {
         </Button>
         <Button
           variant="outlined"
-          disabled
+          onClick={() => onSelect("mine")}
           sx={{
             borderRadius: "8px",
             fontWeight: 600,
             fontSize: "15px",
             py: 1.2,
-            borderColor: "#ddd",
-            color: "#aaa",
-            backgroundColor: "#f8f8f8",
+            borderColor: "#b5ae91",
+            color: "#7a7657",
+            backgroundColor: "#fff",
+            '&:hover': {
+              backgroundColor: "#f2f1e7",
+            },
           }}
         >
-          내 공간으로 시작하기 (준비 중)
+          내 공간으로 시작하기
         </Button>
       </Box>
     </Dialog>

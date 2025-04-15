@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux"; 
 import { Box, Typography, Avatar, IconButton, Tooltip } from "@mui/material";
 import { Logout } from "@mui/icons-material";
-import { logoutUser } from "../../auth/auth.api"; // ✅ 로그아웃 API import
+import { logoutUser } from "../../auth/authApi"; // ✅ 로그아웃 API import
 import { useNavigate } from "react-router-dom"; // ✅ 리다이렉트용
 import { logout } from "../../../store/authSlice"; // ✅ 경로는 실제 위치에 맞게 수정
 

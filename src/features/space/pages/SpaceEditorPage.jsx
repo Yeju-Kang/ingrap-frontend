@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Box } from "@mui/material";
 import Sidebar from "../components/sidebar/Sidebar";
 import FilterPanel from "../components/FilterPanel";
@@ -6,8 +7,17 @@ import ProductList from "../components/ProductList";
 import RoomArea from "../components/RoomArea";
 import FurnitureControls from "../components/FurnitureControls";
 import ProductDetailDialog from "../components/ProductDetailDialog";
+import { saveUserSpace } from "../spaceApi";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { saveLastVisitedPage } from "../../../store/authSlice";
 
-const EmptyPage = () => {
+const SpaceEditorPage = () => {
+  const { id: spaceId } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
   const [furnitureList, setFurnitureList] = useState([]);
   const [selectedFurniture, setSelectedFurniture] = useState(null);
   const [weather, setWeather] = useState("sunny");
@@ -49,7 +59,41 @@ const EmptyPage = () => {
     }
   };
 
-  // 마우스로 사이즈 조절 핸들
+  const handleSave = async () => {
+    if (!isAuthenticated) {
+      dispatch(saveLastVisitedPage(location.pathname + location.search));
+      localStorage.setItem("pendingSpaceId", spaceId);
+      localStorage.setItem("pendingSpaceName", "새 공간");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const payload = {
+        spaceId: parseInt(spaceId),
+        name: localStorage.getItem("pendingSpaceName") || "새 공간",
+        furnitures: furnitureList.map((f) => ({
+          type: f.type,
+          modelUrl: f.modelUrl,
+          positionX: f.position?.[0] || 0,
+          positionY: f.position?.[1] || 0,
+          positionZ: f.position?.[2] || 0,
+          rotationX: f.rotation?.[0] || 0,
+          rotationY: f.rotation?.[1] || 0,
+          rotationZ: f.rotation?.[2] || 0,
+          color: f.color || "#ffffff",
+        })),
+      };
+      await saveUserSpace(payload);
+      alert("저장되었습니다!");
+      localStorage.removeItem("pendingSpaceId");
+      localStorage.removeItem("pendingSpaceName");
+    } catch (err) {
+      console.error("저장 실패", err);
+      alert("저장 중 오류가 발생했습니다.");
+    }
+  };
+
   const handleMouseDown = (e) => {
     e.preventDefault();
     const startX = e.clientX;
@@ -86,6 +130,7 @@ const EmptyPage = () => {
         <FurnitureControls
           selectedFurniture={selectedFurniture}
           onDeleteFurniture={handleDeleteFurniture}
+          onSave={handleSave}
         />
       </Box>
 
@@ -114,46 +159,43 @@ const EmptyPage = () => {
           />
         </Box>
 
-        {/* 📏 사이즈 조절 핸들 */}
         <Box
-  onMouseDown={handleMouseDown}
-  sx={{
-    width: "10px", // 좀 더 여유 있게
-    cursor: "ew-resize",
-    backgroundColor: "#e0e0e0",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "relative",
-    zIndex: 1,
-    transition: "background-color 0.2s",
-  }}
->
-  {/* 🎨 드래그 힌트용 점 3개 (⋮ 형태) */}
-  <Box
-    sx={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: "3px",
-    }}
-  >
-    {[...Array(3)].map((_, i) => (
-      <Box
-        key={i}
-        sx={{
-          width: "5px",
-          height: "5px",
-          backgroundColor: "#999",
-          borderRadius: "50%",
-        }}
-      />
-    ))}
-  </Box>
-</Box>
+          onMouseDown={handleMouseDown}
+          sx={{
+            width: "10px",
+            cursor: "ew-resize",
+            backgroundColor: "#e0e0e0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
+            zIndex: 1,
+            transition: "background-color 0.2s",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "3px",
+            }}
+          >
+            {[...Array(3)].map((_, i) => (
+              <Box
+                key={i}
+                sx={{
+                  width: "5px",
+                  height: "5px",
+                  backgroundColor: "#999",
+                  borderRadius: "50%",
+                }}
+              />
+            ))}
+          </Box>
+        </Box>
 
-        {/* 📦 조절 가능한 우측 패널 */}
         <Box
           ref={panelRef}
           sx={{
@@ -172,17 +214,15 @@ const EmptyPage = () => {
             searchKeyword={searchKeyword}
             onSearchChange={setSearchKeyword}
           />
-<ProductList
-  panelWidth={panelWidth} // ✅ 추가
-  selectedCategory={selectedCategory}
-  searchKeyword={searchKeyword}
-  onProductClick={setPreviewProduct}
-/>
-
+          <ProductList
+            panelWidth={panelWidth}
+            selectedCategory={selectedCategory}
+            searchKeyword={searchKeyword}
+            onProductClick={setPreviewProduct}
+          />
         </Box>
       </Box>
 
-      {/* 상세 팝업 */}
       <ProductDetailDialog
         open={!!previewProduct}
         product={previewProduct}
@@ -193,4 +233,4 @@ const EmptyPage = () => {
   );
 };
 
-export default EmptyPage;
+export default SpaceEditorPage;

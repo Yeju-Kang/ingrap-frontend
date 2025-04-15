@@ -6,7 +6,7 @@ import { ThemeProvider, CssBaseline } from "@mui/material";
 import CustomCursor from "./components/CustomCursor/CustomCursor";
 import Header from "./layouts/Header/Header";
 import { loginSuccess, logout, setAuthLoading} from "./store/authSlice";
-import { checkAuth } from "./features/auth/auth.api";
+import { checkAuth } from "./features/auth/authApi";
 
 function App() {
   const dispatch = useDispatch();
