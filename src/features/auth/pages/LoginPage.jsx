@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import useLogin from "../../../hooks/useLogin"; // ✅ 커스텀 훅 사용
+import useLogin from "../../../hooks/useLogin";
 
 import bgImage from "../../../assets/images/login-bg-blur.png";
 import promoImage from "../../../assets/images/promo-furniture-contest.png";
@@ -23,13 +23,19 @@ const LoginPage = () => {
   const handleLogin = async () => {
     try {
       await login(formData);
-
-      // ✅ pendingSpaceId 및 pendingSpaceName 처리
+  
       const pendingSpaceId = localStorage.getItem("pendingSpaceId");
-      if (pendingSpaceId) {
-        navigate(`/space/${pendingSpaceId}`, { replace: true });
-        // ❗ 이름은 SpaceEditorPage에서 삭제되므로 여기선 유지
-        // localStorage.removeItem("pendingSpaceId"); ← ❌ 여기선 삭제 안 함
+      const pendingSpaceName = localStorage.getItem("pendingSpaceName");
+  
+      if (pendingSpaceId && pendingSpaceName) {
+        // ✅ 자동 저장 후 또 저장되지 않도록 미리 제거
+        localStorage.removeItem("pendingSpaceId");
+        localStorage.removeItem("pendingSpaceName");
+        navigate(`/space/${pendingSpaceId}?autosave=true`, { replace: true });
+      } else if (pendingSpaceId && !pendingSpaceName) {
+        alert("저장할 공간 이름이 없습니다. 다시 시도해주세요.");
+        localStorage.removeItem("pendingSpaceId");
+        navigate("/", { replace: true });
       } else {
         navigate(lastVisitedPage, { replace: true });
       }
@@ -38,6 +44,7 @@ const LoginPage = () => {
       console.error("로그인 오류:", err);
     }
   };
+  
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -163,7 +170,6 @@ const LoginPage = () => {
           </Button>
         </Box>
 
-        {/* 오른쪽 프로모션 이미지 */}
         <Box
           sx={{
             width: "50%",

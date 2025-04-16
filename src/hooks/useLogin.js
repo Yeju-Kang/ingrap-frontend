@@ -13,31 +13,35 @@ const useLogin = () => {
   const login = async (formData) => {
     try {
       await loginUser(formData); // ✅ 실제 로그인 요청
-
+  
       dispatch(loginSuccess({ email: formData.email }));
       alert("로그인 성공!");
-
+  
       const pendingSpaceId = localStorage.getItem("pendingSpaceId");
-      if (pendingSpaceId) {
+      const pendingSpaceName = localStorage.getItem("pendingSpaceName");
+  
+      if (pendingSpaceId && pendingSpaceName) {
         try {
           const saveRequest = {
             spaceId: Number(pendingSpaceId),
-            name: "내 공간",
-            furnitures: [], // ✅ 필요 시 로컬에 저장된 가구 리스트 활용
+            name: pendingSpaceName, // ✅ 수정됨
+            furnitures: [], // 필요 시 가구 정보 추가
           };
           await apiClient.post("/spaces/save", saveRequest);
           localStorage.removeItem("pendingSpaceId");
+          localStorage.removeItem("pendingSpaceName"); // ✅ 꼭 같이 지워야 함
           console.log("자동 저장 완료 ✅");
         } catch (err) {
           console.error("자동 저장 실패 ❌", err);
         }
       }
-
+  
       navigate(lastVisitedPage, { replace: true });
     } catch (error) {
       throw error; // 로그인 실패 시 오류는 컴포넌트에서 핸들링
     }
   };
+  
 
   return login;
 };

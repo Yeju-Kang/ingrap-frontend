@@ -1,6 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Box } from "@mui/material";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Sidebar from "../components/sidebar/Sidebar";
 import FilterPanel from "../components/FilterPanel";
 import ProductList from "../components/ProductList";
@@ -8,11 +9,10 @@ import RoomArea from "../components/RoomArea";
 import FurnitureControls from "../components/FurnitureControls";
 import ProductDetailDialog from "../components/ProductDetailDialog";
 import { saveUserSpace } from "../spaceApi";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { saveLastVisitedPage } from "../../../store/authSlice";
 
 const SpaceEditorPage = () => {
-  const { id: spaceId } = useParams();
+  const { id: urlSpaceId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -30,6 +30,82 @@ const SpaceEditorPage = () => {
   const [panelWidth, setPanelWidth] = useState(500);
 
   const panelRef = useRef();
+
+  // ✅ 자동 저장 useEffect는 furnitureList를 의존성에 포함해야 함
+  useEffect(() => {
+    const pendingId = localStorage.getItem("pendingSpaceId");
+    const pendingName = localStorage.getItem("pendingSpaceName");
+  
+    // 조건: 로그인 되었고, 이름이 유효할 때만 자동 저장
+    if (isAuthenticated && pendingId && pendingName && pendingName !== "내 공간") {
+      const payload = {
+        spaceId: parseInt(pendingId),
+        name: pendingName,
+        furnitures: furnitureList.map((f) => ({
+          type: f.type,
+          modelUrl: f.modelUrl,
+          positionX: f.position?.[0] || 0,
+          positionY: f.position?.[1] || 0,
+          positionZ: f.position?.[2] || 0,
+          rotationX: f.rotation?.[0] || 0,
+          rotationY: f.rotation?.[1] || 0,
+          rotationZ: f.rotation?.[2] || 0,
+          color: f.color || "#ffffff",
+        })),
+      };
+  
+      saveUserSpace(payload)
+        .then(() => {
+          alert("자동 저장 완료!");
+          localStorage.removeItem("pendingSpaceId");
+          localStorage.removeItem("pendingSpaceName");
+        })
+        .catch((err) => {
+          console.error("자동 저장 실패", err);
+        });
+    }
+  }, [isAuthenticated]);
+  
+
+  const handleSave = async () => {
+    const pendingId = localStorage.getItem("pendingSpaceId");
+    const pendingName = localStorage.getItem("pendingSpaceName");
+
+    const finalId = pendingId || urlSpaceId;
+    const finalName = pendingName || "이름 없음";
+
+    if (!isAuthenticated) {
+      dispatch(saveLastVisitedPage(location.pathname + location.search));
+      localStorage.setItem("pendingSpaceId", finalId);
+      localStorage.setItem("pendingSpaceName", finalName);
+      navigate("/login");
+      return;
+    }
+
+    const payload = {
+      spaceId: parseInt(finalId),
+      name: finalName,
+      furnitures: furnitureList.map((f) => ({
+        type: f.type,
+        modelUrl: f.modelUrl,
+        positionX: f.position?.[0] || 0,
+        positionY: f.position?.[1] || 0,
+        positionZ: f.position?.[2] || 0,
+        rotationX: f.rotation?.[0] || 0,
+        rotationY: f.rotation?.[1] || 0,
+        rotationZ: f.rotation?.[2] || 0,
+        color: f.color || "#ffffff",
+      })),
+    };
+
+    try {
+      await saveUserSpace(payload);
+      alert("저장되었습니다!");
+    } catch (err) {
+      console.error("저장 실패", err);
+      alert("저장 중 오류가 발생했습니다.");
+    }
+  };
 
   const handleAddFurniture = (furniture) => {
     const newFurniture = {
@@ -56,41 +132,6 @@ const SpaceEditorPage = () => {
       setFlooring(product.image);
     } else {
       handleAddFurniture(product);
-    }
-  };
-
-  const handleSave = async () => {
-    if (!isAuthenticated) {
-      dispatch(saveLastVisitedPage(location.pathname + location.search));
-      localStorage.setItem("pendingSpaceId", spaceId);
-      localStorage.setItem("pendingSpaceName", "새 공간");
-      navigate("/login");
-      return;
-    }
-
-    try {
-      const payload = {
-        spaceId: parseInt(spaceId),
-        name: localStorage.getItem("pendingSpaceName") || "새 공간",
-        furnitures: furnitureList.map((f) => ({
-          type: f.type,
-          modelUrl: f.modelUrl,
-          positionX: f.position?.[0] || 0,
-          positionY: f.position?.[1] || 0,
-          positionZ: f.position?.[2] || 0,
-          rotationX: f.rotation?.[0] || 0,
-          rotationY: f.rotation?.[1] || 0,
-          rotationZ: f.rotation?.[2] || 0,
-          color: f.color || "#ffffff",
-        })),
-      };
-      await saveUserSpace(payload);
-      alert("저장되었습니다!");
-      localStorage.removeItem("pendingSpaceId");
-      localStorage.removeItem("pendingSpaceName");
-    } catch (err) {
-      console.error("저장 실패", err);
-      alert("저장 중 오류가 발생했습니다.");
     }
   };
 

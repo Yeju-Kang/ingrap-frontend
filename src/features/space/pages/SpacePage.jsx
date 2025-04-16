@@ -36,11 +36,16 @@ const SpacePage = () => {
 
   const handleCreateSpace = async (spaceName) => {
     try {
+      if (!spaceName) return;
+
       if (mode === "empty") {
         const spaceId = await createSpace(spaceName);
-        localStorage.setItem("pendingSpaceId", spaceId); // ✅ 상태 유지
-        setShowNameModal(false);
-        if (spaceId) navigate(`/space/${spaceId}`);
+        if (spaceId) {
+          localStorage.setItem("pendingSpaceId", spaceId);
+          localStorage.setItem("pendingSpaceName", spaceName); // ✅ 이름도 저장
+          setShowNameModal(false);
+          navigate(`/space/${spaceId}`);
+        }
       } else if (mode === "mine") {
         const spaceId = await createGuestSpace(spaceName);
         const url = await createUploadLink(spaceId);
