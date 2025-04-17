@@ -6,6 +6,7 @@ import {
   Typography,
   Grid,
 } from "@mui/material";
+import imageMap from "../../../assets/imageMap";
 
 const ProductList = ({
   onProductClick,
@@ -14,12 +15,12 @@ const ProductList = ({
   panelWidth = 500, // ✅ 기본값
 }) => {
   const products = [
-    { id: 1, name: "원목 의자자", type: "chair", model: "/chair4.glb", image: "/chair.png" },
-    { id: 2, name: "화이트 침대", type: "bed", model: "/bed4.glb", image: "/bed.png" },
-    { id: 3, name: "박스 의자", type: "chair", model: "/box.glb", image: "/box.png" },
+    { id: 1, name: "의자", type: "chair", model:imageMap.section.shop.chair, image: imageMap.section.shop.chairimg },
+    { id: 2, name: "침대", type: "bed", model: imageMap.section.shop.bed, image:  imageMap.section.shop.bedimg },
     { id: 4, name: "화이트 벽지", type: "wallpaper", image: "/textures/wallpaper/Wallpaper001A_4K-PNG_Color.png" },
-    { id: 5, name: "우드 바닥", type: "flooring", image: "/textures/wallpaper/Fabric058_4K-PNG_Color.png" },
-    { id: 6, name: "쇼케이스", type: "storage", model: "/showcase.glb", image: "/textures/wallpaper/Fabric058_4K-PNG_Color.png" },
+    { id: 5, name: "우드 바닥", type: "flooring", image: "/textures/wallpaper/wood_floor_diff_4k.jpg" },
+    { id: 6, name: "소파", type: "sofa", model: imageMap.section.shop.sofa, image: imageMap.section.shop.sofaimg},
+    { id: 7, name: "수납장", type: "storage", model: imageMap.section.shop.drawer, image: imageMap.section.shop.drawerimg },
   ];
 
   const filtered = products.filter((p) => {

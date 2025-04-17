@@ -7,12 +7,19 @@ function CustomCursor() {
 
   useEffect(() => {
     const moveCursor = (e) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+      const { clientX, clientY } = e;
+      // 좌표가 바뀌었을 때만 setState
+      setPosition((prev) => {
+        if (prev.x !== clientX || prev.y !== clientY) {
+          return { x: clientX, y: clientY };
+        }
+        return prev;
+      });
     };
 
     const handleClick = () => {
       setClickEffect(true);
-      setTimeout(() => setClickEffect(false), 300); // 0.3초 후 원래대로
+      setTimeout(() => setClickEffect(false), 300);
     };
 
     window.addEventListener("mousemove", moveCursor);
@@ -26,7 +33,6 @@ function CustomCursor() {
 
   return (
     <div className="custom-cursor-wrapper">
-      {/* 내부 흰색 동그라미 */}
       <div
         className="custom-cursor"
         style={{
@@ -34,7 +40,6 @@ function CustomCursor() {
           top: `${position.y}px`,
         }}
       />
-      {/* 외부 테두리 원 */}
       <div
         className={`custom-cursor-outline ${clickEffect ? "click-effect" : ""}`}
         style={{

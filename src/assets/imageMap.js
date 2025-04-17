@@ -30,6 +30,18 @@ const imageMap = {
       lighting: `${S3_BASE_URL}/assets/section/shop/lighting.png`,
       outdoor: `${S3_BASE_URL}/assets/section/shop/outdoor.png`,
       store: `${S3_BASE_URL}/assets/section/shop/store.png`,
+      chair:`${S3_BASE_URL}/assets/section/shop/chair.glb`,
+      chairimg:`${S3_BASE_URL}/assets/section/shop/chairimg.png`,
+      bed:`${S3_BASE_URL}/assets/section/shop/bed.glb`,
+      bedimg: `${S3_BASE_URL}/assets/section/shop/bedimg.png`,
+      drawer:`${S3_BASE_URL}/assets/section/shop/drawer.glb`,
+      drawerimg: `${S3_BASE_URL}/assets/section/shop/drawerimg.png`,
+      sofa:`${S3_BASE_URL}/assets/section/shop/sofa.glb`,
+      sofaimg: `${S3_BASE_URL}/assets/section/shop/sofaimg.png`,
+      woodfloor:`${S3_BASE_URL}/assets/section/shop/woodfloor.jpg`,
+      wallpaper:`${S3_BASE_URL}/assets/section/shop/wallpaper.png`,
+
+
 
     },
   },
