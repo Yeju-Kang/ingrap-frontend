@@ -30,15 +30,16 @@ const ProductDetailDialog = ({ open, onClose, product, onApply }) => {
       size,
     };
 
-    // onApply이 가구, 벽지, 바닥 전부 적용되도록 처리
-    onApply(appliedProduct);
+    // 먼저 닫고 나서 onApply는 다음 tick에 호출
     onClose();
+    setTimeout(() => {
+      onApply(appliedProduct);
+    }, 0);
   };
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
       <Box display="flex" flexDirection="row" p={3} bgcolor="#fdfdfb">
-        {/* 왼쪽 이미지 */}
         <Box
           sx={{
             width: "50%",
@@ -62,7 +63,6 @@ const ProductDetailDialog = ({ open, onClose, product, onApply }) => {
           />
         </Box>
 
-        {/* 오른쪽 정보 */}
         <Box sx={{ width: "50%", pl: 3, position: "relative" }}>
           <IconButton
             onClick={onClose}
@@ -79,46 +79,44 @@ const ProductDetailDialog = ({ open, onClose, product, onApply }) => {
             오픈형 거실에 잘 어울리는 아이템이에요!
           </Typography>
 
-          {/* 가구일 때만 옵션 선택 표시 */}
-            <>
-              <Typography fontSize={14} mb={1} color="text.secondary">
-                ₩ 700,000 → <strong style={{ color: "#333" }}>₩ 300,000</strong>
+          <>
+            <Typography fontSize={14} mb={1} color="text.secondary">
+              ₩ 700,000 → <strong style={{ color: "#333" }}>₩ 300,000</strong>
+            </Typography>
+
+            <Box mb={2}>
+              <Typography fontSize={14} mb={0.5}>
+                색상
               </Typography>
+              <ToggleButtonGroup
+                value={color}
+                exclusive
+                onChange={(e, val) => val && setColor(val)}
+                size="small"
+                sx={{ gap: 1 }}
+              >
+                <ToggleButton value="white" sx={{ width: 32, height: 32, background: "#f1f1f1" }} />
+                <ToggleButton value="black" sx={{ width: 32, height: 32, background: "#333" }} />
+                <ToggleButton value="beige" sx={{ width: 32, height: 32, background: "#d6c9a8" }} />
+              </ToggleButtonGroup>
+            </Box>
 
-              <Box mb={2}>
-                <Typography fontSize={14} mb={0.5}>
-                  색상
-                </Typography>
-                <ToggleButtonGroup
-                  value={color}
-                  exclusive
-                  onChange={(e, val) => val && setColor(val)}
-                  size="small"
-                  sx={{ gap: 1 }}
+            <Box mb={3}>
+              <FormControl fullWidth size="small">
+                <InputLabel>사이즈 선택</InputLabel>
+                <Select
+                  value={size}
+                  label="사이즈 선택"
+                  onChange={(e) => setSize(e.target.value)}
                 >
-                  <ToggleButton value="white" sx={{ width: 32, height: 32, background: "#f1f1f1" }} />
-                  <ToggleButton value="black" sx={{ width: 32, height: 32, background: "#333" }} />
-                  <ToggleButton value="beige" sx={{ width: 32, height: 32, background: "#d6c9a8" }} />
-                </ToggleButtonGroup>
-              </Box>
+                  <MenuItem value="S">S</MenuItem>
+                  <MenuItem value="M">M</MenuItem>
+                  <MenuItem value="L">L</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </>
 
-              <Box mb={3}>
-                <FormControl fullWidth size="small">
-                  <InputLabel>사이즈 선택</InputLabel>
-                  <Select
-                    value={size}
-                    label="사이즈 선택"
-                    onChange={(e) => setSize(e.target.value)}
-                  >
-                    <MenuItem value="S">S</MenuItem>
-                    <MenuItem value="M">M</MenuItem>
-                    <MenuItem value="L">L</MenuItem>
-                  </Select>
-                </FormControl>
-              </Box>
-            </>
-
-          {/* 액션 버튼 */}
           <Box display="flex" justifyContent="space-between" gap={1}>
             <Tooltip title="장바구니에 담기">
               <IconButton

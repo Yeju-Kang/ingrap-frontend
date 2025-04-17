@@ -282,13 +282,16 @@ const SpaceEditorPage = () => {
           />
         </Box>
       </Box>
-
       <ProductDetailDialog
-        open={!!previewProduct}
-        product={previewProduct}
-        onClose={() => setPreviewProduct(null)}
-        onApply={handleApplyProduct}
-      />
+  open={!!previewProduct}
+  product={previewProduct}
+  onClose={() => {
+    if (previewProduct) {
+      setPreviewProduct(null); // 무한 setState 방지
+    }
+  }}
+  onApply={handleApplyProduct}
+/>
     </Box>
   );
 };
