@@ -8,7 +8,7 @@ import ProductList from "../components/ProductList";
 import RoomArea from "../components/RoomArea";
 import FurnitureControls from "../components/FurnitureControls";
 import ProductDetailDialog from "../components/ProductDetailDialog";
-import { saveUserSpace } from "../spaceApi";
+import { saveUserSpace, getSpaceDetail } from "../spaceApi";
 import { saveLastVisitedPage } from "../../../store/authSlice";
 
 const SpaceEditorPage = () => {
@@ -24,19 +24,39 @@ const SpaceEditorPage = () => {
   const [cameraMode, setCameraMode] = useState("third");
   const [wallpaper, setWallpaper] = useState(null);
   const [flooring, setFlooring] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedType, setSelectedType] = useState("all");
   const [searchKeyword, setSearchKeyword] = useState("");
   const [previewProduct, setPreviewProduct] = useState(null);
   const [panelWidth, setPanelWidth] = useState(500);
 
   const panelRef = useRef();
 
-  // ✅ 자동 저장 useEffect는 furnitureList를 의존성에 포함해야 함
+  useEffect(() => {
+    if (urlSpaceId) {
+      const fetchSpace = async () => {
+        try {
+          const res = await getSpaceDetail(urlSpaceId);
+          const furnitures = res?.furnitures?.map((f) => ({
+            type: f.type,
+            modelUrl: f.modelUrl,
+            position: [f.positionX, f.positionY, f.positionZ],
+            rotation: [f.rotationX, f.rotationY, f.rotationZ],
+            color: f.color,
+            uuid: Date.now() + Math.random(),
+          })) ?? [];
+          setFurnitureList(furnitures);
+        } catch (err) {
+          console.error("공간 불러오기 실패 ❌", err);
+        }
+      };
+      fetchSpace();
+    }
+  }, [urlSpaceId]);
+
   useEffect(() => {
     const pendingId = localStorage.getItem("pendingSpaceId");
     const pendingName = localStorage.getItem("pendingSpaceName");
-  
-    // 조건: 로그인 되었고, 이름이 유효할 때만 자동 저장
+
     if (isAuthenticated && pendingId && pendingName && pendingName !== "내 공간") {
       const payload = {
         spaceId: parseInt(pendingId),
@@ -53,7 +73,7 @@ const SpaceEditorPage = () => {
           color: f.color || "#ffffff",
         })),
       };
-  
+
       saveUserSpace(payload)
         .then(() => {
           alert("자동 저장 완료!");
@@ -65,7 +85,6 @@ const SpaceEditorPage = () => {
         });
     }
   }, [isAuthenticated]);
-  
 
   const handleSave = async () => {
     const pendingId = localStorage.getItem("pendingSpaceId");
@@ -250,14 +269,14 @@ const SpaceEditorPage = () => {
           }}
         >
           <FilterPanel
-            selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
+            selectedType={selectedType}
+            onTypeChange={setSelectedType}
             searchKeyword={searchKeyword}
             onSearchChange={setSearchKeyword}
           />
           <ProductList
             panelWidth={panelWidth}
-            selectedCategory={selectedCategory}
+            selectedType={selectedType}
             searchKeyword={searchKeyword}
             onProductClick={setPreviewProduct}
           />

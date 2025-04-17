@@ -107,9 +107,13 @@ const SpacePage = () => {
               maxWidth: `calc(${CARD_WIDTH * 4 + GAP * 3}px)`
             }}
           >
-            {visibleSpaces.map((space) => (
-              <SpaceCard key={space.id} space={space} />
-            ))}
+          {visibleSpaces.map((space) => (
+  <SpaceCard
+    key={space.id}
+    space={space}
+    onClick={() => navigate(`/space/${space.id}`)} // ✅ 여기가 핵심
+  />
+))}
             {Array.from({ length: remaining }).map((_, index) => (
               <CreateSpaceCard key={`create-${index}`} onClick={() => setShowModeSelect(true)} />
             ))}

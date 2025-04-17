@@ -1,9 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-  Typography,
-  List,
-  ListItem,
-  Divider,
   Box,
   InputBase,
   Paper,
@@ -11,29 +7,28 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  Divider,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
-const categories = [
-  { label: "전체", id: "all" }, 
+const types = [
+  { label: "전체", id: "all" },
   { label: "침대", id: "bed" },
   { label: "테이블", id: "table" },
   { label: "의자", id: "chair" },
   { label: "소파", id: "sofa" },
   { label: "수납장", id: "storage" },
   { label: "조명", id: "lighting" },
-  { label: "바닥", id: "flooring" }, 
+  { label: "바닥", id: "flooring" },
   { label: "벽지", id: "wallpaper" },
 ];
 
-
-const FilterPanel = ({ selectedCategory, onCategoryChange, searchKeyword, onSearchChange  }) => {
-  const [search, setSearch] = useState("");
-
-  const handleChange = (e) => {
-    onCategoryChange(e.target.value);
-  };
-
+const FilterPanel = ({
+  selectedType,
+  onTypeChange,
+  searchKeyword,
+  onSearchChange,
+}) => {
   return (
     <Box
       sx={{
@@ -44,20 +39,20 @@ const FilterPanel = ({ selectedCategory, onCategoryChange, searchKeyword, onSear
       }}
     >
       <FormControl fullWidth sx={{ mb: 2 }}>
-        <InputLabel id="element-select-label">카테고리</InputLabel>
+        <InputLabel id="type-select-label">종류</InputLabel>
         <Select
-          labelId="element-select-label"
-          value={selectedCategory}
-          onChange={handleChange}
-          label="카테고리"
+          labelId="type-select-label"
+          value={selectedType}
+          onChange={(e) => onTypeChange(e.target.value)}
+          label="종류"
           sx={{
             borderRadius: "12px",
             backgroundColor: "#fff",
           }}
         >
-          {categories.map((cat) => (
-            <MenuItem key={cat.id} value={cat.id}>
-              {cat.label}
+          {types.map((item) => (
+            <MenuItem key={item.id} value={item.id}>
+              {item.label}
             </MenuItem>
           ))}
         </Select>
@@ -78,11 +73,11 @@ const FilterPanel = ({ selectedCategory, onCategoryChange, searchKeyword, onSear
       >
         <SearchIcon sx={{ color: "#888", mr: 1 }} />
         <InputBase
-    placeholder="검색"
-    value={searchKeyword}
-    onChange={(e) => onSearchChange(e.target.value)}
-    sx={{ flex: 1 }}
-  />
+          placeholder="검색"
+          value={searchKeyword}
+          onChange={(e) => onSearchChange(e.target.value)}
+          sx={{ flex: 1 }}
+        />
       </Paper>
       <Divider sx={{ mb: 2 }} />
     </Box>

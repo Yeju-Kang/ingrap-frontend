@@ -44,6 +44,7 @@ const ModeSelectModal = ({ open, onClose, onSelect }) => {
         </Button>
         <Button
           variant="outlined"
+          disabled="true"
           onClick={() => onSelect("mine")}
           sx={{
             borderRadius: "8px",
