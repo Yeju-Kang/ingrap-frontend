@@ -17,9 +17,10 @@ const ProductList = ({
   const products = [
     { id: 1, name: "의자", type: "chair", model:imageMap.section.shop.chair, image: imageMap.section.shop.chairimg },
     { id: 2, name: "침대", type: "bed", model: imageMap.section.shop.bed, image:  imageMap.section.shop.bedimg },
-    { id: 4, name: "화이트 벽지", type: "wallpaper", image: "/textures/wallpaper/Wallpaper001A_4K-PNG_Color.png" },
-    { id: 5, name: "우드 바닥", type: "flooring", image: "/textures/wallpaper/wood_floor_diff_4k.jpg" },
-    { id: 6, name: "소파", type: "sofa", model: imageMap.section.shop.sofa, image: imageMap.section.shop.sofaimg},
+    { id: 3, name: "화이트 벽지", type: "wallpaper", image: "/textures/wallpaper/Wallpaper001A_4K-PNG_Color.png" },
+    { id: 4, name: "우드 바닥", type: "flooring", image: "/textures/wallpaper/wood_floor_diff_4k.jpg" },
+    { id: 5, name: "소파", type: "sofa", model: imageMap.section.shop.sofa, image: imageMap.section.shop.sofaimg},
+    { id: 6, name: "조명", type: "lighting", model: imageMap.section.shop.lamp, image: imageMap.section.shop.lampimg},
     { id: 7, name: "수납장", type: "storage", model: imageMap.section.shop.drawer, image: imageMap.section.shop.drawerimg },
   ];
 

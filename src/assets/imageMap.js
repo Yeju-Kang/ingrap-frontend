@@ -38,6 +38,8 @@ const imageMap = {
       drawerimg: `${S3_BASE_URL}/assets/section/shop/drawerimg.png`,
       sofa:`${S3_BASE_URL}/assets/section/shop/sofa.glb`,
       sofaimg: `${S3_BASE_URL}/assets/section/shop/sofaimg.png`,
+      lamp:`${S3_BASE_URL}/assets/section/shop/lamp.glb`,
+      lampimg: `${S3_BASE_URL}/assets/section/shop/lampimg.png`,
       woodfloor:`${S3_BASE_URL}/assets/section/shop/woodfloor.jpg`,
       wallpaper:`${S3_BASE_URL}/assets/section/shop/wallpaper.png`,
 
