@@ -60,6 +60,12 @@ const SceneContent = ({
         Math.round(intersection.z * 100) / 100,
       ];
 
+      // ✅ 벽 밖으로 못 나가게 제한
+      if (Math.abs(pos[0]) > 2.6 || Math.abs(pos[2]) > 2.6) {
+        moveRef.current = requestAnimationFrame(update);
+        return;
+      }
+
       const uuid = selectedFurniture.uuid;
       const rigidBody = rigidBodyRefs.current[uuid];
       if (rigidBody) {
@@ -126,7 +132,7 @@ const SceneContent = ({
       <pointLight position={[0, 8, 0]} intensity={80} distance={30} decay={2} color="#ffffff" />
       <OrbitControls enablePan={!selectedFurniture} enableRotate={!selectedFurniture} />
 
-      {/* 바닥 (5.5m x 5.5m) */}
+      {/* 바닥 */}
       <RigidBody type="fixed" colliders={false}>
         <mesh position={[0, 0, 0]}>
           <boxGeometry args={[5.5, 0.2, 5.5]} />
@@ -168,7 +174,7 @@ const SceneContent = ({
         <CuboidCollider args={[0.1, 2.5, 2.75]} position={[0, 2.5, -2.75]} />
       </RigidBody>
 
-      {/* 가구 렌더링 */}
+      {/* 가구들 */}
       {furnitureList.map((item) => {
         const isSelected = selectedFurniture?.uuid === item.uuid;
 
