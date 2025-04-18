@@ -60,7 +60,6 @@ const SceneContent = ({
         Math.round(intersection.z * 100) / 100,
       ];
 
-      // ✅ 벽 밖으로 못 나가게 제한
       if (Math.abs(pos[0]) > 2.6 || Math.abs(pos[2]) > 2.6) {
         moveRef.current = requestAnimationFrame(update);
         return;
@@ -178,7 +177,7 @@ const SceneContent = ({
       {furnitureList.map((item) => {
         const isSelected = selectedFurniture?.uuid === item.uuid;
 
-        return (
+        return item.model ? (
           <RigidBody
             key={item.uuid}
             ref={(ref) => {
@@ -212,7 +211,7 @@ const SceneContent = ({
               )}
             </group>
           </RigidBody>
-        );
+        ) : null;
       })}
     </>
   );

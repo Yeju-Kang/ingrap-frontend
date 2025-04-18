@@ -8,8 +8,9 @@ import ProductList from "../components/ProductList";
 import RoomArea from "../components/RoomArea";
 import FurnitureControls from "../components/FurnitureControls";
 import ProductDetailDialog from "../components/ProductDetailDialog";
-import { saveUserSpace, getSpaceDetail } from "../spaceApi";
+import { saveUserSpace } from "../spaceApi";
 import { saveLastVisitedPage } from "../../../store/authSlice";
+import { fetchSpaceDetail, setFurnitureList } from "../../../store/spaceSlice";
 
 const SpaceEditorPage = () => {
   const { id: urlSpaceId } = useParams();
@@ -17,8 +18,8 @@ const SpaceEditorPage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { isAuthenticated } = useSelector((state) => state.auth);
+  const { currentSpace } = useSelector((state) => state.space);
 
-  const [furnitureList, setFurnitureList] = useState([]);
   const [selectedFurniture, setSelectedFurniture] = useState(null);
   const [weather, setWeather] = useState("sunny");
   const [cameraMode, setCameraMode] = useState("third");
@@ -33,65 +34,14 @@ const SpaceEditorPage = () => {
 
   useEffect(() => {
     if (urlSpaceId) {
-      const fetchSpace = async () => {
-        try {
-          const res = await getSpaceDetail(urlSpaceId);
-          const furnitures = res?.furnitures?.map((f) => ({
-            type: f.type,
-            modelUrl: f.modelUrl,
-            position: [f.positionX, f.positionY, f.positionZ],
-            rotation: [f.rotationX, f.rotationY, f.rotationZ],
-            color: f.color,
-            uuid: Date.now() + Math.random(),
-          })) ?? [];
-          setFurnitureList(furnitures);
-        } catch (err) {
-          console.error("공간 불러오기 실패 ❌", err);
-        }
-      };
-      fetchSpace();
+      dispatch(fetchSpaceDetail(urlSpaceId));
     }
-  }, [urlSpaceId]);
-
-  useEffect(() => {
-    const pendingId = localStorage.getItem("pendingSpaceId");
-    const pendingName = localStorage.getItem("pendingSpaceName");
-
-    if (isAuthenticated && pendingId && pendingName && pendingName !== "내 공간") {
-      const payload = {
-        spaceId: parseInt(pendingId),
-        name: pendingName,
-        furnitures: furnitureList.map((f) => ({
-          type: f.type,
-          modelUrl: f.modelUrl,
-          positionX: f.position?.[0] || 0,
-          positionY: f.position?.[1] || 0,
-          positionZ: f.position?.[2] || 0,
-          rotationX: f.rotation?.[0] || 0,
-          rotationY: f.rotation?.[1] || 0,
-          rotationZ: f.rotation?.[2] || 0,
-          color: f.color || "#ffffff",
-        })),
-      };
-
-      saveUserSpace(payload)
-        .then(() => {
-          alert("자동 저장 완료!");
-          localStorage.removeItem("pendingSpaceId");
-          localStorage.removeItem("pendingSpaceName");
-        })
-        .catch((err) => {
-          console.error("자동 저장 실패", err);
-        });
-    }
-  }, [isAuthenticated]);
+  }, [dispatch, urlSpaceId]);
 
   const handleSave = async () => {
     const pendingId = localStorage.getItem("pendingSpaceId");
-    const pendingName = localStorage.getItem("pendingSpaceName");
-
     const finalId = pendingId || urlSpaceId;
-    const finalName = pendingName || "이름 없음";
+    const finalName = currentSpace.name || "이름 없음";
 
     if (!isAuthenticated) {
       dispatch(saveLastVisitedPage(location.pathname + location.search));
@@ -104,7 +54,7 @@ const SpaceEditorPage = () => {
     const payload = {
       spaceId: parseInt(finalId),
       name: finalName,
-      furnitures: furnitureList.map((f) => ({
+      furnitures: currentSpace.furnitures.map((f) => ({
         type: f.type,
         modelUrl: f.modelUrl,
         positionX: f.position?.[0] || 0,
@@ -120,6 +70,8 @@ const SpaceEditorPage = () => {
     try {
       await saveUserSpace(payload);
       alert("저장되었습니다!");
+      localStorage.removeItem("pendingSpaceId");
+      localStorage.removeItem("pendingSpaceName");
     } catch (err) {
       console.error("저장 실패", err);
       alert("저장 중 오류가 발생했습니다.");
@@ -132,14 +84,16 @@ const SpaceEditorPage = () => {
       uuid: Date.now(),
       position: [Math.random() * 4 - 2, 0.1, Math.random() * 4 - 2],
     };
-    setFurnitureList((prev) => [...prev, newFurniture]);
+    const updatedList = [...currentSpace.furnitures, newFurniture];
+    dispatch(setFurnitureList(updatedList));
   };
 
   const handleDeleteFurniture = () => {
     if (selectedFurniture) {
-      setFurnitureList((prev) =>
-        prev.filter((item) => item.uuid !== selectedFurniture.uuid)
+      const updatedList = currentSpace.furnitures.filter(
+        (item) => item.uuid !== selectedFurniture.uuid
       );
+      dispatch(setFurnitureList(updatedList));
       setSelectedFurniture(null);
     }
   };
@@ -208,8 +162,8 @@ const SpaceEditorPage = () => {
 
         <Box flex={1} display="flex" flexDirection="column" minWidth={0} minHeight={0}>
           <RoomArea
-            furnitureList={furnitureList}
-            setFurnitureList={setFurnitureList}
+            furnitureList={currentSpace.furnitures}
+            setFurnitureList={(list) => dispatch(setFurnitureList(list))}
             selectedFurniture={selectedFurniture}
             setSelectedFurniture={setSelectedFurniture}
             weather={weather}
@@ -282,16 +236,17 @@ const SpaceEditorPage = () => {
           />
         </Box>
       </Box>
+
       <ProductDetailDialog
-  open={!!previewProduct}
-  product={previewProduct}
-  onClose={() => {
-    if (previewProduct) {
-      setPreviewProduct(null); // 무한 setState 방지
-    }
-  }}
-  onApply={handleApplyProduct}
-/>
+        open={!!previewProduct}
+        product={previewProduct}
+        onClose={() => {
+          if (previewProduct) {
+            setPreviewProduct(null);
+          }
+        }}
+        onApply={handleApplyProduct}
+      />
     </Box>
   );
 };

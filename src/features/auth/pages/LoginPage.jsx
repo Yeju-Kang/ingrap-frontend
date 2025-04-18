@@ -10,7 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useLogin from "../../../hooks/useLogin";
 
-import bgImage from "../../../assets/images/login-bg-blur.png";
+// 이미지 import
+import bgTexture from "../../../assets/images/bg-texture.png";
 import promoImage from "../../../assets/images/promo-furniture-contest.png";
 
 const LoginPage = () => {
@@ -23,12 +24,11 @@ const LoginPage = () => {
   const handleLogin = async () => {
     try {
       await login(formData);
-  
+
       const pendingSpaceId = localStorage.getItem("pendingSpaceId");
       const pendingSpaceName = localStorage.getItem("pendingSpaceName");
-  
+
       if (pendingSpaceId && pendingSpaceName) {
-        // ✅ 자동 저장 후 또 저장되지 않도록 미리 제거
         localStorage.removeItem("pendingSpaceId");
         localStorage.removeItem("pendingSpaceName");
         navigate(`/space/${pendingSpaceId}?autosave=true`, { replace: true });
@@ -44,7 +44,6 @@ const LoginPage = () => {
       console.error("로그인 오류:", err);
     }
   };
-  
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -61,10 +60,11 @@ const LoginPage = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundImage: `url(${bgImage})`,
+        backgroundColor: "#f6f5f0",
+        backgroundImage: `url(${bgTexture})`, // ✅ 텍스처 적용
         backgroundSize: "cover",
-        backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
         overflow: "hidden",
       }}
     >
@@ -79,6 +79,34 @@ const LoginPage = () => {
           bgcolor: "white",
         }}
       >
+        {/* 왼쪽: 이미지 */}
+        <Box
+          sx={{
+            width: "50%",
+            height: "100%",
+            backgroundColor: "#f3f1e8",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "relative",
+            borderTopLeftRadius: "12px",
+            borderBottomLeftRadius: "12px",
+            overflow: "hidden",
+          }}
+        >
+          <img
+            src={promoImage}
+            alt="Furniture Contest"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
+            }}
+          />
+        </Box>
+
+        {/* 오른쪽: 로그인 */}
         <Box
           sx={{
             width: "50%",
@@ -168,32 +196,6 @@ const LoginPage = () => {
           >
             회원가입
           </Button>
-        </Box>
-
-        <Box
-          sx={{
-            width: "50%",
-            height: "100%",
-            backgroundColor: "#f3f1e8",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            position: "relative",
-            borderTopRightRadius: "12px",
-            borderBottomRightRadius: "12px",
-            overflow: "hidden",
-          }}
-        >
-          <img
-            src={promoImage}
-            alt="Furniture Contest"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              display: "block",
-            }}
-          />
         </Box>
       </Box>
     </Box>

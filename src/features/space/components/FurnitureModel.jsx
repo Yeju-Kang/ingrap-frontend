@@ -3,13 +3,13 @@ import { useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { clone } from "three/examples/jsm/utils/SkeletonUtils";
 
-const FurnitureModel = ({ 
+const FurnitureModel = ({
   modelPath,
-   onSelect,
-    selected,
-     position = [0, 0, 0],
-      rotation = [0, 0, 0], 
-     }) => {
+  onSelect,
+  selected,
+  position = [0, 0, 0],
+  rotation = [0, 0, 0],
+}) => {
   const gltf = useLoader(GLTFLoader, modelPath);
   const clonedScene = useMemo(() => clone(gltf.scene), [gltf]);
   const ref = useRef();
@@ -17,8 +17,8 @@ const FurnitureModel = ({
   return (
     <group
       ref={ref}
-      position={position ?? [0, 0, 0]}
-      rotation={rotation ?? [0, 0, 0]}
+      position={position}
+      rotation={rotation}
       onClick={(e) => {
         e.stopPropagation();
         onSelect?.(ref.current);

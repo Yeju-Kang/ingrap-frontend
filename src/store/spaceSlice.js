@@ -14,14 +14,38 @@ export const fetchMySpaces = createAsyncThunk(
   }
 );
 
+export const fetchSpaceDetail = createAsyncThunk(
+  "space/fetchSpaceDetail",
+  async (spaceId, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`/api/spaces/${spaceId}`);
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || "Failed to fetch space detail");
+    }
+  }
+);
+
 const spaceSlice = createSlice({
   name: "space",
   initialState: {
     mySpaces: [],
     loading: false,
     error: null,
+    currentSpace: {
+      id: null,
+      name: "",
+      furnitures: [],
+    },
   },
-  reducers: {},
+  reducers: {
+    setFurnitureList: (state, action) => {
+      state.currentSpace.furnitures = action.payload;
+    },
+    setSpaceName: (state, action) => {
+      state.currentSpace.name = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchMySpaces.pending, (state) => {
@@ -35,8 +59,12 @@ const spaceSlice = createSlice({
       .addCase(fetchMySpaces.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchSpaceDetail.fulfilled, (state, action) => {
+        state.currentSpace = action.payload;
       });
   },
 });
 
+export const { setFurnitureList, setSpaceName } = spaceSlice.actions;
 export default spaceSlice.reducer;
