@@ -40,11 +40,24 @@ export const saveUserSpace = async (payload) => {
 };
 
 /**
- * 공간 상세 정보 조회
+ * 공간 상세 정보 조회 + 가구 데이터 normalize
  * @param {number} spaceId - 공간 ID
  * @returns {Promise<object>} - 공간 상세 데이터
  */
 export const getSpaceDetail = async (spaceId) => {
   const res = await axios.get(`/api/spaces/${spaceId}`);
-  return res.data;
+
+  const normalized = {
+    ...res.data,
+    furnitures: res.data.furnitures?.map((f) => ({
+      type: f.type,
+      modelUrl: f.modelUrl || f.model || null,
+      color: f.color || "#ffffff",
+      position: [f.positionX ?? 0, f.positionY ?? 0, f.positionZ ?? 0],
+      rotation: [f.rotationX ?? 0, f.rotationY ?? 0, f.rotationZ ?? 0],
+      uuid: Date.now() + Math.random(),
+    })) ?? [],
+  };
+
+  return normalized;
 };

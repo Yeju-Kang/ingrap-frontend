@@ -1,7 +1,9 @@
-// redux/spaceSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+/**
+ * 🔄 내 공간 목록 조회 (로그인 사용자)
+ */
 export const fetchMySpaces = createAsyncThunk(
   "space/fetchMySpaces",
   async (_, { rejectWithValue }) => {
@@ -14,15 +16,31 @@ export const fetchMySpaces = createAsyncThunk(
   }
 );
 
+/**
+ * 🔍 특정 공간 상세 조회
+ */
 export const fetchSpaceDetail = createAsyncThunk(
   "space/fetchSpaceDetail",
-  async (spaceId, { rejectWithValue }) => {
-    try {
-      const res = await axios.get(`/api/spaces/${spaceId}`);
-      return res.data;
-    } catch (err) {
-      return rejectWithValue(err.response?.data || "Failed to fetch space detail");
+  async (id) => {
+    const res = await axios.get(`/api/spaces/${id}`);
+    const data = res.data;
+
+    // 🛡️ 방어 코드 포함
+    if (!data || !Array.isArray(data.furnitures)) {
+      return { ...data, furnitures: [] };
     }
+
+    return {
+      ...data,
+      furnitures: data.furnitures.map((f) => ({
+        type: f.type,
+        modelUrl: f.modelUrl || f.model || null,
+        position: [f.positionX ?? 0, f.positionY ?? 0, f.positionZ ?? 0],
+        rotation: [f.rotationX ?? 0, f.rotationY ?? 0, f.rotationZ ?? 0],
+        color: f.color || "#ffffff",
+        uuid: Date.now() + Math.random(),
+      })),
+    };
   }
 );
 
@@ -61,6 +79,7 @@ const spaceSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(fetchSpaceDetail.fulfilled, (state, action) => {
+        if (!action.payload?.furnitures?.length) return; // 덮어쓰기 방지
         state.currentSpace = action.payload;
       });
   },

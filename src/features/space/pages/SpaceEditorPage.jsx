@@ -36,7 +36,7 @@ const SpaceEditorPage = () => {
     if (urlSpaceId) {
       dispatch(fetchSpaceDetail(urlSpaceId));
     }
-  }, [dispatch, urlSpaceId]);
+  }, [dispatch, urlSpaceId]); // ✅ 다른 의존성이 없도록 확인
 
   const handleSave = async () => {
     const pendingId = localStorage.getItem("pendingSpaceId");
@@ -56,7 +56,7 @@ const SpaceEditorPage = () => {
       name: finalName,
       furnitures: currentSpace.furnitures.map((f) => ({
         type: f.type,
-        modelUrl: f.modelUrl,
+        modelUrl: f.modelUrl || f.model || null,
         positionX: f.position?.[0] || 0,
         positionY: f.position?.[1] || 0,
         positionZ: f.position?.[2] || 0,
@@ -79,11 +79,22 @@ const SpaceEditorPage = () => {
   };
 
   const handleAddFurniture = (furniture) => {
+    const modelUrl = furniture.model || furniture.modelUrl;
+
+    if (!modelUrl) {
+      console.warn("🚫 modelUrl이 없습니다. 가구 추가 실패:", furniture);
+      return;
+    }
+
     const newFurniture = {
       ...furniture,
+      modelUrl,
       uuid: Date.now(),
       position: [Math.random() * 4 - 2, 0.1, Math.random() * 4 - 2],
+      rotation: [0, 0, 0],
+      color: furniture.color || "#ffffff",
     };
+
     const updatedList = [...currentSpace.furnitures, newFurniture];
     dispatch(setFurnitureList(updatedList));
   };
@@ -240,11 +251,7 @@ const SpaceEditorPage = () => {
       <ProductDetailDialog
         open={!!previewProduct}
         product={previewProduct}
-        onClose={() => {
-          if (previewProduct) {
-            setPreviewProduct(null);
-          }
-        }}
+        onClose={() => setPreviewProduct(null)}
         onApply={handleApplyProduct}
       />
     </Box>

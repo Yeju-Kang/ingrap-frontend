@@ -35,7 +35,10 @@ const SceneContent = ({
 
   useEffect(() => {
     const onMouseMove = (e) => {
-      const rect = document.querySelector("canvas").getBoundingClientRect();
+      const canvas = document.querySelector("canvas");
+      if (!canvas) return;
+
+      const rect = canvas.getBoundingClientRect();
       lastMouse.current = {
         x: ((e.clientX - rect.left) / rect.width) * 2 - 1,
         y: -((e.clientY - rect.top) / rect.height) * 2 + 1,
@@ -71,16 +74,18 @@ const SceneContent = ({
         rigidBody.setTranslation({ x: pos[0], y: pos[1], z: pos[2] }, true);
       }
 
-      setFurnitureList((prev) =>
-        prev.map((item) => (item.uuid === uuid ? { ...item, position: pos } : item))
+      if (!Array.isArray(furnitureList)) return;
+      const updatedList = furnitureList.map((item) =>
+        item.uuid === uuid ? { ...item, position: pos } : item
       );
+      setFurnitureList(updatedList);
 
       moveRef.current = requestAnimationFrame(update);
     };
 
     moveRef.current = requestAnimationFrame(update);
     return () => cancelAnimationFrame(moveRef.current);
-  }, [dragging, selectedFurniture, camera, raycaster, setFurnitureList]);
+  }, [dragging, selectedFurniture, camera, raycaster, setFurnitureList, furnitureList]);
 
   const handleSelect = (object, uuid) => {
     if (selectedFurniture?.uuid === uuid) {
@@ -95,33 +100,33 @@ const SceneContent = ({
   const rotateFurniture = (direction) => {
     if (!selectedFurniture) return;
 
-    setFurnitureList((prev) =>
-      prev.map((item) => {
-        if (item.uuid !== selectedFurniture.uuid) return item;
+    const updatedList = furnitureList.map((item) => {
+      if (item.uuid !== selectedFurniture.uuid) return item;
 
-        const newYRot = (item.rotation?.[1] || 0) + direction * Math.PI / 2;
-        const newRotation = [
-          item.rotation?.[0] || 0,
-          newYRot,
-          item.rotation?.[2] || 0,
-        ];
+      const newYRot = (item.rotation?.[1] || 0) + direction * Math.PI / 2;
+      const newRotation = [
+        item.rotation?.[0] || 0,
+        newYRot,
+        item.rotation?.[2] || 0,
+      ];
 
-        const rigidBody = rigidBodyRefs.current[item.uuid];
-        if (rigidBody) {
-          rigidBody.setRotation(
-            {
-              w: Math.cos(newYRot / 2),
-              x: 0,
-              y: Math.sin(newYRot / 2),
-              z: 0,
-            },
-            true
-          );
-        }
+      const rigidBody = rigidBodyRefs.current[item.uuid];
+      if (rigidBody) {
+        rigidBody.setRotation(
+          {
+            w: Math.cos(newYRot / 2),
+            x: 0,
+            y: Math.sin(newYRot / 2),
+            z: 0,
+          },
+          true
+        );
+      }
 
-        return { ...item, rotation: newRotation };
-      })
-    );
+      return { ...item, rotation: newRotation };
+    });
+
+    setFurnitureList(updatedList);
   };
 
   return (
@@ -176,8 +181,9 @@ const SceneContent = ({
       {/* 가구들 */}
       {furnitureList.map((item) => {
         const isSelected = selectedFurniture?.uuid === item.uuid;
+        const modelPath = item.modelUrl;
 
-        return item.model ? (
+        return modelPath ? (
           <RigidBody
             key={item.uuid}
             ref={(ref) => {
@@ -191,7 +197,7 @@ const SceneContent = ({
           >
             <group>
               <FurnitureModel
-                modelPath={item.model}
+                modelPath={modelPath}
                 selected={isSelected}
                 position={[0, 0, 0]}
                 rotation={[0, 0, 0]}
