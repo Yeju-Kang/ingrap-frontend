@@ -1,32 +1,53 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, Typography } from '@mui/material';
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Collapse,
+} from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { signupUser } from '../authApi';  // ✅ 회원가입 API 호출
+import { signupUser } from '../authApi';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const [formData, setFormData] = useState({
-    username: '',  
-    email: '',    
+    username: '',
+    email: '',
     password: '',
+    userType: 'individual',
+    businessNumber: '',
   });
 
   const from = location.state?.from || '/';
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('회원가입 정보:', formData);
+    const payload = { ...formData };
+
+    if (payload.userType !== 'corporate') {
+      delete payload.businessNumber;
+    }
+
+    console.log('회원가입 정보:', payload);
 
     try {
-      const response = await signupUser(formData); 
+      const response = await signupUser(payload);
       alert("회원가입 성공!");
-      console.log("회원가입 응답:", response.data);
-      
       navigate('/login', { state: { from } });
     } catch (error) {
       alert("회원가입 실패! 다시 시도해주세요.");
@@ -60,6 +81,35 @@ const SignUpPage = () => {
         </Typography>
 
         <form onSubmit={handleSubmit}>
+          {/* 회원 유형 선택 */}
+          <FormControl fullWidth required sx={{ mb: 2 }}>
+            <InputLabel>회원 유형</InputLabel>
+            <Select
+              name="userType"
+              value={formData.userType}
+              onChange={handleChange}
+              label="회원 유형"
+            >
+              <MenuItem value="individual">개인</MenuItem>
+              <MenuItem value="corporate">기업</MenuItem>
+            </Select>
+          </FormControl>
+
+          {/* 기업회원일 경우만 사업자번호 필드 노출 */}
+          <Collapse in={formData.userType === 'corporate'} timeout={200} unmountOnExit>
+            <Box sx={{ mb: 2 }}>
+              <TextField
+                label="사업자번호"
+                name="businessNumber"
+                variant="outlined"
+                fullWidth
+                required={formData.userType === 'corporate'}
+                value={formData.businessNumber}
+                onChange={handleChange}
+              />
+            </Box>
+          </Collapse>
+
           <TextField
             label="이름"
             name="username"
@@ -68,19 +118,19 @@ const SignUpPage = () => {
             required
             value={formData.username}
             onChange={handleChange}
-            sx={{ marginBottom: "12px" }}
+            sx={{ mb: 2 }}
           />
 
           <TextField
             label="이메일"
-            name="email" 
+            name="email"
             type="email"
             variant="outlined"
             fullWidth
             required
             value={formData.email}
             onChange={handleChange}
-            sx={{ marginBottom: "12px" }}
+            sx={{ mb: 2 }}
           />
 
           <TextField
@@ -92,17 +142,16 @@ const SignUpPage = () => {
             required
             value={formData.password}
             onChange={handleChange}
-            sx={{ marginBottom: "20px" }}
+            sx={{ mb: 3 }}
           />
 
-          {/* ✅ 회원가입 버튼 */}
           <Button
             type="submit"
             variant="contained"
             fullWidth
             sx={{
-              backgroundColor: " var(--primary-color)",
-              color: "white", 
+              backgroundColor: "var(--primary-color)",
+              color: "white",
               fontWeight: "bold",
               padding: "10px",
               "&:hover": { backgroundColor: "var(--primary-color)" },
