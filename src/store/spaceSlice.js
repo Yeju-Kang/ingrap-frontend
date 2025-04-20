@@ -25,13 +25,14 @@ export const fetchSpaceDetail = createAsyncThunk(
     const res = await axios.get(`/api/spaces/${id}`);
     const data = res.data;
 
-    // 🛡️ 방어 코드 포함
+    // 🚡️ 방어 코드 포함
     if (!data || !Array.isArray(data.furnitures)) {
       return { ...data, furnitures: [] };
     }
 
     return {
-      ...data,
+      id: data.id,
+      name: data.name || "",
       furnitures: data.furnitures.map((f) => ({
         type: f.type,
         modelUrl: f.modelUrl || f.model || null,
@@ -79,7 +80,6 @@ const spaceSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(fetchSpaceDetail.fulfilled, (state, action) => {
-        if (!action.payload?.furnitures?.length) return; // 덮어쓰기 방지
         state.currentSpace = action.payload;
       });
   },

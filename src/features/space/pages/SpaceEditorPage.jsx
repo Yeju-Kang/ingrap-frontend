@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Box } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Sidebar from "../components/sidebar/Sidebar";
 import FilterPanel from "../components/FilterPanel";
@@ -10,7 +10,7 @@ import FurnitureControls from "../components/FurnitureControls";
 import ProductDetailDialog from "../components/ProductDetailDialog";
 import { saveUserSpace } from "../spaceApi";
 import { saveLastVisitedPage } from "../../../store/authSlice";
-import { fetchSpaceDetail, setFurnitureList } from "../../../store/spaceSlice";
+import { fetchSpaceDetail, setFurnitureList, setSpaceName } from "../../../store/spaceSlice";
 
 const SpaceEditorPage = () => {
   const { id: urlSpaceId } = useParams();
@@ -34,14 +34,22 @@ const SpaceEditorPage = () => {
 
   useEffect(() => {
     if (urlSpaceId) {
-      dispatch(fetchSpaceDetail(urlSpaceId));
+      dispatch(fetchSpaceDetail(urlSpaceId)).then((action) => {
+        if (action.payload?.name && !currentSpace.name) {
+          dispatch(setSpaceName(action.payload.name));
+        }
+      });
     }
-  }, [dispatch, urlSpaceId]); // ✅ 다른 의존성이 없도록 확인
+  }, [dispatch, urlSpaceId]);
 
   const handleSave = async () => {
     const pendingId = localStorage.getItem("pendingSpaceId");
+    const pendingName = localStorage.getItem("pendingSpaceName");
+
     const finalId = pendingId || urlSpaceId;
-    const finalName = currentSpace.name || "이름 없음";
+    const finalName = (currentSpace.name && currentSpace.name !== "내 공간")
+      ? currentSpace.name
+      : pendingName || currentSpace.name || "이름 없음";
 
     if (!isAuthenticated) {
       dispatch(saveLastVisitedPage(location.pathname + location.search));
@@ -150,8 +158,18 @@ const SpaceEditorPage = () => {
           display: "flex",
           alignItems: "center",
           px: 2,
+          gap: 2,
         }}
       >
+        <TextField
+          variant="outlined"
+          size="small"
+          label="공간 이름"
+          value={currentSpace.name || ""}
+          onChange={(e) => dispatch(setSpaceName(e.target.value))}
+          sx={{ width: 200 }}
+        />
+
         <FurnitureControls
           selectedFurniture={selectedFurniture}
           onDeleteFurniture={handleDeleteFurniture}
