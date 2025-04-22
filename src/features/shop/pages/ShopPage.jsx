@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../components/ShopCard";
 import HeroBanner from "../components/HeroBanner";
 import imageMap from "../../../assets/imageMap";
+import FilterBar from "../components/FilterBar";
+
 
 const CARD_WIDTH = 280;
 const GAP = 24;
@@ -18,11 +20,20 @@ const products = [
 
 const ShopPage = () => {
   const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const filteredProducts = selectedCategory
+    ? products.filter((product) => product.category === selectedCategory)
+    : products;
+
 
   return (
     <Box>
       <HeroBanner />
-
+      <FilterBar
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+      />
       <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
         <Box
           sx={{
