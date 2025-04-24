@@ -42,9 +42,7 @@ const imageMap = {
       lampimg: `${S3_BASE_URL}/assets/section/shop/lampimg.png`,
       woodfloor:`${S3_BASE_URL}/assets/section/shop/woodfloor.jpg`,
       wallpaper:`${S3_BASE_URL}/assets/section/shop/wallpaper.png`,
-
-
-
+      lightWoodBed: `${S3_BASE_URL}/assets/section/shop/light_wood_bed.png`
     },
   },
   manual: {

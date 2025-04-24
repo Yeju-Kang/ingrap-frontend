@@ -21,9 +21,13 @@ export const useAllRoutes = (isAuthenticated) => {
   return [
     { path: "/space", label: translate("space.title"), element: <SpacePage /> },
     { path: "/space/:id", element: <SpaceEditorPage />, label: null }, // ✅ 변경된 라우트
-    { path: "/shop", label: translate("shop.title"), element: <ShopPage /> },
+    // { path: "/shop", label: translate("shop.title"), element: <ShopPage /> },
     { path: "/shop/:productId", element: <ProductDetailPage />, label: null },
-
+    {
+      path: "/shop",
+      label: showCommunity ? translate("shop.title") : null,
+      element: <ShopPage />
+    },
     {
       path: "/community",
       label: showCommunity ? translate("community.title") : null,

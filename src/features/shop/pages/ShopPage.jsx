@@ -11,7 +11,7 @@ const CARD_WIDTH = 280;
 const GAP = 24;
 
 const products = [
-  { id: 1, name: "우드 모던 테이블", price: 374000, image: imageMap.section.home.room1 },
+  { id: 1, name: "라이트 우드 침대", price: 850000, image: imageMap.section.shop.lightWoodBed },
   { id: 2, name: "빈티지 우드 테이블", price: 473000, image: "/assets/images/room1.jpg" },
   { id: 3, name: "화이트 오크 테이블", price: 407000, image: "/assets/images/room2.jpg" },
   { id: 4, name: "다크 우드 테이블", price: 450000, image: "/assets/images/room2.jpg" },
